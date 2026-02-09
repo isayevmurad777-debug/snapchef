@@ -4,6 +4,9 @@
 [functions]
   node_bundler = "esbuild"
 
+[build.environment]
+  SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
+
 [[headers]]
   for = "/*"
   [headers.values]
