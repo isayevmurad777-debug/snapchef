@@ -4550,7 +4550,7 @@
                     role: 'user',
                     content: 'Based on this URL: ' + url + ', generate a realistic recipe. Return JSON: {"name":"Recipe Name","description":"Brief description","ingredients":["item1","item2"],"steps":["Step 1","Step 2"],"prepTime":15,"cookTime":30,"servings":4,"calories":350}'
                 }], { response_format: { type: "json_object" } });
-                var recipe = JSON.parse(data.choices[0].message.content);
+                var recipe = JSON.parse(data.response);
 
                 clearInterval(loadingInterval);
                 currentRecipeData = recipe;
@@ -5139,7 +5139,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 );
 
                 clearInterval(loadingInterval);
-                var recipe = JSON.parse(data.choices[0].message.content);
+                var recipe = JSON.parse(data.response);
 
                 currentRecipeData = recipe;
                 displayRecipe(recipe);
@@ -5201,7 +5201,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 );
 
                 clearInterval(loadingInterval);
-                var recipe = JSON.parse(data.choices[0].message.content);
+                var recipe = JSON.parse(data.response);
 
                 currentRecipeData = recipe;
                 displayRecipe(recipe);
@@ -5342,7 +5342,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 }], { response_format: { type: "json_object" }, max_tokens: 800 });
 
                 clearInterval(loadingInterval);
-                var analysis = JSON.parse(data.choices[0].message.content);
+                var analysis = JSON.parse(data.response);
                 displayAnalysis(analysis);
                 showConfetti();
 
@@ -6064,7 +6064,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                         [{ role: 'user', content: 'Estimate nutrition for one serving of "' + sanitizeInput(name, 100) + '". Return ONLY JSON: {"calories":0,"protein":0,"carbs":0,"fat":0}' }],
                         { response_format: { type: "json_object" }, max_tokens: 100 }
                     );
-                    var est = JSON.parse(data.choices[0].message.content);
+                    var est = JSON.parse(data.response);
                     document.getElementById('mealLogCal').value = est.calories || 0;
                     document.getElementById('mealLogProt').value = est.protein || 0;
                     document.getElementById('mealLogCarb').value = est.carbs || 0;
