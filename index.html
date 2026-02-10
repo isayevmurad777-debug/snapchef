@@ -5064,7 +5064,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             var response = await fetch('/.netlify/functions/ai', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + idToken },
                 body: JSON.stringify(body)
             });
             var data = await response.json();
