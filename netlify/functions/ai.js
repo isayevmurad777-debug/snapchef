@@ -40,7 +40,7 @@ exports.handler = async (event, context) => {
     const idToken = authHeader.split('Bearer ')[1];
 
     // Request body-ni parse et
-    const { userId, prompt, action } = JSON.parse(event.body);
+    const { userId, prompt, action, messages } = JSON.parse(event.body);
 
     if (!userId) {
       return {
@@ -89,7 +89,7 @@ exports.handler = async (event, context) => {
       },
       body: JSON.stringify({
         model: 'gpt-4o-mini',
-        messages: [{ role: 'user', content: prompt }],
+        messages: messages || [{ role: 'user', content: prompt }],
         max_tokens: 1500,
         temperature: 0.7,
       }),
