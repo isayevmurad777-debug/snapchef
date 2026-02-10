@@ -1,5 +1,5 @@
 // OpenAI API proxy function
-const fetch = require('node-fetch');
+
 
 // In-memory istifadə məlumatı (production üçün Firestore tövsiyə olunur)
 const userUsage = new Map();
