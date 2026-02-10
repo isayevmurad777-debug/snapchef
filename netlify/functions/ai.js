@@ -1,6 +1,4 @@
 // OpenAI API proxy function
-
-
 // In-memory istifadə məlumatı (production üçün Firestore tövsiyə olunur)
 const userUsage = new Map();
 const MAX_FREE_GENERATIONS = 10;
