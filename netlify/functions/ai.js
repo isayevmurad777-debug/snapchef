@@ -40,7 +40,7 @@ exports.handler = async (event, context) => {
     }
 
     const idToken = authHeader.split('Bearer ')[1];
-    
+
     // Request body-ni parse et
     const { userId, prompt, action } = JSON.parse(event.body);
 
@@ -54,8 +54,8 @@ exports.handler = async (event, context) => {
 
     // İstifadə limitini yoxla
     const currentUsage = userUsage.get(userId) || 0;
-    
-    // Əgər yalnız limit yoxlaması isənilsə
+
+    // Əgər yalnız limit yoxlaması istənilsə
     if (action === 'check-limit') {
       return {
         statusCode: 200,
@@ -120,7 +120,6 @@ exports.handler = async (event, context) => {
         },
       }),
     };
-
   } catch (error) {
     console.error('Error:', error);
     return {
@@ -133,17 +132,3 @@ exports.handler = async (event, context) => {
     };
   }
 };
-```
-
----
-
-## ✅ Strukturu Yoxla
-
-Qovluq strukturun belə olmalıdır:
-```
-snapchef/
-├── index.html
-├── netlify.toml
-└── netlify/
-    └── functions/
-        └── ai.js
