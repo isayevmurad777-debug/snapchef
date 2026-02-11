@@ -1,6 +1,18 @@
-// OpenAI API proxy function
-// In-memory istifadə məlumatı (production üçün Firestore tövsiyə olunur)
-const userUsage = new Map();
+// OpenAI API proxy function with Firestore usage tracking
+const admin = require('firebase-admin');
+
+// Initialize Firebase Admin (yalnız bir dəfə)
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    }),
+  });
+}
+
+const db = admin.firestore();
 const MAX_FREE_GENERATIONS = 10;
 
 exports.handler = async (event, context) => {
@@ -27,7 +39,7 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    // Firebase ID token-i yoxla
+    // Firebase ID token-i yoxla və təsdiqlə
     const authHeader = event.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return {
@@ -39,19 +51,32 @@ exports.handler = async (event, context) => {
 
     const idToken = authHeader.split('Bearer ')[1];
 
-    // Request body-ni parse et
-    const { userId, prompt, action, messages } = JSON.parse(event.body);
-
-    if (!userId) {
+    // Token-i təsdiqlə
+    let decodedToken;
+    try {
+      decodedToken = await admin.auth().verifyIdToken(idToken);
+    } catch (error) {
+      console.error('Token verification failed:', error);
       return {
-        statusCode: 400,
+        statusCode: 401,
         headers,
-        body: JSON.stringify({ error: 'userId required' }),
+        body: JSON.stringify({ error: 'Invalid or expired token' }),
       };
     }
 
-    // İstifadə limitini yoxla
-    const currentUsage = userUsage.get(userId) || 0;
+    const userId = decodedToken.uid;
+
+    // Request body-ni parse et
+    const { prompt, action, messages } = JSON.parse(event.body);
+
+    // Firestore-dan istifadə məlumatını oxu
+    const userDocRef = db.collection('users').doc(userId);
+    const userDoc = await userDocRef.get();
+
+    let currentUsage = 0;
+    if (userDoc.exists) {
+      currentUsage = userDoc.data().recipeGenerations || 0;
+    }
 
     // Əgər yalnız limit yoxlaması istənilsə
     if (action === 'check-limit') {
@@ -61,7 +86,7 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({
           used: currentUsage,
           limit: MAX_FREE_GENERATIONS,
-          remaining: MAX_FREE_GENERATIONS - currentUsage,
+          remaining: Math.max(0, MAX_FREE_GENERATIONS - currentUsage),
         }),
       };
     }
@@ -73,7 +98,7 @@ exports.handler = async (event, context) => {
         headers,
         body: JSON.stringify({
           error: 'Free limit reached',
-          message: 'Premium üzvlüyə keçid edin',
+          message: 'Pulsuz limit bitdi. Premium üzvlüyə keçid edin',
           used: currentUsage,
           limit: MAX_FREE_GENERATIONS,
         }),
@@ -103,14 +128,24 @@ exports.handler = async (event, context) => {
     const data = await openaiResponse.json();
     const response = data.choices[0].message.content;
 
-    // İstifadə sayını artır
-    userUsage.set(userId, currentUsage + 1);
+    // Markdown code fence-ləri təmizlə
+    const cleanResponse = response.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+
+    // Firestore-da istifadə sayını artır
+    await userDocRef.set(
+      {
+        recipeGenerations: currentUsage + 1,
+        lastGeneratedAt: admin.firestore.FieldValue.serverTimestamp(),
+        email: decodedToken.email || null,
+      },
+      { merge: true }
+    );
 
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
-        response,
+        response: cleanResponse,
         usage: {
           used: currentUsage + 1,
           limit: MAX_FREE_GENERATIONS,
