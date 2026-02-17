@@ -2,6 +2,7 @@
   "name": "snapchef",
   "version": "1.0.0",
   "dependencies": {
-    "firebase-admin": "^12.0.0"
+    "firebase-admin": "^12.0.0",
+    "openai": "^4.52.0"
   }
 }
