@@ -13,7 +13,7 @@ if (!admin.apps.length) {
 }
 
 const db = admin.firestore();
-const MAX_FREE_GENERATIONS = 25; // Gündə 25 pulsuz
+const MAX_FREE_GENERATIONS = 15; // Gündə 15 pulsuz
 
 exports.handler = async (event, context) => {
   // CORS headers
