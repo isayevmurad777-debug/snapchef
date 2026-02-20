@@ -1926,10 +1926,11 @@
             border-top: 1px solid #e2e8f0;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
             display: flex;
-            justify-content: space-around;
-            padding: 6px 4px;
-            padding-bottom: calc(6px + env(safe-area-inset-bottom));
+            justify-content: space-evenly;
+            padding: 4px 0;
+            padding-bottom: calc(4px + env(safe-area-inset-bottom));
             z-index: 1000;
+            overflow: hidden;
         }
 
         @media (min-width: 640px) {
@@ -1958,10 +1959,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px 10px;
+            gap: 2px;
+            padding: 6px 2px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 14px;
+            transition: all 0.2s;
+            border-radius: 10px;
             position: relative;
             min-width: 0;
             flex: 1;
@@ -2011,14 +2013,11 @@
         }
 
         .nav-label {
-            font-size: 9px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
+            font-size: 10px;
             font-weight: 600;
             color: var(--text-muted);
             white-space: nowrap;
+            line-height: 1;
         }
 
         body.dark-mode .nav-label {
@@ -2419,6 +2418,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transform: none;
         }
         .close-camera-btn {
             position: absolute;
@@ -4361,27 +4361,64 @@
             return foodEmojis['default'];
         }
 
+        // Food image cache
+        var foodImageCache = {};
+
         function getRecipeImageURL(recipeName) {
             var name = (recipeName || 'food').toLowerCase();
+            // Extract main food keyword
             var foodWords = ['chicken','pasta','rice','salad','soup','fish','steak','pizza',
                 'sushi','bread','cake','burger','taco','curry','noodle','sandwich','pie',
                 'egg','beef','pork','lamb','shrimp','salmon','chocolate','pancake','kebab',
-                'plov','dolma','lahmacun','pilaf','biryani','ramen','dumpling','vegetable',
-                'tomato','cheese','mushroom','potato','grilled','baked','fried','roasted'];
-            var keyword = 'food,dish,meal';
+                'plov','dolma','lahmacun','pilaf','biryani','ramen','dumpling','vegetable'];
+            var keyword = '';
             for (var i = 0; i < foodWords.length; i++) {
-                if (name.indexOf(foodWords[i]) !== -1) { keyword = foodWords[i] + ',food'; break; }
+                if (name.indexOf(foodWords[i]) !== -1) { keyword = foodWords[i]; break; }
             }
-            var hash = 0;
-            for (var j = 0; j < name.length; j++) {
-                hash = name.charCodeAt(j) + ((hash << 5) - hash);
-            }
-            var lock = Math.abs(hash % 50) + 1;
-            return 'https://loremflickr.com/800/600/' + encodeURIComponent(keyword) + '?lock=' + lock;
+            // Fallback placeholder with gradient
+            if (!keyword) keyword = name.split(' ').slice(0, 2).join(' ');
+            
+            // Try TheMealDB for real food images
+            var searchTerm = keyword || name.split(' ')[0];
+            tryLoadRealImage(searchTerm, recipeName);
+            
+            // Return a nice gradient placeholder immediately  
+            return 'data:image/svg+xml,' + encodeURIComponent(
+                '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">' +
+                '<defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">' +
+                '<stop offset="0%" style="stop-color:#f97316"/>' +
+                '<stop offset="100%" style="stop-color:#dc2626"/>' +
+                '</linearGradient></defs>' +
+                '<rect width="800" height="600" fill="url(#g)"/>' +
+                '<text x="400" y="260" text-anchor="middle" font-size="80" fill="white" opacity="0.9">🍽️</text>' +
+                '<text x="400" y="360" text-anchor="middle" font-size="28" fill="white" font-family="sans-serif" opacity="0.8">' + 
+                (recipeName || 'Recipe').substring(0, 30) + '</text>' +
+                '</svg>'
+            );
+        }
+
+        function tryLoadRealImage(searchTerm, recipeName) {
+            if (foodImageCache[recipeName]) return;
+            
+            fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=' + encodeURIComponent(searchTerm))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.meals && data.meals.length > 0) {
+                        var imgUrl = data.meals[0].strMealThumb + '/preview';
+                        foodImageCache[recipeName] = imgUrl;
+                        // Update all images with this recipe name
+                        document.querySelectorAll('img[data-recipe="' + CSS.escape(recipeName) + '"]').forEach(function(img) {
+                            img.src = imgUrl;
+                        });
+                    }
+                })
+                .catch(function() {});
         }
 
         function getRandomFoodImage() {
-            return 'https://loremflickr.com/800/600/food,dish,meal?lock=' + Math.floor(Math.random() * 100);
+            var categories = ['chicken','beef','pasta','seafood','dessert','salad','soup'];
+            var cat = categories[Math.floor(Math.random() * categories.length)];
+            return getRecipeImageURL(cat);
         }
 
         // Fallback image: a solid gradient SVG as data URI
@@ -4789,6 +4826,7 @@
                 var imgHtml = '';
                 if (recipe) {
                     var imgUrl = recipe.image || getRecipeImageURL(recipe.name);
+                    // Mark img for async real image loading
                     imgHtml = '<img class="meal-thumb" src="' + imgUrl + '" alt="" onerror="this.style.display=\'none\'">';
                 }
                 var content = recipe ? 
@@ -5386,7 +5424,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             var html = '<div class="recipe-card">' +
                 '<div class="recipe-img-box">' +
-                '<img src="' + imageUrl + '" alt="' + escapeHTML(recipe.name) + '" onload="this.style.opacity=1" onerror="this.src=\'' + fallbackFoodImage + '\'" style="opacity:0;transition:opacity 0.3s">' +
+                '<img src="' + imageUrl + '" alt="' + escapeHTML(recipe.name) + '" data-recipe="' + escapeHTML(recipe.name) + '" onload="this.style.opacity=1" onerror="this.style.display=\'none\'" style="opacity:0;transition:opacity 0.3s">' +
                 '<div class="recipe-overlay">' +
                 '<div class="recipe-name">' + escapeHTML(recipe.name) + '</div>' +
                 '<div class="recipe-desc">' + escapeHTML(recipe.description || '') + '</div>' +
@@ -5584,7 +5622,15 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
         }
 
         function startCamera(type) {
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+            navigator.mediaDevices.getUserMedia({ 
+                video: { 
+                    facingMode: 'environment',
+                    width: { ideal: 1920 },
+                    height: { ideal: 1080 },
+                    zoom: { ideal: 1 },
+                    advanced: [{ zoom: 1 }]
+                } 
+            })
                 .then(function(stream) {
                     streams[type] = stream;
                     var video = document.getElementById(type + 'Video');
@@ -5607,7 +5653,15 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             if (!window._cameraFacing) window._cameraFacing = {};
             window._cameraFacing[type] = newFacing;
             
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: newFacing } })
+            navigator.mediaDevices.getUserMedia({ 
+                video: { 
+                    facingMode: newFacing,
+                    width: { ideal: 1920 },
+                    height: { ideal: 1080 },
+                    zoom: { ideal: 1 },
+                    advanced: [{ zoom: 1 }]
+                } 
+            })
                 .then(function(stream) {
                     streams[type] = stream;
                     var video = document.getElementById(type + 'Video');
