@@ -13,7 +13,7 @@ if (!admin.apps.length) {
 }
 
 const db = admin.firestore();
-const MAX_FREE_GENERATIONS = 10;
+const MAX_FREE_GENERATIONS = 25; // Gündə 25 pulsuz
 
 exports.handler = async (event, context) => {
   // CORS headers
@@ -67,15 +67,32 @@ exports.handler = async (event, context) => {
     const userId = decodedToken.uid;
 
     // Request body-ni parse et
-    const { prompt, action, messages } = JSON.parse(event.body);
+    const { prompt, action, messages, max_tokens } = JSON.parse(event.body);
 
     // Firestore-dan istifadə məlumatını oxu
     const userDocRef = db.collection('users').doc(userId);
     const userDoc = await userDocRef.get();
 
     let currentUsage = 0;
+    let lastResetDate = null;
+
     if (userDoc.exists) {
-      currentUsage = userDoc.data().recipeGenerations || 0;
+      const userData = userDoc.data();
+      currentUsage = userData.recipeGenerations || 0;
+      lastResetDate = userData.lastResetDate || null;
+    }
+
+    // Gündəlik reset: Əgər son reset bugündən əvvəldirsə, counter-i sıfırla
+    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    if (lastResetDate !== today) {
+      currentUsage = 0;
+      await userDocRef.set(
+        {
+          recipeGenerations: 0,
+          lastResetDate: today,
+        },
+        { merge: true }
+      );
     }
 
     // Əgər yalnız limit yoxlaması istənilsə
@@ -97,8 +114,8 @@ exports.handler = async (event, context) => {
         statusCode: 403,
         headers,
         body: JSON.stringify({
-          error: 'Free limit reached',
-          message: 'Pulsuz limit bitdi. Premium üzvlüyə keçid edin',
+          error: 'free_limit_exceeded',
+          message: 'Günlük pulsuz limit bitdi. Premium üzvlüyə keçid edin',
           used: currentUsage,
           limit: MAX_FREE_GENERATIONS,
         }),
@@ -115,7 +132,7 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         messages: messages || [{ role: 'user', content: prompt }],
-        max_tokens: 1500,
+        max_tokens: max_tokens || 1500,
         temperature: 0.7,
       }),
     });
@@ -136,21 +153,25 @@ exports.handler = async (event, context) => {
       {
         recipeGenerations: currentUsage + 1,
         lastGeneratedAt: admin.firestore.FieldValue.serverTimestamp(),
+        lastResetDate: today,
         email: decodedToken.email || null,
       },
       { merge: true }
     );
+
+    const usageInfo = {
+      used: currentUsage + 1,
+      limit: MAX_FREE_GENERATIONS,
+      remaining: MAX_FREE_GENERATIONS - currentUsage - 1,
+    };
 
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
         response: cleanResponse,
-        usage: {
-          used: currentUsage + 1,
-          limit: MAX_FREE_GENERATIONS,
-          remaining: MAX_FREE_GENERATIONS - currentUsage - 1,
-        },
+        usage: usageInfo,
+        _usage: usageInfo, // backward compatibility
       }),
     };
   } catch (error) {
