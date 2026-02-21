@@ -11,7 +11,7 @@
     <meta name="keywords" content="recipe generator, meal planner, calorie counter, ingredient scanner, AI cooking">
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -1937,7 +1937,7 @@
             padding: 6px 0;
             padding-bottom: calc(6px + env(safe-area-inset-bottom));
             z-index: 1000;
-            overflow: hidden;
+            overflow: visible;
         }
 
         @media (min-width: 640px) {
@@ -1967,13 +1967,20 @@
             flex-direction: column;
             align-items: center;
             gap: 2px;
-            padding: 6px 2px;
+            padding: 8px 4px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s;
             border-radius: 10px;
             position: relative;
             min-width: 0;
             flex: 1;
+            border: none;
+            background: none;
+            -webkit-appearance: none;
+            appearance: none;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: rgba(0,0,0,0.05);
+            font-family: inherit;
         }
 
         .nav-item::before {
@@ -2006,14 +2013,14 @@
         }
 
         .nav-item.active .nav-icon {
-            transform: scale(1.15);
+            transform: scale(1.1);
         }
 
         .nav-icon {
-            width: 24px;
-            height: 24px;
-            margin-bottom: 4px;
-            transition: transform 0.3s;
+            font-size: 20px;
+            line-height: 1;
+            margin-bottom: 2px;
+            transition: transform 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -2024,7 +2031,7 @@
             font-weight: 600;
             color: var(--text-muted);
             white-space: nowrap;
-            line-height: 1;
+            line-height: 1.2;
         }
 
         body.dark-mode .nav-label {
@@ -3966,25 +3973,25 @@
             <!-- Header -->
             <header class="header">
                 <div class="logo">
-                    <span class="logo-icon"><i data-lucide="chef-hat"></i></span>
+                    <span class="logo-icon">🍳</span>
                     <h1>SnapChef</h1>
                     <span class="premium-badge hidden" id="premiumBadge">PRO</span>
                 </div>
                 <div class="header-btns">
                     <div class="credits-display" onclick="CreditSystem.showBuyModal()">
-                        <i data-lucide="gem" style="width:16px;height:16px;"></i>
+                        💎
                         <span id="creditsDisplay">10</span>
                     </div>
                     <div class="lang-selector">
-                        <button class="icon-btn lang-btn" onclick="toggleLangDropdown()" id="langBtn"><i data-lucide="globe"></i></button>
+                        <button class="icon-btn lang-btn" onclick="toggleLangDropdown()" id="langBtn">🌐</button>
                         <div class="lang-dropdown" id="langDropdown">
                             <div class="lang-option active" data-lang="en" onclick="setLanguage('en')">🇬🇧 English</div>
                             <div class="lang-option" data-lang="az" onclick="setLanguage('az')">🇦🇿 Azərbaycan</div>
                             <div class="lang-option" data-lang="ru" onclick="setLanguage('ru')">🇷🇺 Русский</div>
                         </div>
                     </div>
-                    <button class="icon-btn" onclick="toggleVoice()" id="voiceBtn" title="Voice Input"><i data-lucide="mic"></i></button>
-                    <button class="icon-btn" onclick="toggleDarkMode()" id="darkBtn"><i data-lucide="moon"></i></button>
+                    <button class="icon-btn" onclick="toggleVoice()" id="voiceBtn" title="Voice Input">🎙️</button>
+                    <button class="icon-btn" onclick="toggleDarkMode()" id="darkBtn">🌙</button>
                 </div>
             </header>
 
@@ -4314,30 +4321,30 @@
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
-        <div class="nav-item active" onclick="switchTab('recipe')" data-tab="recipe" role="button" tabindex="0" aria-label="Recipe tab" onkeypress="if(event.key==='Enter')switchTab('recipe')">
-            <span class="nav-icon"><i data-lucide="chef-hat"></i></span>
+        <button class="nav-item active" onclick="switchTab('recipe')" data-tab="recipe" type="button">
+            <span class="nav-icon">🍳</span>
             <span class="nav-label">Recipe</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('analyze')" data-tab="analyze" role="button" tabindex="0" aria-label="Analyze tab" onkeypress="if(event.key==='Enter')switchTab('analyze')">
-            <span class="nav-icon"><i data-lucide="scan-search"></i></span>
+        </button>
+        <button class="nav-item" onclick="switchTab('analyze')" data-tab="analyze" type="button">
+            <span class="nav-icon">🔍</span>
             <span class="nav-label">Analyze</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('health')" data-tab="health" role="button" tabindex="0" aria-label="Health target tab" onkeypress="if(event.key==='Enter')switchTab('health')">
-            <span class="nav-icon"><i data-lucide="heart-pulse"></i></span>
+        </button>
+        <button class="nav-item" onclick="switchTab('health')" data-tab="health" type="button">
+            <span class="nav-icon">💪</span>
             <span class="nav-label">Health</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('mealplan')" data-tab="mealplan" role="button" tabindex="0" aria-label="Meal plan tab" onkeypress="if(event.key==='Enter')switchTab('mealplan')">
-            <span class="nav-icon"><i data-lucide="calendar-days"></i></span>
+        </button>
+        <button class="nav-item" onclick="switchTab('mealplan')" data-tab="mealplan" type="button">
+            <span class="nav-icon">📅</span>
             <span class="nav-label">Plan</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('favorites')" data-tab="favorites" role="button" tabindex="0" aria-label="Favorites tab" onkeypress="if(event.key==='Enter')switchTab('favorites')">
-            <span class="nav-icon"><i data-lucide="heart"></i></span>
+        </button>
+        <button class="nav-item" onclick="switchTab('favorites')" data-tab="favorites" type="button">
+            <span class="nav-icon">❤️</span>
             <span class="nav-label">Saved</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('settings')" data-tab="settings" role="button" tabindex="0" aria-label="Settings tab" onkeypress="if(event.key==='Enter')switchTab('settings')">
-            <span class="nav-icon"><i data-lucide="settings"></i></span>
+        </button>
+        <button class="nav-item" onclick="switchTab('settings')" data-tab="settings" type="button">
+            <span class="nav-icon">⚙️</span>
             <span class="nav-label">Settings</span>
-        </div>
+        </button>
     </nav>
 
     <canvas id="canvas"></canvas>
@@ -4846,20 +4853,28 @@
         }
 
         function switchTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(function(c) {
-                c.classList.remove('active');
-            });
-            document.querySelectorAll('.nav-item').forEach(function(n) {
-                n.classList.toggle('active', n.getAttribute('data-tab') === tab);
-            });
-            var el = document.getElementById(tab + 'Tab');
-            if (el) el.classList.add('active');
+            try {
+                document.querySelectorAll('.tab-content').forEach(function(c) {
+                    c.classList.remove('active');
+                });
+                document.querySelectorAll('.nav-item').forEach(function(n) {
+                    n.classList.toggle('active', n.getAttribute('data-tab') === tab);
+                });
+                var el = document.getElementById(tab + 'Tab');
+                if (el) el.classList.add('active');
 
-            if (tab === 'favorites') renderFavorites();
-            if (tab === 'health') { HealthTarget.render(); }
-            if (tab === 'favorites') { ShoppingList.render(); }
-            if (tab === 'mealplan') { MealPlanner.renderWeek(); }
-            if (tab === 'settings') renderStats();
+                // Scroll to top of new tab
+                var container = document.querySelector('.container');
+                if (container) container.scrollTop = 0;
+
+                if (tab === 'favorites') renderFavorites();
+                if (tab === 'health') { HealthTarget.render(); }
+                if (tab === 'favorites') { ShoppingList.render(); }
+                if (tab === 'mealplan') { MealPlanner.renderWeek(); }
+                if (tab === 'settings') renderStats();
+            } catch(e) {
+                console.error('Tab switch error:', e);
+            }
         }
 
         // ========================================
@@ -7198,7 +7213,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
         // ========================================
         function renderEmptyFavorites() {
             return '<div class="empty-state">' +
-                '<div class="empty-icon"><i data-lucide="heart" style="width:48px;height:48px;color:var(--text-muted)"></i></div>' +
+                '<div class="empty-icon" style="font-size:48px;">🤍</div>' +
                 '<div class="empty-title">' + t('noRecipes') + '</div>' +
                 '<div class="empty-desc">Tap the ❤️ button on any recipe to save it here</div>' +
                 '<button class="empty-state-action" onclick="switchTab(\'recipe\')">🍳 Create Recipe</button>' +
