@@ -45,14 +45,14 @@
             --warning: #f59e0b;
             --success: #2D6A4F;
             --bg-light: #FAFAF7;
-            --bg-dark: #121214;
+            --bg-dark: #111111;
             --card-light: #ffffff;
-            --card-dark: #1C1C22;
+            --card-dark: #1C1C1E;
             --text-light: #1A1A1E;
             --text-dark: #ECECED;
             --text-muted: #8E8E93;
             --border-light: #EBEBEA;
-            --border-dark: #2C2C34;
+            --border-dark: #2A2A2C;
             --premium-gold: #14b8a6;
             --glass-light: rgba(255, 255, 255, 0.85);
             --glass-dark: rgba(28, 28, 34, 0.85);
@@ -114,7 +114,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(145deg, #6366f1 0%, #4f46e5 40%, #4338ca 100%);
+            background: linear-gradient(145deg, #4338ca 0%, #312e81 50%, #1e1b4b 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -390,7 +390,7 @@
         }
 
         body.dark-mode .container {
-            background: #1C1C22;
+            background: #0D0D0F;
         }
 
         /* Subscription Banner */
@@ -760,12 +760,12 @@
             padding: 14px;
             border-radius: 14px;
             margin-bottom: 15px;
-            border: 1px solid #bbf7d0;
+            border: 1px solid var(--border-light);
         }
 
         body.dark-mode .api-section {
-            background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
-            border-color: #047857;
+            background: #1E1E20;
+            border-color: #2A2A2C;
         }
 
         .api-section label {
@@ -863,7 +863,7 @@
 
         .api-status.success {
             background: #d1fae5;
-            color: #065f46;
+            color: #2D6A4F;
             display: block;
         }
 
@@ -874,7 +874,7 @@
         }
 
         body.dark-mode .api-status.success {
-            background: #064e3b;
+            background: #1C1C1E;
             color: #6ee7b7;
         }
 
@@ -1074,8 +1074,8 @@
         }
 
         body.dark-mode .detected-box {
-            background: linear-gradient(135deg, #064e3b, #065f46);
-            border-color: #047857;
+            background: #1C1C1E;
+            border-color: #2D6A4F;
         }
 
         .detected-box.show {
@@ -1084,7 +1084,7 @@
 
         .detected-title {
             font-weight: 600;
-            color: #065f46;
+            color: #2D6A4F;
             margin-bottom: 8px;
             font-size: 13px;
         }
@@ -1104,14 +1104,14 @@
             padding: 5px 10px;
             border-radius: 20px;
             font-size: 12px;
-            color: #065f46;
+            color: #2D6A4F;
             border: 1px solid #a7f3d0;
         }
 
         body.dark-mode .detected-tag {
             background: var(--card-dark);
             color: #6ee7b7;
-            border-color: #047857;
+            border-color: #2D6A4F;
         }
 
         /* Input Section */
@@ -1554,7 +1554,7 @@
         }
 
         .score-circle.good {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: linear-gradient(135deg, #10b981, #2D6A4F);
         }
 
         .score-circle.moderate {
@@ -1958,8 +1958,8 @@
         }
 
         body.dark-mode .bottom-nav {
-            background: var(--card-dark);
-            border-color: var(--border-dark);
+            background: #1C1C1E;
+            border-color: #2A2A2C;
         }
 
         .nav-item {
@@ -3277,18 +3277,18 @@
 
         /* ===== HEALTH TARGET SYSTEM ===== */
         .health-dashboard {
-            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%);
+            background: #F5F5FF;
             border-radius: 24px;
             padding: 22px;
             margin-bottom: 20px;
-            border: 1px solid #6ee7b7;
+            border: 1px solid var(--border-light);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.12);
+            box-shadow: var(--shadow-md);
         }
         body.dark-mode .health-dashboard {
-            background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
-            border-color: #047857;
+            background: #1E1E20;
+            border-color: #2A2A2C;
         }
         .health-dashboard::before {
             content: '';
@@ -3307,24 +3307,24 @@
         .health-dash-title {
             font-size: 16px;
             font-weight: 700;
-            color: #065f46;
+            color: #2D6A4F;
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        body.dark-mode .health-dash-title { color: #6ee7b7; }
+        body.dark-mode .health-dash-title { color: #a5b4fc; }
         .health-edit-btn {
             padding: 6px 14px;
             background: rgba(16, 185, 129, 0.15);
-            border: 1px solid #6ee7b7;
+            border: 1px solid var(--border-light);
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
-            color: #065f46;
+            color: #2D6A4F;
             cursor: pointer;
             transition: all 0.3s;
         }
-        body.dark-mode .health-edit-btn { color: #6ee7b7; border-color: #047857; }
+        body.dark-mode .health-edit-btn { color: #a5b4fc; border-color: #3A3A3C; }
         .health-edit-btn:hover { background: rgba(16, 185, 129, 0.3); transform: scale(1.05); }
 
         .health-goal-badge {
@@ -3340,7 +3340,7 @@
         .health-goal-badge.loss { background: #fef3c7; color: #92400e; }
         .health-goal-badge.maintain { background: #dbeafe; color: var(--primary); }
         .health-goal-badge.gain { background: #ede9fe; color: #5b21b6; }
-        .health-goal-badge.healthy { background: #d1fae5; color: #065f46; }
+        .health-goal-badge.healthy { background: #d1fae5; color: #2D6A4F; }
 
         .health-progress-ring {
             display: flex;
@@ -3480,7 +3480,7 @@
         }
         body.dark-mode .water-glass {
             background: transparent;
-            border-color: #1d4ed8;
+            border-color: #3A3A3C;
         }
         .water-glass.filled {
             background: linear-gradient(135deg, #3b82f6, #2563eb);
@@ -3610,18 +3610,18 @@
             background: linear-gradient(135deg, #ecfdf5, #d1fae5);
             border-radius: 20px;
             margin-bottom: 20px;
-            border: 1px solid #C6E7D4;
+            border: 1px solid var(--border-light);
         }
         body.dark-mode .health-no-profile {
-            background: linear-gradient(135deg, #064e3b, #065f46);
-            border-color: #047857;
+            background: #1C1C1E;
+            border-color: #2A2A2C;
         }
         .health-no-profile-icon { font-size: 48px; margin-bottom: 12px; }
         .health-no-profile-title {
             font-size: 18px; font-weight: 700;
-            color: #065f46; margin-bottom: 6px;
+            color: #2D6A4F; margin-bottom: 6px;
         }
-        body.dark-mode .health-no-profile-title { color: #6ee7b7; }
+        body.dark-mode .health-no-profile-title { color: #a5b4fc; }
         .health-no-profile-desc {
             font-size: 13px; color: #64748b; margin-bottom: 16px;
         }
@@ -4236,13 +4236,13 @@
                 <!-- Account Section -->
                 <section class="api-section" style="text-align: center;">
                     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                        <img id="userAvatar" src="" style="width: 40px; height: 40px; border-radius: 50%; background: #e2e8f0; display: none;" onerror="this.style.display='none'">
+                        <img id="userAvatar" src="" style="width: 40px; height: 40px; border-radius: 50%; background: #e2e8f0; display: none;" onerror="this.style.opacity='0'">
                         <div style="text-align: left;">
                             <div style="font-weight: 700; color: var(--text-light);" id="userDisplayName">User</div>
                             <div style="font-size: 12px; color: #64748b;">Free Plan</div>
                         </div>
                     </div>
-                    <button class="test-btn" onclick="showPremiumModal()" style="width: 100%; background: var(--accent); color: #000; font-weight: 700; margin-bottom: 8px;">👑 Upgrade to Premium</button>
+                    <button class="test-btn" onclick="showPremiumModal()" style="width: 100%; background: var(--primary); color: white; font-weight: 700; margin-bottom: 8px;">👑 Upgrade to Premium</button>
                     <button class="clear-key-btn" onclick="signOut()" style="width: 100%; padding: 8px;">🚪 Sign Out</button>
                 </section>
                 <input type="hidden" id="apiKey" value="BACKEND">
@@ -4672,12 +4672,12 @@
             return 'data:image/svg+xml,' + encodeURIComponent(
                 '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">' +
                 '<defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">' +
-                '<stop offset="0%" style="stop-color:#f97316"/>' +
-                '<stop offset="100%" style="stop-color:#ea580c"/>' +
+                '<stop offset="0%" style="stop-color:#374151"/>' +
+                '<stop offset="100%" style="stop-color:#1f2937"/>' +
                 '</linearGradient></defs>' +
                 '<rect width="800" height="600" fill="url(#g)"/>' +
-                '<text x="400" y="270" text-anchor="middle" font-size="90" fill="white" opacity="0.8">🍽️</text>' +
-                '<text x="400" y="360" text-anchor="middle" font-size="24" fill="white" font-family="Arial,sans-serif" opacity="0.7">' + 
+                '<text x="400" y="260" text-anchor="middle" font-size="80" fill="white" opacity="0.15">🍽️</text>' +
+                '<text x="400" y="350" text-anchor="middle" font-size="22" fill="white" font-family="Arial,sans-serif" opacity="0.4">' + 
                 (name || '').substring(0, 35) + '</text></svg>'
             );
         }
