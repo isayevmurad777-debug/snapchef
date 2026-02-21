@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SnapChef - AI Recipe Generator & Meal Planner</title>
-    <meta name="theme-color" content="#E8654A">
+    <meta name="theme-color" content="#6366f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="description" content="Scan ingredients, get instant AI recipes & nutrition analysis. Free meal planning app.">
@@ -36,13 +36,13 @@
         }
 
         :root {
-            --primary: #E8654A;
-            --primary-dark: #D4532C;
-            --primary-light: #F28B73;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
             --secondary: #2D6A4F;
-            --accent: #D4A853;
-            --danger: #DC3545;
-            --warning: #E8954A;
+            --accent: #14b8a6;
+            --danger: #ef4444;
+            --warning: #f59e0b;
             --success: #2D6A4F;
             --bg-light: #FAFAF7;
             --bg-dark: #121214;
@@ -53,7 +53,7 @@
             --text-muted: #8E8E93;
             --border-light: #EBEBEA;
             --border-dark: #2C2C34;
-            --premium-gold: #D4A853;
+            --premium-gold: #14b8a6;
             --glass-light: rgba(255, 255, 255, 0.85);
             --glass-dark: rgba(28, 28, 34, 0.85);
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
@@ -114,7 +114,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(145deg, #E8654A 0%, #D4532C 40%, #B8441F 100%);
+            background: linear-gradient(145deg, #6366f1 0%, #4f46e5 40%, #4338ca 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -161,7 +161,7 @@
         .splash-logo svg {
             width: 56px;
             height: 56px;
-            color: #E8654A;
+            color: #6366f1;
         }
 
         .splash-title {
@@ -395,7 +395,7 @@
 
         /* Subscription Banner */
         .subscription-banner {
-            background: linear-gradient(135deg, #2D2319 0%, #3D2E1E 100%);
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
             padding: 16px 18px;
             border-radius: var(--radius-md);
             margin-bottom: 16px;
@@ -439,16 +439,16 @@
         .sub-title {
             font-size: 14px;
             font-weight: 700;
-            color: #D4A853;
+            color: #a5b4fc;
         }
 
         .sub-desc {
             font-size: 12px;
-            color: #C4985A;
+            color: #0d9488;
         }
 
         .sub-btn {
-            background: #D4A853;
+            background: #14b8a6;
             color: #1A1A1E;
             padding: 8px 16px;
             border-radius: 20px;
@@ -1994,11 +1994,11 @@
         }
 
         .nav-item:hover {
-            background: rgba(232, 101, 74, 0.08);
+            background: rgba(99, 102, 241, 0.08);
         }
 
         body.dark-mode .nav-item:hover {
-            background: rgba(232, 101, 74, 0.15);
+            background: rgba(99, 102, 241, 0.15);
         }
 
         .nav-item.active {
@@ -2571,7 +2571,7 @@
             align-items: center;
             gap: 10px;
             padding: 14px 16px;
-            background: #FFF5F0;
+            background: #EEF0FF;
             border-radius: 14px;
             cursor: pointer;
             transition: all 0.2s;
@@ -2580,7 +2580,7 @@
         }
         .fridge-toggle:has(input:checked) {
             border-color: var(--primary);
-            background: #FFF0EB;
+            background: #E8EAFF;
         }
         body.dark-mode .fridge-toggle {
             background: #2A2A32;
@@ -4004,7 +4004,7 @@
             <div class="tab-content active" id="recipeTab">
                 <!-- History Section -->
                 <!-- Usage Counter -->
-                <div id="usageCounterBanner" class="api-hint-banner" style="display:block; background: #FFF5F0; cursor: default;">
+                <div id="usageCounterBanner" class="api-hint-banner" style="display:block; background: #EEF0FF; cursor: default;">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <div style="font-size: 22px;">✨</div>
                         <div style="flex:1;">
@@ -6750,7 +6750,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 html += '<div class="health-progress-ring">';
                 // Calories
                 html += '<div class="ring-item">' +
-                    this.buildRingSVG(calPct, calPct > 110 ? '#DC3545' : '#E8654A') +
+                    this.buildRingSVG(calPct, calPct > 110 ? '#DC3545' : '#6366f1') +
                     '<div class="ring-value">' + log.calories + '</div>' +
                     '<div class="ring-label">Calories /' + cal + '</div></div>';
                 // Protein
@@ -7106,7 +7106,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             var container = document.getElementById('confettiContainer');
             if (!container) return;
             
-            var colors = ['#E8654A', '#2D6A4F', '#D4A853', '#E8954A', '#2D6A4F', '#D4532C'];
+            var colors = ['#6366f1', '#2D6A4F', '#14b8a6', '#E8954A', '#2D6A4F', '#4f46e5'];
             var html = '';
             
             for (var i = 0; i < 40; i++) {
