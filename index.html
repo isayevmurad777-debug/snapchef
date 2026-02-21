@@ -2538,6 +2538,214 @@
         body.dark-mode .floating-generate {
             background: linear-gradient(transparent 0%, #1a1a2e 20%);
         }
+
+        /* ===== ALLERGY & FRIDGE MODE ===== */
+        .allergy-option span {
+            color: #dc2626;
+        }
+        body.dark-mode .allergy-option span {
+            color: #fca5a5;
+        }
+        .fridge-mode-section {
+            margin: 12px 0 15px;
+        }
+        .fridge-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            flex-wrap: wrap;
+        }
+        .fridge-toggle:has(input:checked) {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #bfdbfe, #c7d2fe);
+        }
+        body.dark-mode .fridge-toggle {
+            background: linear-gradient(135deg, #1e3a5f, #312e81);
+        }
+        body.dark-mode .fridge-toggle:has(input:checked) {
+            border-color: #60a5fa;
+        }
+        .fridge-toggle input {
+            width: 20px;
+            height: 20px;
+            accent-color: #3b82f6;
+        }
+        .fridge-toggle-label {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        body.dark-mode .fridge-toggle-label { color: var(--text-dark); }
+        .fridge-toggle-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            width: 100%;
+            padding-left: 30px;
+            margin-top: -4px;
+        }
+
+        /* ===== VOICE COOKING ASSISTANT ===== */
+        .voice-cook-panel {
+            background: linear-gradient(135deg, #1e1b4b, #312e81);
+            border-radius: 18px;
+            padding: 20px;
+            margin-top: 15px;
+            color: white;
+        }
+        .voice-cook-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .voice-cook-title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .voice-cook-close {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .voice-step-display {
+            text-align: center;
+            padding: 20px 10px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .voice-step-num {
+            font-size: 14px;
+            color: #a5b4fc;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .voice-step-text {
+            font-size: 18px;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+        .voice-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        .voice-ctrl-btn {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .voice-ctrl-btn:hover {
+            background: rgba(255,255,255,0.25);
+        }
+        .voice-ctrl-btn.small { width: 44px; height: 44px; font-size: 18px; }
+        .voice-ctrl-btn.big { width: 64px; height: 64px; font-size: 28px; background: #6366f1; }
+        .voice-ctrl-btn.big:hover { background: #4f46e5; }
+        .voice-progress {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 12px;
+        }
+        .voice-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transition: all 0.2s;
+        }
+        .voice-dot.active {
+            background: #818cf8;
+            transform: scale(1.3);
+        }
+        .voice-dot.done {
+            background: #22c55e;
+        }
+
+        /* ===== SHOPPING LIST ===== */
+        .shopping-list-panel {
+            background: var(--bg-light);
+            border-radius: 18px;
+            padding: 20px;
+            margin-top: 15px;
+            border: 1px solid var(--border-light);
+        }
+        body.dark-mode .shopping-list-panel {
+            background: var(--card-dark);
+            border-color: var(--border-dark);
+        }
+        .shopping-list-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+        body.dark-mode .shopping-list-title { color: var(--text-dark); }
+        .shopping-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+        body.dark-mode .shopping-item { border-color: var(--border-dark); }
+        .shopping-item:last-child { border: none; }
+        .shopping-check {
+            width: 22px;
+            height: 22px;
+            accent-color: #22c55e;
+            cursor: pointer;
+        }
+        .shopping-item.checked .shopping-text {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+        .shopping-text {
+            flex: 1;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        body.dark-mode .shopping-text { color: var(--text-dark); }
+        .shopping-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .shopping-actions button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
         canvas {
             display: none;
         }
@@ -3853,15 +4061,39 @@
                     </div>
                 </div>
 
-                <!-- Dietary Preferences -->
+                <!-- Dietary Preferences & Allergy Filter -->
                 <div class="dietary-section">
                     <label>⚙️ <span data-i18n="dietaryPrefs">Dietary Preferences</span></label>
                     <div class="dietary-options">
-                        <label class="dietary-option"><input type="checkbox" id="vegetarian"><span data-i18n="vegetarian">Vegetarian</span></label>
-                        <label class="dietary-option"><input type="checkbox" id="vegan"><span data-i18n="vegan">Vegan</span></label>
-                        <label class="dietary-option"><input type="checkbox" id="lowcal"><span data-i18n="lowCal">Low Calorie</span></label>
-                        <label class="dietary-option"><input type="checkbox" id="quick"><span data-i18n="quickEasy">Quick & Easy</span></label>
+                        <label class="dietary-option"><input type="checkbox" id="vegetarian"><span>🥬 Vegetarian</span></label>
+                        <label class="dietary-option"><input type="checkbox" id="vegan"><span>🌱 Vegan</span></label>
+                        <label class="dietary-option"><input type="checkbox" id="lowcal"><span>🔥 Low Calorie</span></label>
+                        <label class="dietary-option"><input type="checkbox" id="quick"><span>⚡ Quick & Easy</span></label>
+                        <label class="dietary-option"><input type="checkbox" id="halal"><span>☪️ Halal</span></label>
+                        <label class="dietary-option"><input type="checkbox" id="keto"><span>🥩 Keto</span></label>
                     </div>
+                </div>
+
+                <!-- Allergy Alerts -->
+                <div class="dietary-section" style="margin-top: -10px;">
+                    <label>⚠️ Allergy Alerts</label>
+                    <div class="dietary-options">
+                        <label class="dietary-option allergy-option"><input type="checkbox" id="noGluten"><span>🚫 Gluten-free</span></label>
+                        <label class="dietary-option allergy-option"><input type="checkbox" id="noLactose"><span>🥛 Lactose-free</span></label>
+                        <label class="dietary-option allergy-option"><input type="checkbox" id="noNuts"><span>🥜 Nut-free</span></label>
+                        <label class="dietary-option allergy-option"><input type="checkbox" id="noEggs"><span>🥚 Egg-free</span></label>
+                        <label class="dietary-option allergy-option"><input type="checkbox" id="noShellfish"><span>🦐 Shellfish-free</span></label>
+                        <label class="dietary-option allergy-option"><input type="checkbox" id="noSoy"><span>🫘 Soy-free</span></label>
+                    </div>
+                </div>
+
+                <!-- Smart Fridge Mode -->
+                <div class="fridge-mode-section">
+                    <label class="fridge-toggle">
+                        <input type="checkbox" id="fridgeMode">
+                        <span class="fridge-toggle-label">🧊 Smart Fridge Mode</span>
+                        <span class="fridge-toggle-desc">Only use ingredients I have</span>
+                    </label>
                 </div>
 
                 <!-- Cook Specific Dish (Enhanced) -->
@@ -3948,6 +4180,14 @@
 
             <!-- Favorites Tab -->
             <div class="tab-content" id="favoritesTab">
+                <!-- Shopping List Section -->
+                <div style="margin-bottom:20px;">
+                    <h3 class="section-title" style="display:flex;justify-content:space-between;align-items:center;">
+                        <span>🛒 Shopping List</span>
+                        <button onclick="ShoppingList.clear()" style="background:none;border:none;color:var(--text-muted);font-size:12px;cursor:pointer;">Clear</button>
+                    </h3>
+                    <div class="shopping-list-panel" id="shoppingListPanel"></div>
+                </div>
                 <div class="search-box">
                     <input type="text" id="favSearchInput" class="search-input" placeholder="Search recipes..." oninput="searchFavorites(this.value)">
                 </div>
@@ -4544,6 +4784,7 @@
 
             if (tab === 'favorites') renderFavorites();
             if (tab === 'health') { HealthTarget.render(); }
+            if (tab === 'favorites') { ShoppingList.render(); }
             if (tab === 'mealplan') { MealPlanner.renderWeek(); }
             if (tab === 'settings') renderStats();
         }
@@ -5312,14 +5553,15 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             var apiKey = getApiKeyOrGuide();
             if (!apiKey) return;
 
-            var prefs = [];
-            if (document.getElementById('vegetarian').checked) prefs.push('vegetarian');
-            if (document.getElementById('vegan').checked) prefs.push('vegan');
-            if (document.getElementById('lowcal').checked) prefs.push('low calorie');
-            if (document.getElementById('quick').checked) prefs.push('quick and easy (under 30 minutes)');
+            var prefs = getFullDietaryPrefs();
 
-            var prompt = 'Create a recipe using these ingredients: ' + sanitizeInput(ingredients, 500);
-            if (prefs.length) prompt += '. Dietary preferences: ' + prefs.join(', ');
+            var prompt = '';
+            if (document.getElementById('fridgeMode').checked) {
+                prompt = 'Create a recipe using ONLY these ingredients (do not add others): ' + sanitizeInput(ingredients, 500);
+            } else {
+                prompt = 'Create a recipe using these ingredients: ' + sanitizeInput(ingredients, 500);
+            }
+            if (prefs.length) prompt += '. Dietary restrictions (MUST follow): ' + prefs.join(', ');
             prompt += '. Return JSON: {"name":"Recipe Name","description":"Brief description","ingredients":["item1 with amount","item2"],"steps":["Detailed step 1","Step 2"],"prepTime":15,"cookTime":30,"servings":4,"calories":350}';
 
             var loadingInterval = showProgressiveLoading('recipeResults', [
@@ -5373,15 +5615,17 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             if (!apiKey) return;
 
             var ingredients = document.getElementById('ingredients').value.trim();
-            var prefs = [];
-            if (document.getElementById('vegetarian').checked) prefs.push('vegetarian');
-            if (document.getElementById('vegan').checked) prefs.push('vegan');
-            if (document.getElementById('lowcal').checked) prefs.push('low calorie');
-            if (document.getElementById('quick').checked) prefs.push('quick and easy (under 30 minutes)');
+            var prefs = getFullDietaryPrefs();
 
             var prompt = 'Create a detailed recipe for: ' + sanitizeInput(dishName, 100);
-            if (ingredients) prompt += '. Use these available ingredients: ' + sanitizeInput(ingredients, 500);
-            if (prefs.length) prompt += '. Dietary preferences: ' + prefs.join(', ');
+            if (ingredients) {
+                if (document.getElementById('fridgeMode').checked) {
+                    prompt += '. ONLY use these ingredients (do not add others): ' + sanitizeInput(ingredients, 500);
+                } else {
+                    prompt += '. Use these available ingredients: ' + sanitizeInput(ingredients, 500);
+                }
+            }
+            if (prefs.length) prompt += '. Dietary restrictions: ' + prefs.join(', ');
             prompt += '. Return JSON: {"name":"Recipe Name","description":"Brief description","ingredients":["item1 with amount","item2"],"steps":["Detailed step 1","Step 2"],"prepTime":15,"cookTime":30,"servings":4,"calories":350}';
 
             var loadingInterval = showProgressiveLoading('recipeResults', [
@@ -5437,7 +5681,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 '<div class="recipe-actions">' +
                 '<button class="recipe-action' + (isFav ? ' fav' : '') + '" onclick="toggleFavorite()" title="Favorite">' + (isFav ? '❤️' : '🤍') + '</button>' +
                 '<button class="recipe-action" onclick="shareRecipe()" title="Share">📤</button>' +
-                '<button class="recipe-action" onclick="speakRecipe()" title="Read aloud" aria-label="Read recipe aloud">🔊</button>' +
+                '<button class="recipe-action" onclick="voiceCook.start(currentRecipeData)" title="Voice Cooking Mode" aria-label="Read recipe aloud">🔊</button>' +
                 '</div></div>' +
                 '<div class="recipe-stats">' +
                 '<div class="stat-item"><div class="stat-icon">⏱️</div><div class="stat-value">' + (recipe.prepTime || 15) + '</div><div class="stat-label">Prep (min)</div></div>' +
@@ -5460,10 +5704,14 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             });
 
             html += '</div>' +
-                '<div style="display:flex;gap:10px;margin-top:15px;">' +
-                '<button class="main-btn" onclick="addToMealPlan()" style="flex:1; background: linear-gradient(135deg, var(--secondary), #db2777);">' +
+                '<div style="display:flex;gap:8px;margin-top:15px;flex-wrap:wrap;">' +
+                '<button class="main-btn" onclick="voiceCook.start(currentRecipeData)" style="flex:1;min-width:45%; background: linear-gradient(135deg, #6366f1, #4f46e5);">' +
+                '<span>🗣️</span><span>Voice Cook</span></button>' +
+                '<button class="main-btn" onclick="ShoppingList.addFromRecipe(currentRecipeData)" style="flex:1;min-width:45%; background: linear-gradient(135deg, #f59e0b, #d97706);">' +
+                '<span>🛒</span><span>Shopping List</span></button>' +
+                '<button class="main-btn" onclick="addToMealPlan()" style="flex:1;min-width:45%; background: linear-gradient(135deg, var(--secondary), #db2777);">' +
                 '<span>📅</span><span>Add to Plan</span></button>' +
-                '<button class="main-btn" onclick="HealthTarget.addMealFromRecipe(currentRecipeData); toast(\'Meal logged! 🎯\', \'✅\');" style="flex:1; background: linear-gradient(135deg, #14b8a6, #0d9488);">' +
+                '<button class="main-btn" onclick="HealthTarget.addMealFromRecipe(currentRecipeData); toast(\'Meal logged! 🎯\', \'✅\');" style="flex:1;min-width:45%; background: linear-gradient(135deg, #14b8a6, #0d9488);">' +
                 '<span>🎯</span><span>Log Meal</span></button>' +
                 '</div></div></div>';
 
@@ -5792,6 +6040,247 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 }
             }
         }
+
+
+        // ========================================
+        // DIETARY PREFERENCES COLLECTOR
+        // ========================================
+        function getFullDietaryPrefs() {
+            var prefs = [];
+            if (document.getElementById('vegetarian').checked) prefs.push('vegetarian');
+            if (document.getElementById('vegan').checked) prefs.push('vegan');
+            if (document.getElementById('lowcal').checked) prefs.push('low calorie');
+            if (document.getElementById('quick').checked) prefs.push('quick and easy (under 30 min)');
+            if (document.getElementById('halal').checked) prefs.push('halal (no pork, no alcohol)');
+            if (document.getElementById('keto').checked) prefs.push('keto (low carb, high fat)');
+            // Allergies
+            if (document.getElementById('noGluten').checked) prefs.push('gluten-free (no wheat, barley, rye)');
+            if (document.getElementById('noLactose').checked) prefs.push('lactose-free (no milk, cheese, cream)');
+            if (document.getElementById('noNuts').checked) prefs.push('nut-free (no peanuts, almonds, walnuts)');
+            if (document.getElementById('noEggs').checked) prefs.push('egg-free');
+            if (document.getElementById('noShellfish').checked) prefs.push('shellfish-free (no shrimp, crab, lobster)');
+            if (document.getElementById('noSoy').checked) prefs.push('soy-free');
+            return prefs;
+        }
+
+        // ========================================
+        // VOICE COOKING ASSISTANT
+        // ========================================
+        var voiceCook = {
+            steps: [],
+            current: 0,
+            speaking: false,
+            synth: window.speechSynthesis,
+
+            start: function(recipe) {
+                if (!recipe || !recipe.steps || !recipe.steps.length) {
+                    toast('No steps to read', '⚠️');
+                    return;
+                }
+                this.steps = recipe.steps;
+                this.current = 0;
+                this.speaking = false;
+                this.render();
+                this.speak();
+            },
+
+            render: function() {
+                var step = this.steps[this.current];
+                var total = this.steps.length;
+                var dots = '';
+                for (var i = 0; i < total; i++) {
+                    var cls = i < this.current ? 'done' : (i === this.current ? 'active' : '');
+                    dots += '<div class="voice-dot ' + cls + '"></div>';
+                }
+
+                var html = '<div class="voice-cook-panel" id="voiceCookPanel">' +
+                    '<div class="voice-cook-header">' +
+                    '<div class="voice-cook-title">👨‍🍳 Voice Cooking</div>' +
+                    '<button class="voice-cook-close" onclick="voiceCook.stop()">✕</button>' +
+                    '</div>' +
+                    '<div class="voice-step-display">' +
+                    '<div class="voice-step-num">Step ' + (this.current + 1) + ' of ' + total + '</div>' +
+                    '<div class="voice-step-text">' + escapeHTML(step) + '</div>' +
+                    '</div>' +
+                    '<div class="voice-controls">' +
+                    '<button class="voice-ctrl-btn small" onclick="voiceCook.prev()" ' + (this.current === 0 ? 'disabled style="opacity:0.3"' : '') + '>⏮️</button>' +
+                    '<button class="voice-ctrl-btn small" onclick="voiceCook.repeat()">🔁</button>' +
+                    '<button class="voice-ctrl-btn big" onclick="voiceCook.toggleSpeak()" id="voicePlayBtn">' + (this.speaking ? '⏸️' : '▶️') + '</button>' +
+                    '<button class="voice-ctrl-btn small" onclick="voiceCook.next()" ' + (this.current >= total - 1 ? 'disabled style="opacity:0.3"' : '') + '>⏭️</button>' +
+                    '</div>' +
+                    '<div class="voice-progress">' + dots + '</div>' +
+                    '</div>';
+
+                var existing = document.getElementById('voiceCookPanel');
+                if (existing) {
+                    existing.outerHTML = html;
+                } else {
+                    document.getElementById('recipeResults').insertAdjacentHTML('beforeend', html);
+                }
+            },
+
+            speak: function() {
+                this.synth.cancel();
+                var utter = new SpeechSynthesisUtterance(this.steps[this.current]);
+                utter.rate = 0.9;
+                utter.pitch = 1;
+                utter.lang = document.documentElement.lang || 'en';
+                var self = this;
+                utter.onend = function() {
+                    self.speaking = false;
+                    self.render();
+                };
+                this.speaking = true;
+                this.synth.speak(utter);
+                this.render();
+            },
+
+            toggleSpeak: function() {
+                if (this.speaking) {
+                    this.synth.cancel();
+                    this.speaking = false;
+                    this.render();
+                } else {
+                    this.speak();
+                }
+            },
+
+            next: function() {
+                if (this.current < this.steps.length - 1) {
+                    this.synth.cancel();
+                    this.current++;
+                    this.render();
+                    this.speak();
+                } else {
+                    toast('🎉 Recipe complete!', '✅');
+                }
+            },
+
+            prev: function() {
+                if (this.current > 0) {
+                    this.synth.cancel();
+                    this.current--;
+                    this.render();
+                    this.speak();
+                }
+            },
+
+            repeat: function() {
+                this.speak();
+            },
+
+            stop: function() {
+                this.synth.cancel();
+                this.speaking = false;
+                var panel = document.getElementById('voiceCookPanel');
+                if (panel) panel.remove();
+            }
+        };
+
+        // ========================================
+        // SMART SHOPPING LIST
+        // ========================================
+        var ShoppingList = {
+            items: JSON.parse(localStorage.getItem('snapchef_shopping') || '[]'),
+
+            save: function() {
+                localStorage.setItem('snapchef_shopping', JSON.stringify(this.items));
+            },
+
+            addFromRecipe: function(recipe) {
+                if (!recipe || !recipe.ingredients) return;
+                var added = 0;
+                var self = this;
+                recipe.ingredients.forEach(function(ing) {
+                    // Check if already exists
+                    var exists = self.items.some(function(item) {
+                        return item.text.toLowerCase() === ing.toLowerCase();
+                    });
+                    if (!exists) {
+                        self.items.push({ text: ing, checked: false, recipe: recipe.name });
+                        added++;
+                    }
+                });
+                this.save();
+                toast(added + ' items added to shopping list', '🛒');
+                this.render();
+            },
+
+            toggle: function(index) {
+                this.items[index].checked = !this.items[index].checked;
+                this.save();
+                this.render();
+            },
+
+            remove: function(index) {
+                this.items.splice(index, 1);
+                this.save();
+                this.render();
+            },
+
+            clear: function() {
+                this.items = [];
+                this.save();
+                this.render();
+            },
+
+            clearChecked: function() {
+                this.items = this.items.filter(function(item) { return !item.checked; });
+                this.save();
+                this.render();
+            },
+
+            share: function() {
+                var text = '🛒 Shopping List\n\n';
+                this.items.forEach(function(item) {
+                    text += (item.checked ? '✅' : '⬜') + ' ' + item.text + '\n';
+                });
+                if (navigator.share) {
+                    navigator.share({ title: 'Shopping List', text: text });
+                } else {
+                    navigator.clipboard.writeText(text);
+                    toast('List copied!', '📋');
+                }
+            },
+
+            render: function() {
+                var panel = document.getElementById('shoppingListPanel');
+                if (!panel) return;
+
+                if (this.items.length === 0) {
+                    panel.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted);">' +
+                        '<div style="font-size:40px;margin-bottom:10px;">🛒</div>' +
+                        '<div>Shopping list is empty</div>' +
+                        '<div style="font-size:12px;margin-top:5px;">Generate a recipe and tap "Add to Shopping List"</div></div>';
+                    return;
+                }
+
+                var html = '<div class="shopping-list-title">🛒 Shopping List (' + this.items.length + ' items)</div>';
+                var self = this;
+                this.items.forEach(function(item, i) {
+                    html += '<div class="shopping-item ' + (item.checked ? 'checked' : '') + '">' +
+                        '<input type="checkbox" class="shopping-check" ' + (item.checked ? 'checked' : '') + 
+                        ' onchange="ShoppingList.toggle(' + i + ')">' +
+                        '<span class="shopping-text">' + escapeHTML(item.text) + '</span>' +
+                        '<button onclick="ShoppingList.remove(' + i + ')" style="background:none;border:none;cursor:pointer;font-size:16px;opacity:0.5;">🗑️</button>' +
+                        '</div>';
+                });
+                html += '<div class="shopping-actions">' +
+                    '<button onclick="ShoppingList.share()" style="background:#6366f1;color:white;">📤 Share</button>' +
+                    '<button onclick="ShoppingList.clearChecked()" style="background:#f59e0b;color:white;">✅ Clear Done</button>' +
+                    '<button onclick="ShoppingList.clear()" style="background:#ef4444;color:white;">🗑️ Clear All</button>' +
+                    '</div>';
+                panel.innerHTML = html;
+            },
+
+            showPanel: function() {
+                var results = document.getElementById('recipeResults');
+                var existing = document.getElementById('shoppingListPanel');
+                if (existing) { existing.remove(); return; }
+                results.insertAdjacentHTML('beforeend', '<div class="shopping-list-panel" id="shoppingListPanel"></div>');
+                this.render();
+            }
+        };
 
         // ========================================
         // VOICE INPUT
