@@ -2421,6 +2421,7 @@
             transform: none;
         }
         .close-camera-btn {
+            -webkit-appearance: none;
             position: absolute;
             top: 20px;
             left: 20px;
@@ -2433,7 +2434,7 @@
             color: white;
             font-size: 20px;
             cursor: pointer;
-            z-index: 10;
+            z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -2444,6 +2445,7 @@
             transform: scale(1.1);
         }
         .switch-camera-btn {
+            -webkit-appearance: none;
             position: absolute;
             top: 20px;
             right: 20px;
@@ -2456,7 +2458,7 @@
             color: white;
             font-size: 20px;
             cursor: pointer;
-            z-index: 10;
+            z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -2468,18 +2470,20 @@
         }
         .capture-btn {
             position: absolute;
-            bottom: 50px;
+            bottom: calc(40px + env(safe-area-inset-bottom));
             left: 50%;
             transform: translateX(-50%);
             width: 80px;
             height: 80px;
             border-radius: 50%;
             border: 6px solid white;
-            background: rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.3);
             cursor: pointer;
-            z-index: 10;
+            z-index: 9999;
             transition: all 0.15s;
-            box-shadow: 0 4px 25px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 25px rgba(0,0,0,0.5);
+            -webkit-appearance: none;
+            appearance: none;
         }
         .capture-btn::after {
             content: '📸';
@@ -2487,34 +2491,35 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 32px;
+            font-size: 30px;
             line-height: 1;
         }
         .capture-btn:active {
             transform: translateX(-50%) scale(0.85);
-            background: rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.6);
         }
         .camera-bottom-bar {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 140px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.6));
-            z-index: 5;
+            height: 160px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            z-index: 8;
             pointer-events: none;
         }
         .camera-guide-text {
             position: absolute;
-            bottom: 130px;
+            bottom: calc(130px + env(safe-area-inset-bottom));
             left: 50%;
             transform: translateX(-50%);
-            color: rgba(255,255,255,0.8);
-            font-size: 14px;
-            font-weight: 500;
+            color: rgba(255,255,255,0.9);
+            font-size: 15px;
+            font-weight: 600;
             text-align: center;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-            z-index: 10;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.7);
+            z-index: 9998;
+            white-space: nowrap;
         }
 
 
