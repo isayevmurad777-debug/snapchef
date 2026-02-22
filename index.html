@@ -148,7 +148,7 @@
             width: 100px;
             height: 100px;
             background: white;
-            border-radius: 28px;
+            border-radius: var(--radius-xl);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -283,7 +283,7 @@
 
         .onboarding-desc {
             font-size: 16px;
-            color: #64748b;
+            color: var(--text-muted);
             line-height: 1.6;
             max-width: 320px;
         }
@@ -306,7 +306,7 @@
         .onboarding-dot.active {
             background: var(--primary);
             width: 30px;
-            border-radius: 5px;
+            border-radius: 4px;
         }
 
         .onboarding-btns {
@@ -319,7 +319,7 @@
             flex: 1;
             padding: 16px;
             border: none;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
@@ -378,7 +378,7 @@
         @media (min-width: 640px) {
             .container {
                 max-width: 640px;
-                border-radius: 32px 32px 0 0;
+                border-radius: var(--radius-xl) var(--radius-xl) 0 0;
                 padding: 24px 20px 80px;
                 box-shadow: 0 -10px 60px rgba(0,0,0,0.15);
             }
@@ -439,7 +439,7 @@
         .sub-title {
             font-size: 14px;
             font-weight: 700;
-            color: #a5b4fc;
+            color: var(--primary-light);
         }
 
         .sub-desc {
@@ -451,7 +451,7 @@
             background: #14b8a6;
             color: #1A1A1E;
             padding: 8px 16px;
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             font-size: 12px;
             font-weight: 700;
             border: none;
@@ -490,7 +490,7 @@
             width: 100px;
             height: 6px;
             background: var(--border-light);
-            border-radius: 3px;
+            border-radius: 4px;
             overflow: hidden;
         }
 
@@ -519,7 +519,7 @@
             gap: 5px;
             background: var(--accent);
             padding: 5px 12px;
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             font-size: 13px;
             font-weight: 700;
             color: #78350f;
@@ -549,7 +549,7 @@
             width: 40px;
             height: 40px;
             background: var(--primary);
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -575,7 +575,7 @@
             color: #78350f;
             font-size: 10px;
             padding: 3px 8px;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             font-weight: 700;
             margin-left: 8px;
         }
@@ -589,7 +589,7 @@
         .icon-btn {
             width: 42px;
             height: 42px;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             border: none;
             cursor: pointer;
             background: var(--bg-light);
@@ -634,7 +634,7 @@
             top: 100%;
             right: 0;
             background: var(--card-light);
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             overflow: hidden;
             display: none;
@@ -693,9 +693,9 @@
             display: none;
             align-items: center;
             gap: 10px;
-            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            background: #fee2e2;
             padding: 12px 16px;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             margin-bottom: 15px;
             border: 1px solid #fca5a5;
         }
@@ -705,7 +705,7 @@
         }
 
         body.dark-mode .voice-indicator {
-            background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+            background: #7f1d1d;
             border-color: #dc2626;
         }
 
@@ -738,7 +738,7 @@
             background: #fef3c7;
             color: #92400e;
             padding: 10px 14px;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             margin-bottom: 15px;
             font-size: 13px;
             align-items: center;
@@ -756,9 +756,9 @@
 
         /* API Section */
         .api-section {
-            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            background: #f0fdf4;
             padding: 14px;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             margin-bottom: 15px;
             border: 1px solid var(--border-light);
         }
@@ -782,7 +782,7 @@
             background: var(--primary);
             color: white;
             padding: 3px 10px;
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             font-size: 10px;
             margin-left: 8px;
         }
@@ -791,7 +791,7 @@
             width: 100%;
             padding: 10px;
             border: 2px solid var(--border-light);
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             margin-top: 8px;
             font-size: 13px;
             background: white;
@@ -818,7 +818,7 @@
 
         .api-hint {
             font-size: 11px;
-            color: #64748b;
+            color: var(--text-muted);
             flex: 1;
         }
 
@@ -875,7 +875,7 @@
 
         body.dark-mode .api-status.success {
             background: #1C1C1E;
-            color: #6ee7b7;
+            color: var(--primary-light);
         }
 
         body.dark-mode .api-status.error {
@@ -890,11 +890,11 @@
 
         .tab-content.active {
             display: block;
-            animation: fadeIn 0.4s;
+            animation: fadeIn 0.2s;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -911,44 +911,29 @@
             overflow: hidden;
             box-shadow: var(--shadow-sm);
         }
-        .upload-section::before {
-            content: '';
-            position: absolute;
-            top: -1px;
-            left: -1px;
-            right: -1px;
-            bottom: -1px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: var(--radius-lg);
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .upload-section:hover::before {
-            opacity: 0.15;
-        }
+        .upload-section::before { display: none; }
 
         .upload-section:hover {
             border-color: var(--primary);
-            background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+            background: #F8F8FF;
         }
 
         body.dark-mode .upload-section {
-            background: linear-gradient(135deg, #1e1e2e 0%, #252538 100%);
+            background: var(--card-dark);
             border-color: var(--border-dark);
         }
 
         body.dark-mode .upload-section:hover {
             border-color: var(--primary);
-            background: linear-gradient(135deg, #252538 0%, #2d2d44 100%);
+            background: var(--card-dark);
         }
 
         .upload-icon {
             width: 64px;
             height: 64px;
             margin: 0 auto 16px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            border-radius: 20px;
+            background: var(--primary);
+            border-radius: var(--radius-lg);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1044,7 +1029,7 @@
 
         .image-preview img {
             width: 100%;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             box-shadow: 0 8px 30px rgba(0,0,0,0.2);
         }
 
@@ -1054,7 +1039,7 @@
             right: 10px;
             width: 36px;
             height: 36px;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             background: rgba(255,255,255,0.95);
             border: none;
             cursor: pointer;
@@ -1063,14 +1048,14 @@
 
         /* Detected Box */
         .detected-box {
-            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+            background: #ecfdf5;
             padding: 14px;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             margin-top: 15px;
             margin-bottom: 10px;
             display: none;
             border: 1px solid #a7f3d0;
-            animation: fadeIn 0.4s;
+            animation: fadeIn 0.2s;
         }
 
         body.dark-mode .detected-box {
@@ -1090,7 +1075,7 @@
         }
 
         body.dark-mode .detected-title {
-            color: #6ee7b7;
+            color: var(--primary-light);
         }
 
         .detected-tags {
@@ -1102,7 +1087,7 @@
         .detected-tag {
             background: white;
             padding: 5px 10px;
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             font-size: 12px;
             color: #2D6A4F;
             border: 1px solid #a7f3d0;
@@ -1110,7 +1095,7 @@
 
         body.dark-mode .detected-tag {
             background: var(--card-dark);
-            color: #6ee7b7;
+            color: var(--primary-light);
             border-color: #2D6A4F;
         }
 
@@ -1133,7 +1118,7 @@
 
         .char-count {
             font-size: 10px;
-            color: #94a3b8;
+            color: var(--text-muted);
             text-align: right;
             margin-top: 4px;
         }
@@ -1142,7 +1127,7 @@
             width: 100%;
             padding: 12px;
             border: 2px solid var(--border-light);
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             font-size: 14px;
             resize: none;
             background: white;
@@ -1171,7 +1156,7 @@
         .tag {
             background: var(--bg-light);
             padding: 6px 12px;
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             cursor: pointer;
             border: 2px solid transparent;
             font-size: 12px;
@@ -1210,7 +1195,7 @@
             gap: 6px;
             background: var(--bg-light);
             padding: 8px 12px;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             font-size: 12px;
             color: var(--text-light);
             cursor: pointer;
@@ -1234,12 +1219,12 @@
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 16px;
+            border-radius: var(--radius-md);
             font-size: 16px;
             font-weight: 600;
+            font-family: inherit;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+            transition: all 0.15s;
             letter-spacing: 0.3px;
             display: flex;
             align-items: center;
@@ -1303,20 +1288,23 @@
         /* Recipe Card */
         .recipe-card {
             background: var(--bg-light);
-            border-radius: 24px;
+            border-radius: var(--radius-xl);
             overflow: hidden;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.12);
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-light);
+            transition: all 0.2s;
         }
 
         body.dark-mode .recipe-card {
-            background: var(--bg-dark);
+            background: #161618;
+            border-color: var(--border-dark);
+            box-shadow: none;
         }
 
         .recipe-img-box {
             position: relative;
-            height: 200px;
-            background: linear-gradient(135deg, #f97316, #dc2626);
+            height: 220px;
+            background: #1a1a2e;
             overflow: hidden;
         }
 
@@ -1358,7 +1346,7 @@
         .recipe-action {
             width: 36px;
             height: 36px;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             border: none;
             background: rgba(255,255,255,0.95);
             cursor: pointer;
@@ -1408,7 +1396,7 @@
 
         .stat-label {
             font-size: 11px;
-            color: #94a3b8;
+            color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
@@ -1442,7 +1430,7 @@
         .ing-item {
             padding: 8px 12px;
             background: var(--card-light);
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             font-size: 13px;
             color: var(--text-light);
             border: 1px solid var(--border-light);
@@ -1465,7 +1453,7 @@
             gap: 12px;
             padding: 12px;
             background: var(--card-light);
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             border: 1px solid var(--border-light);
         }
 
@@ -1502,7 +1490,7 @@
         /* Food Card */
         .food-card {
             background: var(--bg-light);
-            border-radius: 18px;
+            border-radius: var(--radius-lg);
             padding: 18px;
             margin-bottom: 15px;
         }
@@ -1531,7 +1519,7 @@
         }
 
         .food-desc {
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 13px;
             margin-top: 4px;
         }
@@ -1554,7 +1542,7 @@
         }
 
         .score-circle.good {
-            background: linear-gradient(135deg, #10b981, #2D6A4F);
+            background: var(--secondary);
         }
 
         .score-circle.moderate {
@@ -1562,12 +1550,12 @@
         }
 
         .score-circle.poor {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+            background: #ef4444;
         }
 
         .score-label {
             font-size: 11px;
-            color: #64748b;
+            color: var(--text-muted);
             text-transform: uppercase;
             font-weight: 600;
         }
@@ -1583,7 +1571,7 @@
         .nutrition-item {
             background: var(--card-light);
             padding: 12px;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             text-align: center;
             border: 1px solid var(--border-light);
         }
@@ -1610,7 +1598,7 @@
 
         .nutrition-label {
             font-size: 11px;
-            color: #94a3b8;
+            color: var(--text-muted);
             text-transform: uppercase;
         }
 
@@ -1645,7 +1633,7 @@
             gap: 12px;
             padding: 12px;
             background: var(--bg-light);
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -1661,9 +1649,9 @@
         .history-img {
             width: 50px;
             height: 50px;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             object-fit: cover;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: var(--primary);
         }
 
         .history-info {
@@ -1682,7 +1670,7 @@
 
         .history-date {
             font-size: 11px;
-            color: #94a3b8;
+            color: var(--text-muted);
         }
 
         .history-delete {
@@ -1738,7 +1726,7 @@
             background: var(--card-dark);
             color: white;
             padding: 12px 20px;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             font-size: 13px;
             font-weight: 500;
             z-index: 9999;
@@ -1775,7 +1763,7 @@
 
         .premium-content {
             background: var(--card-light);
-            border-radius: 24px;
+            border-radius: var(--radius-xl);
             padding: 30px;
             max-width: 400px;
             width: 100%;
@@ -1811,7 +1799,7 @@
         }
 
         .premium-desc {
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 14px;
             margin-bottom: 25px;
         }
@@ -1887,7 +1875,7 @@
 
         .plan-period {
             font-size: 11px;
-            color: #64748b;
+            color: var(--text-muted);
         }
 
         .plan-save {
@@ -1895,7 +1883,7 @@
             color: white;
             font-size: 10px;
             padding: 2px 8px;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             margin-top: 5px;
             display: inline-block;
         }
@@ -1906,7 +1894,7 @@
             background: var(--accent);
             color: #78350f;
             border: none;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
@@ -1916,7 +1904,7 @@
             margin-top: 15px;
             background: none;
             border: none;
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 14px;
             cursor: pointer;
         }
@@ -1982,7 +1970,7 @@
             padding: 8px 4px;
             cursor: pointer;
             transition: all 0.15s;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             position: relative;
             min-width: 0;
             flex: 1;
@@ -2065,7 +2053,7 @@
             width: 120px;
             height: 120px;
             margin: 0 auto 20px;
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            background: #f1f5f9;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -2074,7 +2062,7 @@
         }
 
         body.dark-mode .empty-icon {
-            background: linear-gradient(135deg, #1e1e2e 0%, #252538 100%);
+            background: var(--card-dark);
         }
 
         .empty-icon::after {
@@ -2106,7 +2094,7 @@
 
         .empty-desc {
             font-size: 14px;
-            color: #94a3b8;
+            color: var(--text-muted);
         }
 
         /* Search Box */
@@ -2119,7 +2107,7 @@
             width: 100%;
             padding: 14px 45px 14px 16px;
             border: 2px solid var(--border-light);
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             font-size: 15px;
             background: var(--bg-light);
             color: var(--text-light);
@@ -2146,7 +2134,7 @@
 
         .meal-plan-day {
             background: var(--bg-light);
-            border-radius: 16px;
+            border-radius: var(--radius-md);
             padding: 15px;
         }
 
@@ -2179,7 +2167,7 @@
 
         .day-date {
             font-size: 12px;
-            color: #64748b;
+            color: var(--text-muted);
         }
 
         .meal-slots {
@@ -2195,7 +2183,7 @@
             padding: 12px;
             background: var(--card-light);
             border: 1px solid var(--border-light);
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -2234,12 +2222,12 @@
 
         .meal-calories {
             font-size: 12px;
-            color: #64748b;
+            color: var(--text-muted);
         }
 
         .meal-empty {
             font-size: 13px;
-            color: #94a3b8;
+            color: var(--text-muted);
         }
 
         .meal-remove {
@@ -2269,7 +2257,7 @@
             gap: 12px;
             padding: 12px;
             background: var(--bg-light);
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -2294,14 +2282,14 @@
 
         .recipe-meta {
             font-size: 12px;
-            color: #64748b;
+            color: var(--text-muted);
             margin-top: 2px;
         }
 
         /* Shopping List Styles */
         .shopping-list {
             background: var(--bg-light);
-            border-radius: 16px;
+            border-radius: var(--radius-md);
             padding: 15px;
         }
 
@@ -2329,7 +2317,7 @@
             gap: 10px;
             padding: 10px;
             background: var(--card-light);
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             margin-bottom: 6px;
         }
 
@@ -2363,7 +2351,7 @@
 
         .shopping-item-qty {
             font-size: 12px;
-            color: #64748b;
+            color: var(--text-muted);
             background: var(--bg-light);
             padding: 4px 8px;
             border-radius: 8px;
@@ -2377,7 +2365,7 @@
         .settings-item {
             padding: 15px;
             background: var(--bg-light);
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             margin-bottom: 10px;
         }
 
@@ -2591,7 +2579,7 @@
             gap: 10px;
             padding: 14px 16px;
             background: #EEF0FF;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             cursor: pointer;
             transition: all 0.2s;
             border: 2px solid transparent;
@@ -2629,7 +2617,7 @@
         /* ===== VOICE COOKING ASSISTANT ===== */
         .voice-cook-panel {
             background: linear-gradient(135deg, #1e1b4b, #312e81);
-            border-radius: 18px;
+            border-radius: var(--radius-lg);
             padding: 20px;
             margin-top: 15px;
             color: white;
@@ -2665,7 +2653,7 @@
         }
         .voice-step-num {
             font-size: 14px;
-            color: #a5b4fc;
+            color: var(--primary-light);
             margin-bottom: 8px;
             font-weight: 600;
         }
@@ -2722,7 +2710,7 @@
         /* ===== SHOPPING LIST ===== */
         .shopping-list-panel {
             background: var(--bg-light);
-            border-radius: 18px;
+            border-radius: var(--radius-lg);
             padding: 20px;
             margin-top: 15px;
             border: 1px solid var(--border-light);
@@ -2772,7 +2760,7 @@
             flex: 1;
             padding: 10px;
             border: none;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
@@ -2849,7 +2837,7 @@
         }
         .prep-chip {
             padding: 6px 14px;
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             border: 1px solid var(--border-light);
             background: var(--card-light);
             font-size: 12px;
@@ -2859,7 +2847,7 @@
             font-family: inherit;
         }
         body.dark-mode .prep-chip {
-            background: #222224;
+            background: var(--card-dark);
             border-color: var(--border-dark);
             color: var(--text-dark);
         }
@@ -2876,7 +2864,7 @@
             margin-top: 16px;
         }
         body.dark-mode .prep-summary {
-            background: #222224;
+            background: var(--card-dark);
             border-color: var(--border-dark);
         }
         .prep-summary-title {
@@ -3005,7 +2993,7 @@
         .import-plat {
             font-size: 11px;
             padding: 4px 10px;
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             background: rgba(99,102,241,0.1);
             color: var(--primary);
             font-weight: 500;
@@ -3084,15 +3072,15 @@
 
         /* API Hint Banner */
         .api-hint-banner {
-            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            background: #eff6ff;
             border: 1.5px solid #93c5fd;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             padding: 12px 14px;
             margin-bottom: 14px;
             cursor: pointer;
         }
         body.dark-mode .api-hint-banner {
-            background: linear-gradient(135deg, #1e3a5f, #1e40af22);
+            background: #1e3a5f;
             border-color: #3b82f6;
         }
         body.dark-mode .api-hint-banner div[style*="color: #1e40af"] {
@@ -3117,7 +3105,7 @@
         .api-guide-modal.active { display: flex; }
         .api-guide-content {
             background: var(--card-light);
-            border-radius: 24px 24px 0 0;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
             padding: 24px 20px;
             padding-bottom: calc(20px + env(safe-area-inset-bottom));
             max-width: 100%;
@@ -3137,7 +3125,7 @@
             }
             .api-guide-content {
                 max-width: 420px;
-                border-radius: 24px;
+                border-radius: var(--radius-xl);
                 padding: 28px;
             }
         }
@@ -3180,14 +3168,14 @@
 
         /* ===== Better Error Box ===== */
         .error-box {
-            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            background: #fef2f2;
             border: 1px solid #fecaca;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             padding: 18px;
             text-align: center;
         }
         body.dark-mode .error-box {
-            background: linear-gradient(135deg, #450a0a, #7f1d1d);
+            background: #450a0a;
             border-color: #991b1b;
         }
         .error-box .error-icon { font-size: 36px; margin-bottom: 8px; }
@@ -3206,7 +3194,7 @@
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
@@ -3278,7 +3266,7 @@
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
@@ -3341,7 +3329,7 @@
         /* ===== NOTIFICATION SYSTEM ===== */
         .notif-center {
             background: white;
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             padding: 20px;
             margin-bottom: 18px;
             border: 1px solid var(--border-light);
@@ -3371,7 +3359,7 @@
             font-size: 10px;
             font-weight: 700;
             padding: 2px 7px;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
         }
         .notif-toggle-row {
             display: flex;
@@ -3390,7 +3378,7 @@
         }
         .notif-toggle-icon {
             width: 40px; height: 40px;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -3405,7 +3393,7 @@
         body.dark-mode .notif-toggle-text { color: var(--text-dark); }
         .notif-toggle-desc {
             font-size: 11px;
-            color: #64748b;
+            color: var(--text-muted);
             margin-top: 2px;
         }
         .notif-switch {
@@ -3420,7 +3408,7 @@
             cursor: pointer;
             top: 0; left: 0; right: 0; bottom: 0;
             background: #cbd5e1;
-            border-radius: 26px;
+            border-radius: var(--radius-xl);
             transition: 0.3s;
         }
         .notif-slider::before {
@@ -3457,15 +3445,15 @@
         .notif-time-btn:hover { border-color: var(--primary); }
 
         .notif-permission-banner {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            background: #fef3c7;
             border: 2px solid #fcd34d;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             padding: 16px;
             text-align: center;
             margin-bottom: 16px;
         }
         body.dark-mode .notif-permission-banner {
-            background: linear-gradient(135deg, #78350f, #92400e);
+            background: #78350f;
             border-color: #b45309;
         }
         .notif-permission-btn {
@@ -3474,7 +3462,7 @@
             background: var(--accent);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
@@ -3487,7 +3475,7 @@
             left: 50%;
             transform: translateX(-50%);
             background: white;
-            border-radius: 16px;
+            border-radius: var(--radius-md);
             padding: 14px 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.15);
             display: flex;
@@ -3512,10 +3500,10 @@
             color: var(--text-light);
         }
         body.dark-mode .in-app-notif-title { color: var(--text-dark); }
-        .in-app-notif-msg { font-size: 12px; color: #64748b; margin-top: 2px; }
+        .in-app-notif-msg { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
         .in-app-notif-close {
             background: none; border: none;
-            font-size: 18px; cursor: pointer; color: #94a3b8; padding: 4px;
+            font-size: 18px; cursor: pointer; color: var(--text-muted); padding: 4px;
         }
         .in-app-notif-action {
             margin-top: 6px;
@@ -3532,7 +3520,7 @@
         /* ===== HEALTH TARGET SYSTEM ===== */
         .health-dashboard {
             background: #F5F5FF;
-            border-radius: 24px;
+            border-radius: var(--radius-xl);
             padding: 22px;
             margin-bottom: 20px;
             border: 1px solid var(--border-light);
@@ -3566,19 +3554,19 @@
             align-items: center;
             gap: 8px;
         }
-        body.dark-mode .health-dash-title { color: #a5b4fc; }
+        body.dark-mode .health-dash-title { color: var(--primary-light); }
         .health-edit-btn {
             padding: 6px 14px;
             background: rgba(16, 185, 129, 0.15);
             border: 1px solid var(--border-light);
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             font-size: 12px;
             font-weight: 600;
             color: #2D6A4F;
             cursor: pointer;
             transition: all 0.3s;
         }
-        body.dark-mode .health-edit-btn { color: #a5b4fc; border-color: #3A3A3C; }
+        body.dark-mode .health-edit-btn { color: var(--primary-light); border-color: #3A3A3C; }
         .health-edit-btn:hover { background: rgba(16, 185, 129, 0.3); transform: scale(1.05); }
 
         .health-goal-badge {
@@ -3586,7 +3574,7 @@
             align-items: center;
             gap: 6px;
             padding: 4px 12px;
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             font-size: 12px;
             font-weight: 600;
             margin-bottom: 14px;
@@ -3637,7 +3625,7 @@
         body.dark-mode .ring-value { color: var(--text-dark); }
         .ring-label {
             font-size: 11px;
-            color: #64748b;
+            color: var(--text-muted);
             margin-top: 4px;
             font-weight: 600;
         }
@@ -3648,7 +3636,7 @@
             gap: 14px;
             background: white;
             padding: 14px;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             margin-bottom: 14px;
         }
         body.dark-mode .health-daily-score {
@@ -3679,7 +3667,7 @@
         body.dark-mode .daily-score-title { color: var(--text-dark); }
         .daily-score-desc {
             font-size: 12px;
-            color: #64748b;
+            color: var(--text-muted);
             margin-top: 2px;
         }
         .daily-score-streak {
@@ -3694,7 +3682,7 @@
         .health-water-section {
             background: white;
             padding: 14px;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             margin-bottom: 14px;
         }
         body.dark-mode .health-water-section { background: rgba(0,0,0,0.2); }
@@ -3722,7 +3710,7 @@
         }
         .water-glass {
             width: 38px; height: 38px;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             border: 2px solid #93c5fd;
             display: flex;
             align-items: center;
@@ -3737,16 +3725,16 @@
             border-color: #3A3A3C;
         }
         .water-glass.filled {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            border-color: #3b82f6;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
         }
         .water-glass:hover { transform: scale(1.15); }
 
         .health-tips {
             background: white;
             padding: 14px;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
         }
         body.dark-mode .health-tips { background: rgba(0,0,0,0.2); }
         .health-tip {
@@ -3780,7 +3768,7 @@
             width: 100%;
             padding: 12px 14px;
             border: 2px solid var(--border-light);
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             font-size: 14px;
             background: var(--bg-light);
             color: var(--text-light);
@@ -3804,7 +3792,7 @@
         .goal-option {
             padding: 14px 10px;
             border: 2px solid var(--border-light);
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
@@ -3828,7 +3816,7 @@
         body.dark-mode .goal-option-name { color: var(--text-dark); }
         .goal-option-desc {
             font-size: 11px;
-            color: #64748b;
+            color: var(--text-muted);
             margin-top: 2px;
         }
         .diet-chips {
@@ -3839,7 +3827,7 @@
         .diet-chip {
             padding: 8px 14px;
             border: 2px solid var(--border-light);
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             font-size: 13px;
             cursor: pointer;
             transition: all 0.3s;
@@ -3861,8 +3849,8 @@
         .health-no-profile {
             text-align: center;
             padding: 30px 20px;
-            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-            border-radius: 20px;
+            background: #ecfdf5;
+            border-radius: var(--radius-lg);
             margin-bottom: 20px;
             border: 1px solid var(--border-light);
         }
@@ -3875,16 +3863,16 @@
             font-size: 18px; font-weight: 700;
             color: #2D6A4F; margin-bottom: 6px;
         }
-        body.dark-mode .health-no-profile-title { color: #a5b4fc; }
+        body.dark-mode .health-no-profile-title { color: var(--primary-light); }
         .health-no-profile-desc {
-            font-size: 13px; color: #64748b; margin-bottom: 16px;
+            font-size: 13px; color: var(--text-muted); margin-bottom: 16px;
         }
         .health-setup-btn {
             padding: 14px 28px;
             background: var(--secondary);
             color: white;
             border: none;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             font-size: 15px;
             font-weight: 700;
             cursor: pointer;
@@ -3899,15 +3887,15 @@
         /* ===== Cook Specific Dish - Enhanced ===== */
         .cook-specific-section {
             margin: 0 0 18px 0;
-            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            background: #ede9fe;
             padding: 18px;
-            border-radius: 16px;
+            border-radius: var(--radius-md);
             border: 2px solid #c4b5fd;
             position: relative;
             overflow: hidden;
         }
         body.dark-mode .cook-specific-section {
-            background: linear-gradient(135deg, #2e1065, #3b0764);
+            background: #2e1065;
             border-color: #7c3aed;
         }
         .cook-specific-section::before {
@@ -3936,7 +3924,7 @@
             flex: 1;
             padding: 14px 16px;
             border: 2px solid #c4b5fd;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             font-size: 15px;
             background: white;
             color: var(--text-light);
@@ -3953,10 +3941,10 @@
         }
         .cook-specific-btn {
             padding: 14px 22px;
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            background: var(--primary);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             font-weight: 700;
             font-size: 14px;
             cursor: pointer;
@@ -3972,9 +3960,9 @@
         .history-img {
             width: 50px;
             height: 50px;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             object-fit: cover;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: var(--primary);
             flex-shrink: 0;
         }
         .meal-thumb {
@@ -3987,9 +3975,9 @@
         .recipe-selector-thumb {
             width: 50px;
             height: 50px;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             object-fit: cover;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: var(--primary);
         }
 
     </style>
@@ -4176,15 +4164,15 @@
 
     <!-- Login Screen -->
     <div id="loginScreen" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #F5F4F0; z-index: 8000; flex-direction: column; align-items: center; justify-content: center; padding: 24px;">
-        <div style="background: white; border-radius: 24px; padding: 32px 24px; max-width: 380px; width: 100%; box-shadow: 0 12px 40px rgba(0,0,0,0.1);">
+        <div style="background: white; border-radius: var(--radius-xl); padding: 32px 24px; max-width: 380px; width: 100%; box-shadow: 0 12px 40px rgba(0,0,0,0.1);">
             <div style="text-align: center; margin-bottom: 24px;">
                 <div style="font-size: 48px; margin-bottom: 8px;">🍳</div>
                 <h1 style="font-size: 28px; font-weight: 800; color: #1e293b; margin-bottom: 4px;">SnapChef</h1>
-                <p style="color: #64748b; font-size: 14px;">AI-Powered Recipe Generator</p>
+                <p style="color: var(--text-muted); font-size: 14px;">AI-Powered Recipe Generator</p>
             </div>
             
             <!-- Google Sign In -->
-            <button onclick="signInWithGoogle()" style="width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; background: white; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; transition: all 0.2s;">
+            <button onclick="signInWithGoogle()" style="width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: var(--radius-sm); background: white; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; transition: all 0.2s;">
                 <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#34A853" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
                 Continue with Google
             </button>
@@ -4192,18 +4180,18 @@
             <!-- Divider -->
             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
                 <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
-                <span style="color: #94a3b8; font-size: 12px;">or</span>
+                <span style="color: var(--text-muted); font-size: 12px;">or</span>
                 <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
             </div>
             
             <!-- Email Sign In -->
-            <input type="email" id="loginEmail" placeholder="Email" style="width: 100%; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 14px; margin-bottom: 10px; outline: none; box-sizing: border-box;">
-            <input type="password" id="loginPassword" placeholder="Password" style="width: 100%; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 14px; margin-bottom: 16px; outline: none; box-sizing: border-box;">
-            <button onclick="signInWithEmail()" style="width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer;">
+            <input type="email" id="loginEmail" placeholder="Email" style="width: 100%; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: var(--radius-sm); font-size: 14px; margin-bottom: 10px; outline: none; box-sizing: border-box;">
+            <input type="password" id="loginPassword" placeholder="Password" style="width: 100%; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: var(--radius-sm); font-size: 14px; margin-bottom: 16px; outline: none; box-sizing: border-box;">
+            <button onclick="signInWithEmail()" style="width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700; cursor: pointer;">
                 Sign In / Sign Up
             </button>
             
-            <p style="text-align: center; margin-top: 16px; font-size: 12px; color: #94a3b8;">
+            <p style="text-align: center; margin-top: 16px; font-size: 12px; color: var(--text-muted);">
                 🎁 First 10 recipes are free!
             </p>
         </div>
@@ -4540,7 +4528,7 @@
                         <img id="userAvatar" src="" style="width: 40px; height: 40px; border-radius: 50%; background: #e2e8f0; display: none;" onerror="this.style.opacity='0'">
                         <div style="text-align: left;">
                             <div style="font-weight: 700; color: var(--text-light);" id="userDisplayName">User</div>
-                            <div style="font-size: 12px; color: #64748b;">Free Plan</div>
+                            <div style="font-size: 12px; color: var(--text-muted);">Free Plan</div>
                         </div>
                     </div>
                     <button class="test-btn" onclick="showPremiumModal()" style="width: 100%; background: var(--primary); color: white; font-weight: 700; margin-bottom: 8px;">👑 Upgrade to Premium</button>
@@ -4553,7 +4541,7 @@
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
                             <div style="font-weight: 600; color: var(--text-light);" data-i18n="darkMode">Dark Mode</div>
-                            <div style="font-size: 12px; color: #64748b;" data-i18n="darkModeDesc">Switch between light and dark theme</div>
+                            <div style="font-size: 12px; color: var(--text-muted);" data-i18n="darkModeDesc">Switch between light and dark theme</div>
                         </div>
                         <button class="icon-btn" onclick="toggleDarkMode()" id="darkBtn2">🌙</button>
                     </div>
@@ -4593,10 +4581,10 @@
                 </div>
 
                 <!-- App Info -->
-                <div style="margin-top: 20px; text-align: center; color: #64748b; font-size: 12px;">
-                    <div>SnapChef v5.0</div>
+                <div style="margin-top: 20px; text-align: center; color: var(--text-muted); font-size: 12px;">
+                    <div>SnapChef v5.5</div>
                     <div style="margin-top: 5px;">Made with ❤️</div>
-                    <div style="margin-top: 3px; font-size: 10px; color: #94a3b8;">Health Tracking • Notifications • Better UX</div>
+                    <div style="margin-top: 3px; font-size: 10px; color: var(--text-muted);">Health Tracking • Notifications • Better UX</div>
                 </div>
             </div>
         </div>
@@ -7653,10 +7641,10 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                     '</div>' +
 
                     '<div style="display:flex;gap:8px;margin-top:5px;">' +
-                    '<button class="main-btn" style="flex:1;background:linear-gradient(135deg,var(--primary),var(--primary-dark));" onclick="HealthTarget._quickEstimate()"><span>🤖</span><span>AI Estimate</span></button>' +
+                    '<button class="main-btn" style="flex:1;background: var(--primary);" onclick="HealthTarget._quickEstimate()"><span>🤖</span><span>AI Estimate</span></button>' +
                     '</div>' +
 
-                    '<button class="main-btn" onclick="HealthTarget.addMealFromLogger()" style="margin-top:10px;background:linear-gradient(135deg,#14b8a6,#0d9488);">' +
+                    '<button class="main-btn" onclick="HealthTarget.addMealFromLogger()" style="margin-top:10px;background: var(--accent);">' +
                     '<span>✅</span><span>Add Meal</span></button>' +
                     '<button class="premium-close" onclick="document.getElementById(\'mealLogModal\').remove()">Cancel</button>' +
                     '</div></div>';
