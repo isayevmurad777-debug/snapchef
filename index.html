@@ -2993,6 +2993,30 @@
             gap: 8px;
         }
 
+
+        /* ===== IMPORT FROM URL ===== */
+        .import-platforms {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .import-plat {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(99,102,241,0.1);
+            color: var(--primary);
+            font-weight: 500;
+        }
+        body.dark-mode .import-plat {
+            background: rgba(99,102,241,0.2);
+        }
+        .import-plat.active {
+            background: var(--primary);
+            color: white;
+        }
         canvas {
             display: none;
         }
@@ -4088,14 +4112,25 @@
 
     <!-- Import Recipe Modal -->
     <div class="premium-modal" id="importModal">
-        <div class="premium-content">
-            <div class="premium-icon">🔗</div>
-            <h2 class="premium-title" data-i18n="importRecipe">Import Recipe</h2>
-            <p class="premium-desc">Paste a recipe URL from Instagram, YouTube, TikTok or any recipe website</p>
-            <input type="url" id="importURL" class="api-input" placeholder="https://instagram.com/p/..." style="margin-top: 15px;">
-            <button class="main-btn" onclick="importRecipeFromURL()" style="margin-top: 15px;">
-                <span>📥</span>
-                <span data-i18n="importFromURL">Import Recipe</span>
+        <div class="premium-content" style="max-width: 400px;">
+            <div class="premium-icon">📲</div>
+            <h2 class="premium-title">Import from Video / Link</h2>
+            <p class="premium-desc" style="margin-bottom:4px;">Paste a cooking video or recipe link — AI will extract the full recipe</p>
+            <div class="import-platforms">
+                <span class="import-plat">▶️ YouTube</span>
+                <span class="import-plat">📸 Instagram</span>
+                <span class="import-plat">🎵 TikTok</span>
+                <span class="import-plat">🌐 Any Site</span>
+            </div>
+            <div style="position:relative;margin-top:14px;">
+                <input type="url" id="importURL" class="api-input" placeholder="Paste link here..." oninput="RecipeImporter.detectPlatform(this.value)" style="padding-right:60px;">
+                <button onclick="RecipeImporter.pasteFromClipboard()" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);background:var(--primary);color:white;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">📋 Paste</button>
+            </div>
+            <div id="importPlatformBadge" style="display:none;margin-top:8px;font-size:13px;font-weight:600;color:var(--primary);"></div>
+            <div id="importVideoTitle" style="display:none;margin-top:6px;font-size:12px;color:var(--text-muted);line-height:1.4;"></div>
+            <button class="main-btn" id="importBtn" onclick="RecipeImporter.importFromURL()" style="margin-top: 14px;">
+                <span>🤖</span>
+                <span>Extract Recipe with AI</span>
             </button>
             <button class="premium-close" onclick="RecipeImporter.closeImportModal()">Cancel</button>
         </div>
@@ -4263,9 +4298,9 @@
                             <span>🖼️</span>
                             <span data-i18n="upload">Upload</span>
                         </button>
-                        <button class="upload-btn tertiary" onclick="RecipeImporter.openImportModal()" aria-label="Import recipe from URL">
+                        <button class="upload-btn tertiary" onclick="RecipeImporter.openImportModal()" aria-label="Import recipe from video or URL">
                             <span>🔗</span>
-                            <span data-i18n="importRecipe">Import URL</span>
+                            <span data-i18n="importRecipe">Import from Video</span>
                         </button>
                     </div>
                     <input type="file" id="recipeFileInput" class="file-input" accept="image/*" onchange="handleUpload(event, 'recipe')">
@@ -5304,54 +5339,192 @@
         // RECIPE IMPORTER
         // ========================================
         var RecipeImporter = {
+            _videoInfo: null,
+
             openImportModal: function() {
                 var modal = document.getElementById('importModal');
                 if (modal) modal.classList.add('active');
+                this._videoInfo = null;
+                document.getElementById('importPlatformBadge').style.display = 'none';
+                document.getElementById('importVideoTitle').style.display = 'none';
             },
 
             closeImportModal: function() {
                 var modal = document.getElementById('importModal');
                 if (modal) modal.classList.remove('active');
+            },
+
+            pasteFromClipboard: async function() {
+                try {
+                    var text = await navigator.clipboard.readText();
+                    if (text) {
+                        document.getElementById('importURL').value = text;
+                        this.detectPlatform(text);
+                    }
+                } catch(e) {
+                    toast('Allow clipboard access', '📋');
+                }
+            },
+
+            detectPlatform: function(url) {
+                if (!url) return;
+                var badge = document.getElementById('importPlatformBadge');
+                var platform = this.getPlatform(url);
+
+                // Highlight matching platform chip
+                document.querySelectorAll('.import-plat').forEach(function(p) { p.classList.remove('active'); });
+
+                if (platform.name !== 'website') {
+                    badge.textContent = platform.icon + ' ' + platform.label + ' detected';
+                    badge.style.display = 'block';
+                    // Highlight chip
+                    var chips = document.querySelectorAll('.import-plat');
+                    chips.forEach(function(chip) {
+                        if (chip.textContent.toLowerCase().indexOf(platform.name) > -1) {
+                            chip.classList.add('active');
+                        }
+                    });
+                    // Auto-fetch video info
+                    this.fetchVideoInfo(url, platform);
+                } else if (url.startsWith('http')) {
+                    badge.textContent = '🌐 Recipe website detected';
+                    badge.style.display = 'block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            },
+
+            getPlatform: function(url) {
+                if (/youtube\.com|youtu\.be/i.test(url)) return { name: 'youtube', icon: '▶️', label: 'YouTube video' };
+                if (/instagram\.com/i.test(url)) return { name: 'instagram', icon: '📸', label: 'Instagram post' };
+                if (/tiktok\.com/i.test(url)) return { name: 'tiktok', icon: '🎵', label: 'TikTok video' };
+                if (/facebook\.com|fb\.watch/i.test(url)) return { name: 'facebook', icon: '📘', label: 'Facebook video' };
+                if (/pinterest\.com/i.test(url)) return { name: 'pinterest', icon: '📌', label: 'Pinterest pin' };
+                return { name: 'website', icon: '🌐', label: 'Website' };
+            },
+
+            fetchVideoInfo: async function(url, platform) {
+                var titleEl = document.getElementById('importVideoTitle');
+                try {
+                    // Use noembed.com — free oEmbed proxy (supports YT, TikTok, IG, etc.)
+                    var oembed = await fetch('https://noembed.com/embed?url=' + encodeURIComponent(url));
+                    if (oembed.ok) {
+                        var data = await oembed.json();
+                        if (data.title || data.author_name) {
+                            this._videoInfo = {
+                                title: data.title || '',
+                                author: data.author_name || '',
+                                thumbnail: data.thumbnail_url || '',
+                                platform: platform.name
+                            };
+                            var display = '';
+                            if (data.title) display += '📺 ' + data.title;
+                            if (data.author_name) display += '\n👤 ' + data.author_name;
+                            titleEl.textContent = display;
+                            titleEl.style.display = 'block';
+                            titleEl.style.whiteSpace = 'pre-line';
+                            return;
+                        }
+                    }
+                } catch(e) {
+                    console.log('oEmbed fetch skipped:', e);
+                }
+                titleEl.style.display = 'none';
+            },
+
+            getYouTubeId: function(url) {
+                var match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+                return match ? match[1] : null;
+            },
+
+            importFromURL: async function() {
+                var url = document.getElementById('importURL').value.trim();
+                if (!url) {
+                    toast('Paste a link first', '⚠️');
+                    return;
+                }
+                if (!url.startsWith('http')) {
+                    // Maybe they pasted a dish name instead of URL
+                    cookSpecificDish(url);
+                    this.closeImportModal();
+                    document.getElementById('importURL').value = '';
+                    return;
+                }
+
+                var apiKey = getApiKeyOrGuide();
+                if (!apiKey) return;
+
+                var btn = document.getElementById('importBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<span>⏳</span><span>Extracting recipe...</span>';
+
+                var platform = this.getPlatform(url);
+                var videoInfo = this._videoInfo;
+
+                // Build smart prompt based on what we know
+                var context = 'I have a ' + platform.label + ' link: ' + url;
+                if (videoInfo) {
+                    if (videoInfo.title) context += '\nVideo title: "' + videoInfo.title + '"';
+                    if (videoInfo.author) context += '\nCreator: ' + videoInfo.author;
+                }
+
+                var prompt = context + '\n\nThis is a cooking video/post. Based on the title, creator, and URL, figure out what dish this is and provide the COMPLETE recipe with exact measurements and detailed step-by-step cooking instructions.';
+                prompt += '\n\nReturn JSON: {"name":"Dish Name","description":"What this dish is and where it comes from","imageKeyword":"search keyword for food image","ingredients":["200g chicken breast","2 tbsp soy sauce","1 clove garlic, minced"],"steps":["Detailed step 1 with temperatures and times","Step 2 with specific techniques"],"prepTime":15,"cookTime":30,"servings":4,"calories":400,"tips":"Pro tip from the video creator","source":"' + (videoInfo ? videoInfo.author : 'imported') + '"}';
+                prompt += '\n\nIMPORTANT: Provide REAL measurements (grams, cups, tbsp), REAL cooking temperatures, and REAL timing. Be specific and detailed as if teaching a beginner.';
+
+                var loadingInterval = showProgressiveLoading('recipeResults', [
+                    platform.icon + ' Reading ' + platform.label + '...',
+                    '🧠 Identifying the dish...',
+                    '📝 Writing full recipe...',
+                    '🔥 Adding cooking details...',
+                    '✨ Almost ready...'
+                ]);
+
+                try {
+                    switchTab('recipe');
+
+                    var data = await callAI([{
+                        role: 'user',
+                        content: prompt
+                    }], { response_format: { type: "json_object" } });
+
+                    var recipe = JSON.parse(data.response);
+
+                    // Add source badge
+                    if (!recipe.description) recipe.description = '';
+                    if (videoInfo && videoInfo.author) {
+                        recipe.description += ' (via ' + videoInfo.author + ')';
+                    }
+                    recipe.source = url;
+                    recipe.importedFrom = platform.name;
+
+                    clearInterval(loadingInterval);
+                    currentRecipeData = recipe;
+                    displayRecipe(recipe);
+                    addToHistory(recipe);
+
+                    // Load real food image
+                    if (recipe.imageKeyword) {
+                        loadFoodImage(recipe.imageKeyword, recipe.name);
+                    }
+
+                    this.closeImportModal();
+                    document.getElementById('importURL').value = '';
+                    this._videoInfo = null;
+                    showConfetti();
+                    toast('Recipe extracted! 🎉', '✅');
+
+                } catch (error) {
+                    clearInterval(loadingInterval);
+                    console.error('Import error:', error);
+                    toast('Could not extract recipe', '❌');
+                    showError('recipeResults', 'api_error');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>🤖</span><span>Extract Recipe with AI</span>';
+                }
             }
         };
-
-        async function importRecipeFromURL() {
-            var url = document.getElementById('importURL').value.trim();
-            if (!url) {
-                toast('Enter a URL', '⚠️');
-                return;
-            }
-
-            var apiKey = getApiKeyOrGuide();
-            if (!apiKey) return;
-
-            var loadingInterval = showProgressiveLoading('recipeResults', [
-                '🔗 Reading URL...',
-                '📝 Extracting recipe...',
-                '✨ Formatting...'
-            ]);
-
-            try {
-                var data = await callAI([{
-                    role: 'user',
-                    content: 'Based on this URL: ' + url + ', generate a realistic recipe. Return JSON: {"name":"Recipe Name","description":"Brief description","ingredients":["item1","item2"],"steps":["Step 1","Step 2"],"prepTime":15,"cookTime":30,"servings":4,"calories":350}'
-                }], { response_format: { type: "json_object" } });
-                var recipe = JSON.parse(data.response);
-
-                clearInterval(loadingInterval);
-                currentRecipeData = recipe;
-                displayRecipe(recipe);
-                addToHistory(recipe);
-                RecipeImporter.closeImportModal();
-                document.getElementById('importURL').value = '';
-                showConfetti();
-                toast('Recipe imported!', '✅');
-
-            } catch (error) {
-                clearInterval(loadingInterval);
-                showError('recipeResults', 'api_error');
-            }
-        }
 
         // ========================================
         // MEAL PLANNER
