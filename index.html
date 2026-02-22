@@ -2782,6 +2782,217 @@
             gap: 6px;
         }
 
+
+        /* ===== AI MEAL PREP ===== */
+        .meal-prep-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .meal-prep-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 16px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+        .meal-prep-btn.ai {
+            background: var(--primary);
+            color: white;
+        }
+        .meal-prep-btn.clear {
+            background: var(--card-light);
+            color: var(--text-muted);
+            border: 1px solid var(--border-light);
+        }
+        body.dark-mode .meal-prep-btn.clear {
+            background: var(--card-dark);
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+        .meal-prep-btn:active { transform: scale(0.97); }
+        .prep-prefs {
+            background: var(--card-light);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .prep-prefs.active { display: block; }
+        body.dark-mode .prep-prefs {
+            background: var(--card-dark);
+            border-color: var(--border-dark);
+        }
+        .prep-prefs-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-light);
+        }
+        body.dark-mode .prep-prefs-title { color: var(--text-dark); }
+        .prep-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .prep-chip {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border-light);
+            background: var(--card-light);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+        body.dark-mode .prep-chip {
+            background: #222224;
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+        .prep-chip.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .prep-summary {
+            background: #F5F5FF;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-top: 16px;
+        }
+        body.dark-mode .prep-summary {
+            background: #222224;
+            border-color: var(--border-dark);
+        }
+        .prep-summary-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .prep-total {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 12px;
+        }
+        .prep-total-item {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .prep-total-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        /* ===== SOCIAL / COMMUNITY ===== */
+        .social-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 0;
+            border-top: 1px solid var(--border-light);
+            margin-top: 12px;
+        }
+        body.dark-mode .social-bar {
+            border-color: var(--border-dark);
+        }
+        .social-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-weight: 500;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: all 0.15s;
+        }
+        .social-btn:hover { background: rgba(0,0,0,0.05); }
+        body.dark-mode .social-btn:hover { background: rgba(255,255,255,0.08); }
+        .social-btn.liked { color: #ef4444; }
+        .social-btn .social-count {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .community-section {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-light);
+        }
+        body.dark-mode .community-section { border-color: var(--border-dark); }
+        .community-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-light);
+        }
+        body.dark-mode .community-title { color: var(--text-dark); }
+        .trending-grid {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .trending-card {
+            min-width: 150px;
+            background: var(--card-light);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+        body.dark-mode .trending-card {
+            background: var(--card-dark);
+            border-color: var(--border-dark);
+        }
+        .trending-card:active { transform: scale(0.97); }
+        .trending-img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            background: #374151;
+        }
+        .trending-info {
+            padding: 8px 10px;
+        }
+        .trending-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-light);
+            line-height: 1.3;
+        }
+        body.dark-mode .trending-name { color: var(--text-dark); }
+        .trending-meta {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            display: flex;
+            gap: 8px;
+        }
+
         canvas {
             display: none;
         }
@@ -4223,15 +4434,51 @@
 
             <!-- Meal Plan Tab -->
             <div class="tab-content" id="mealplanTab">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                     <h3 class="section-title" style="margin: 0;">📅 <span data-i18n="mealPlan">Meal Plan</span></h3>
                     <button class="icon-btn" onclick="ShoppingList.generateFromMealPlan()" title="Generate Shopping List">🛒</button>
                 </div>
+                <div class="meal-prep-header">
+                    <button class="meal-prep-btn ai" onclick="MealPrep.togglePrefs()">🤖 AI Meal Prep</button>
+                    <button class="meal-prep-btn clear" onclick="MealPlanner.clearAll()">🗑️ Clear</button>
+                </div>
+                <div class="prep-prefs" id="prepPrefs">
+                    <div class="prep-prefs-title">🎯 Customize Your Week</div>
+                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">Goal:</div>
+                    <div class="prep-chips" id="prepGoalChips">
+                        <button class="prep-chip selected" onclick="MealPrep.selectGoal(this)" data-goal="balanced">⚖️ Balanced</button>
+                        <button class="prep-chip" onclick="MealPrep.selectGoal(this)" data-goal="weight-loss">🔥 Weight Loss</button>
+                        <button class="prep-chip" onclick="MealPrep.selectGoal(this)" data-goal="muscle-gain">💪 Muscle Gain</button>
+                        <button class="prep-chip" onclick="MealPrep.selectGoal(this)" data-goal="budget">💰 Budget</button>
+                    </div>
+                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">Style:</div>
+                    <div class="prep-chips" id="prepStyleChips">
+                        <button class="prep-chip selected" onclick="MealPrep.selectStyle(this)" data-style="varied">🌈 Varied</button>
+                        <button class="prep-chip" onclick="MealPrep.selectStyle(this)" data-style="simple">🍳 Simple (< 30 min)</button>
+                        <button class="prep-chip" onclick="MealPrep.selectStyle(this)" data-style="meal-prep">📦 Batch Cook</button>
+                    </div>
+                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;">People:</div>
+                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+                        <button class="serv-btn" onclick="MealPrep.changePeople(-1)">−</button>
+                        <span id="prepPeople" style="font-size:18px;font-weight:700;">2</span>
+                        <button class="serv-btn" onclick="MealPrep.changePeople(1)">+</button>
+                    </div>
+                    <button class="main-btn" onclick="MealPrep.generate()" id="prepGenerateBtn">
+                        <span>✨</span>
+                        <span>Generate Week Plan</span>
+                    </button>
+                </div>
+                <div id="prepSummary"></div>
                 <div id="mealPlanContainer" class="meal-plan-container"></div>
             </div>
 
             <!-- Favorites Tab -->
             <div class="tab-content" id="favoritesTab">
+                <!-- Trending Section -->
+                <div class="community-section" style="border-top:none;margin-top:0;padding-top:0;">
+                    <div class="community-title">🔥 Trending Recipes</div>
+                    <div id="trendingRecipes"></div>
+                </div>
                 <!-- Shopping List Section -->
                 <div style="margin-bottom:20px;">
                     <h3 class="section-title" style="display:flex;justify-content:space-between;align-items:center;">
@@ -4880,7 +5127,7 @@
                 var container = document.querySelector('.container');
                 if (container) container.scrollTop = 0;
 
-                if (tab === 'favorites') renderFavorites();
+                if (tab === 'favorites') { renderFavorites(); Social.renderTrending(); }
                 if (tab === 'health') { HealthTarget.render(); }
                 if (tab === 'favorites') { ShoppingList.render(); }
                 if (tab === 'mealplan') { MealPlanner.renderWeek(); }
@@ -5783,7 +6030,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 '</div>' +
                 '<div class="recipe-actions">' +
                 '<button class="recipe-action' + (isFav ? ' fav' : '') + '" onclick="toggleFavorite()" title="Favorite">' + (isFav ? '❤️' : '🤍') + '</button>' +
-                '<button class="recipe-action" onclick="shareRecipe()" title="Share">📤</button>' +
+                '<button class="recipe-action" onclick="Social.shareRecipe()" title="Share">📤</button>' +
                 '<button class="recipe-action" onclick="voiceCook.start(currentRecipeData)" title="Voice Cooking Mode" aria-label="Read recipe aloud">🔊</button>' +
                 '</div></div>' +
                 '<div class="recipe-stats">' +
@@ -5816,7 +6063,14 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 '<span>📅</span><span>Add to Plan</span></button>' +
                 '<button class="main-btn" onclick="HealthTarget.addMealFromRecipe(currentRecipeData); toast(\'Meal logged! 🎯\', \'✅\');" style="flex:1;min-width:45%; background: var(--secondary);">' +
                 '<span>🎯</span><span>Log Meal</span></button>' +
-                '</div></div></div>';
+                '</div>' +
+                '<div class="social-bar">' +
+                '<button class="social-btn social-like-btn' + (Social.isLiked(recipe.name) ? ' liked' : '') + '" data-recipe="' + escapeHTML(recipe.name) + '" onclick="Social.toggleLike(\'' + escapeHTML(recipe.name).replace(/'/g, "\\'") + '\')">' +
+                (Social.isLiked(recipe.name) ? '❤️' : '🤍') + ' <span class="social-count">' + Social.getLikeCount(recipe.name) + '</span></button>' +
+                '<button class="social-btn" onclick="Social.shareRecipe()">📤 Share</button>' +
+                '<button class="social-btn" onclick="Social.shareAsImage()">🖼️ Card</button>' +
+                '</div>' +
+                '</div></div>';
 
             document.getElementById('recipeResults').innerHTML = html;
             document.getElementById('recipeResults').classList.add('show');
@@ -5858,6 +6112,275 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             utterance.rate = 0.9;
             window.speechSynthesis.speak(utterance);
         }
+
+
+        // ========================================
+        // AI MEAL PREP
+        // ========================================
+        var MealPrep = {
+            goal: 'balanced',
+            style: 'varied',
+            people: 2,
+
+            togglePrefs: function() {
+                document.getElementById('prepPrefs').classList.toggle('active');
+            },
+
+            selectGoal: function(el) {
+                document.querySelectorAll('#prepGoalChips .prep-chip').forEach(function(c) { c.classList.remove('selected'); });
+                el.classList.add('selected');
+                this.goal = el.getAttribute('data-goal');
+            },
+
+            selectStyle: function(el) {
+                document.querySelectorAll('#prepStyleChips .prep-chip').forEach(function(c) { c.classList.remove('selected'); });
+                el.classList.add('selected');
+                this.style = el.getAttribute('data-style');
+            },
+
+            changePeople: function(delta) {
+                this.people = Math.max(1, Math.min(8, this.people + delta));
+                document.getElementById('prepPeople').textContent = this.people;
+            },
+
+            generate: async function() {
+                var btn = document.getElementById('prepGenerateBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<span>⏳</span><span>Generating...</span>';
+
+                var diets = getFullDietaryPrefs();
+                var goalMap = {
+                    'balanced': 'balanced nutrition with variety',
+                    'weight-loss': 'low calorie, high protein for weight loss (under 1600 cal/day)',
+                    'muscle-gain': 'high protein, high calorie for muscle building (2500+ cal/day)',
+                    'budget': 'budget-friendly, use affordable common ingredients'
+                };
+                var styleMap = {
+                    'varied': 'different meals each day',
+                    'simple': 'quick and simple meals, each under 30 minutes',
+                    'meal-prep': 'batch cooking friendly - meals that can be prepped on Sunday for the whole week'
+                };
+
+                var prompt = 'Create a 7-day meal plan (' + this.people + ' people). Goal: ' + goalMap[this.goal] + '. Style: ' + styleMap[this.style] + '.';
+                if (diets) prompt += ' Dietary restrictions: ' + diets + '.';
+                prompt += ' Return JSON: {"days":[{"breakfast":{"name":"Name","calories":300,"prepTime":10},"lunch":{"name":"Name","calories":500,"prepTime":20},"dinner":{"name":"Name","calories":600,"prepTime":30}}],"shoppingList":["item1","item2"],"totalCalories":1400,"tips":"One meal prep tip"}. Return exactly 7 days.';
+
+                try {
+                    var response = await fetch('/.netlify/functions/ai', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            messages: [{ role: 'user', content: prompt }],
+                            userId: window._userId || 'anon'
+                        })
+                    });
+
+                    var data = await response.json();
+                    if (data.error) throw new Error(data.error);
+
+                    var text = data.choices ? data.choices[0].message.content : data.content || '';
+                    var jsonMatch = text.match(/\{[\s\S]*\}/);
+                    if (!jsonMatch) throw new Error('No JSON');
+
+                    var plan = JSON.parse(jsonMatch[0]);
+                    this.applyPlan(plan);
+                    toast('Week plan generated! 🎉', '✅');
+                } catch(e) {
+                    console.error('Meal prep error:', e);
+                    toast('Error generating plan', '❌');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>✨</span><span>Generate Week Plan</span>';
+                }
+            },
+
+            applyPlan: function(plan) {
+                if (!plan.days || !Array.isArray(plan.days)) return;
+
+                var days = plan.days.slice(0, 7);
+                days.forEach(function(day, i) {
+                    if (i >= 7) return;
+                    ['breakfast', 'lunch', 'dinner'].forEach(function(meal) {
+                        if (day[meal]) {
+                            MealPlanner.currentWeek[i][meal] = {
+                                name: day[meal].name,
+                                calories: day[meal].calories || 0,
+                                prepTime: day[meal].prepTime || 0
+                            };
+                        }
+                    });
+                });
+                MealPlanner.save();
+                MealPlanner.renderWeek();
+
+                // Show summary
+                var summary = '<div class="prep-summary">';
+                summary += '<div class="prep-summary-title">✅ Week Plan Ready!</div>';
+                if (plan.tips) summary += '<div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">💡 ' + escapeHTML(plan.tips) + '</div>';
+                summary += '<div class="prep-total">';
+                summary += '<div class="prep-total-item"><div class="prep-total-value">' + (plan.totalCalories || '~1500') + '</div>cal/day</div>';
+                summary += '<div class="prep-total-item"><div class="prep-total-value">21</div>meals</div>';
+                summary += '<div class="prep-total-item"><div class="prep-total-value">' + (plan.shoppingList ? plan.shoppingList.length : '~20') + '</div>items</div>';
+                summary += '</div>';
+                if (plan.shoppingList && plan.shoppingList.length) {
+                    summary += '<button class="main-btn" style="margin-top:12px;" onclick="MealPrep.addShoppingList()">🛒 Add All to Shopping List</button>';
+                    MealPrep._shoppingList = plan.shoppingList;
+                }
+                summary += '</div>';
+                document.getElementById('prepSummary').innerHTML = summary;
+                document.getElementById('prepPrefs').classList.remove('active');
+            },
+
+            _shoppingList: [],
+
+            addShoppingList: function() {
+                this._shoppingList.forEach(function(item) {
+                    ShoppingList.addItem(item);
+                });
+                toast(this._shoppingList.length + ' items added!', '🛒');
+            }
+        };
+
+        // Add clearAll to MealPlanner
+        MealPlanner.clearAll = function() {
+            for (var i = 0; i < 7; i++) {
+                this.currentWeek[i] = { day: i, breakfast: null, lunch: null, dinner: null };
+            }
+            this.save();
+            this.renderWeek();
+            document.getElementById('prepSummary').innerHTML = '';
+            toast('Plan cleared', '🗑️');
+        };
+
+
+        // ========================================
+        // SOCIAL & COMMUNITY
+        // ========================================
+        var Social = {
+            likes: JSON.parse(localStorage.getItem('snapchef_likes') || '{}'),
+            community: JSON.parse(localStorage.getItem('snapchef_community') || '[]'),
+
+            toggleLike: function(recipeName) {
+                if (this.likes[recipeName]) {
+                    delete this.likes[recipeName];
+                } else {
+                    this.likes[recipeName] = { at: Date.now() };
+                    // Add to community trending
+                    this.addToCommunity(recipeName);
+                }
+                localStorage.setItem('snapchef_likes', JSON.stringify(this.likes));
+                this.updateLikeUI(recipeName);
+            },
+
+            isLiked: function(name) {
+                return !!this.likes[name];
+            },
+
+            getLikeCount: function(name) {
+                // Simulate community likes (base + user)
+                var hash = 0;
+                for (var i = 0; i < name.length; i++) hash = ((hash << 5) - hash) + name.charCodeAt(i);
+                var base = Math.abs(hash) % 200 + 10;
+                return base + (this.likes[name] ? 1 : 0);
+            },
+
+            updateLikeUI: function(name) {
+                var btns = document.querySelectorAll('.social-like-btn');
+                btns.forEach(function(btn) {
+                    if (btn.getAttribute('data-recipe') === name) {
+                        var liked = Social.isLiked(name);
+                        btn.className = 'social-btn' + (liked ? ' liked' : '');
+                        btn.innerHTML = (liked ? '❤️' : '🤍') + ' <span class="social-count">' + Social.getLikeCount(name) + '</span>';
+                    }
+                });
+            },
+
+            addToCommunity: function(name) {
+                // Keep unique, max 50
+                this.community = this.community.filter(function(r) { return r.name !== name; });
+                this.community.unshift({
+                    name: name,
+                    at: Date.now(),
+                    likes: this.getLikeCount(name)
+                });
+                if (this.community.length > 50) this.community = this.community.slice(0, 50);
+                localStorage.setItem('snapchef_community', JSON.stringify(this.community));
+            },
+
+            shareRecipe: function(recipe) {
+                if (!recipe) recipe = currentRecipeData;
+                if (!recipe) return;
+
+                var text = '🍳 *' + recipe.name + '*\n\n';
+                if (recipe.description) text += recipe.description + '\n\n';
+                text += '📝 *Ingredients:*\n' + (recipe.ingredients || []).map(function(i) { return '• ' + i; }).join('\n') + '\n\n';
+                text += '👨‍🍳 *Steps:*\n' + (recipe.steps || []).map(function(s, i) { return (i + 1) + '. ' + s; }).join('\n');
+                text += '\n\n⏱ ' + (recipe.prepTime || 15) + ' min prep | 🔥 ' + (recipe.calories || 350) + ' cal';
+                text += '\n\n📲 Made with SnapChef';
+
+                if (navigator.share) {
+                    navigator.share({ title: recipe.name, text: text }).catch(function() {});
+                } else {
+                    navigator.clipboard.writeText(text).then(function() {
+                        toast('Recipe copied!', '📋');
+                    });
+                }
+            },
+
+            shareAsImage: function(recipe) {
+                if (!recipe) recipe = currentRecipeData;
+                if (!recipe) return;
+                // Create shareable card text
+                var card = '🍳 ' + recipe.name + '\n';
+                card += '⏱ ' + (recipe.prepTime || 15) + 'min | 🔥 ' + (recipe.calories || 350) + 'cal | 👥 ' + (recipe.servings || 4) + ' servings';
+                card += '\n\nIngredients: ' + (recipe.ingredients || []).slice(0, 5).join(', ');
+                if ((recipe.ingredients || []).length > 5) card += '...';
+
+                if (navigator.share) {
+                    navigator.share({ title: recipe.name + ' - SnapChef', text: card });
+                } else {
+                    navigator.clipboard.writeText(card);
+                    toast('Copied!', '📋');
+                }
+            },
+
+            renderTrending: function() {
+                var container = document.getElementById('trendingRecipes');
+                if (!container) return;
+
+                // Get trending from community + favorites
+                var trending = [];
+                var favs = safeJsonParse(localStorage.getItem('snapchef_favorites'), []);
+                favs.forEach(function(r) {
+                    trending.push({ name: r.name, likes: Social.getLikeCount(r.name), recipe: r });
+                });
+                this.community.forEach(function(r) {
+                    if (!trending.find(function(t) { return t.name === r.name; })) {
+                        trending.push({ name: r.name, likes: Social.getLikeCount(r.name) });
+                    }
+                });
+                trending.sort(function(a, b) { return b.likes - a.likes; });
+                trending = trending.slice(0, 10);
+
+                if (trending.length === 0) {
+                    container.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:20px;">Generate recipes to see trending! 🍳</div>';
+                    return;
+                }
+
+                var html = '<div class="trending-grid">';
+                trending.forEach(function(item) {
+                    var imgUrl = getRecipeImageURL(item.name);
+                    html += '<div class="trending-card" onclick="cookSpecificDish(\'' + escapeHTML(item.name).replace(/'/g, "\\'") + '\')">';
+                    html += '<img class="trending-img" src="' + imgUrl + '" data-recipe="' + escapeHTML(item.name) + '" onerror="this.style.opacity=\'0.5\'">';
+                    html += '<div class="trending-info">';
+                    html += '<div class="trending-name">' + escapeHTML(item.name) + '</div>';
+                    html += '<div class="trending-meta"><span>❤️ ' + item.likes + '</span></div>';
+                    html += '</div></div>';
+                });
+                html += '</div>';
+                container.innerHTML = html;
+            }
+        };
 
         // ========================================
         // FOOD ANALYSIS
@@ -6288,6 +6811,15 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             save: function() {
                 localStorage.setItem('snapchef_shopping', JSON.stringify(this.items));
+            },
+
+            addItem: function(item) {
+                if (!item) return;
+                var items = JSON.parse(localStorage.getItem('snapchef_shopping') || '[]');
+                if (!items.find(function(i) { return i.name === item; })) {
+                    items.push({ name: item, done: false });
+                    localStorage.setItem('snapchef_shopping', JSON.stringify(items));
+                }
             },
 
             addFromRecipe: function(recipe) {
