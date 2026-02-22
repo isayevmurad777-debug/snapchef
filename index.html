@@ -6339,23 +6339,12 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 prompt += ' Return JSON: {"days":[{"breakfast":{"name":"Name","calories":300,"prepTime":10},"lunch":{"name":"Name","calories":500,"prepTime":20},"dinner":{"name":"Name","calories":600,"prepTime":30}}],"shoppingList":["item1","item2"],"totalCalories":1400,"tips":"One meal prep tip"}. Return exactly 7 days.';
 
                 try {
-                    var response = await fetch('/.netlify/functions/ai', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            messages: [{ role: 'user', content: prompt }],
-                            userId: window._userId || 'anon'
-                        })
-                    });
+                    var data = await callAI([{
+                        role: 'user',
+                        content: prompt
+                    }], { response_format: { type: "json_object" }, max_tokens: 2000 });
 
-                    var data = await response.json();
-                    if (data.error) throw new Error(data.error);
-
-                    var text = data.choices ? data.choices[0].message.content : data.content || '';
-                    var jsonMatch = text.match(/\{[\s\S]*\}/);
-                    if (!jsonMatch) throw new Error('No JSON');
-
-                    var plan = JSON.parse(jsonMatch[0]);
+                    var plan = JSON.parse(data.response);
                     this.applyPlan(plan);
                     toast('Week plan generated! 🎉', '✅');
                 } catch(e) {
