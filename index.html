@@ -153,7 +153,7 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             position: relative;
             z-index: 1;
         }
@@ -170,7 +170,7 @@
             font-weight: 800;
             margin-top: 24px;
             letter-spacing: -0.5px;
-            animation: fadeInUp 0.8s 0.2s both;
+            animation: fadeInUp 0.5s 0.1s both;
             position: relative;
             z-index: 1;
         }
@@ -180,7 +180,7 @@
             font-size: 15px;
             font-weight: 500;
             margin-top: 8px;
-            animation: fadeInUp 0.8s 0.4s both;
+            animation: fadeInUp 0.5s 0.2s both;
             position: relative;
             z-index: 1;
         }
@@ -894,12 +894,12 @@
 
         .tab-content.active {
             display: block;
-            animation: slideUp 0.35s ease-out;
+            animation: fadeIn 0.15s ease-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* Upload Section */
@@ -1288,7 +1288,7 @@
 
         .results.show {
             display: block;
-            animation: fadeIn 0.5s;
+            animation: fadeIn 0.2s;
         }
 
         /* Recipe Card */
@@ -1299,7 +1299,7 @@
             box-shadow: 0 8px 40px rgba(0,0,0,0.08);
             border: none;
             transition: all 0.3s;
-            animation: slideUp 0.4s ease-out;
+            animation: fadeIn 0.2s ease-out;
         }
 
         body.dark-mode .recipe-card {
@@ -1780,7 +1780,7 @@
             max-width: 400px;
             width: 100%;
             text-align: center;
-            animation: scaleIn 0.3s;
+            animation: scaleIn 0.15s;
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -3028,7 +3028,7 @@
 
         /* ===== MICRO-ANIMATIONS ===== */
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(16px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
         @keyframes slideIn {
@@ -3036,7 +3036,7 @@
             to { opacity: 1; transform: translateX(0); }
         }
         @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.95); }
+            from { opacity: 0; transform: scale(0.98); }
             to { opacity: 1; transform: scale(1); }
         }
         @keyframes shimmer {
@@ -3051,9 +3051,9 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-4px); }
         }
-        .animate-slideUp { animation: slideUp 0.4s ease-out both; }
-        .animate-slideIn { animation: slideIn 0.3s ease-out both; }
-        .animate-scaleIn { animation: scaleIn 0.3s ease-out both; }
+        .animate-slideUp { animation: slideUp 0.2s ease-out both; }
+        .animate-slideIn { animation: slideIn 0.15s ease-out both; }
+        .animate-scaleIn { animation: scaleIn 0.15s ease-out both; }
         .stagger-1 { animation-delay: 0.05s; }
         .stagger-2 { animation-delay: 0.1s; }
         .stagger-3 { animation-delay: 0.15s; }
@@ -3169,7 +3169,7 @@
             padding-bottom: calc(20px + env(safe-area-inset-bottom));
             max-width: 100%;
             width: 100%;
-            animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: fadeIn 0.2s ease-out;
             max-height: 85vh;
             overflow-y: auto;
         }
