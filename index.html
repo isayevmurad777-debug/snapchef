@@ -395,7 +395,7 @@
 
         /* Subscription Banner */
         .subscription-banner {
-            background: linear-gradient(135deg, #6C5CE7 0%, #5A4BD1 100%);
+            background: var(--primary);
             padding: 16px 20px;
             border-radius: var(--radius-xl);
             margin-bottom: 20px;
@@ -757,7 +757,7 @@
 
         /* API Section */
         .api-section {
-            background: #f0fdf4;
+            background: #F5F3FF;
             padding: 14px;
             border-radius: var(--radius-md);
             margin-bottom: 15px;
@@ -765,8 +765,8 @@
         }
 
         body.dark-mode .api-section {
-            background: #1E1E20;
-            border-color: #2A2A2C;
+            background: var(--card-dark);
+            border-color: var(--border-dark);
         }
 
         .api-section label {
@@ -844,15 +844,18 @@
         }
 
         .clear-key-btn {
-            background: var(--danger);
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 8px;
+            background: transparent;
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            padding: 10px 14px;
+            border-radius: 50px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
+            font-family: inherit;
+            transition: all 0.15s;
         }
+        .clear-key-btn:active { transform: scale(0.97); background: rgba(239,68,68,0.1); }
 
         .api-status {
             margin-top: 10px;
@@ -905,7 +908,7 @@
             border-radius: var(--radius-xl);
             padding: 32px 24px;
             text-align: center;
-            border: 1px solid var(--border-light);
+            border: none;
             margin-bottom: 20px;
             transition: all 0.2s;
             position: relative;
@@ -1269,12 +1272,12 @@
         }
 
         .main-btn.analyze {
-            background: var(--secondary);
-            box-shadow: 0 8px 24px rgba(236, 72, 153, 0.35);
+            background: var(--accent);
+            box-shadow: 0 4px 16px rgba(0, 184, 148, 0.3);
         }
 
-        .main-btn.analyze:hover {
-            box-shadow: 0 12px 32px rgba(236, 72, 153, 0.45);
+        .main-btn.analyze:active {
+            transform: scale(0.97);
         }
 
         /* Results */
@@ -1578,15 +1581,16 @@
 
         .nutrition-item {
             background: var(--card-light);
-            padding: 12px;
-            border-radius: var(--radius-sm);
+            padding: 14px;
+            border-radius: var(--radius-md);
             text-align: center;
-            border: 1px solid var(--border-light);
+            border: none;
+            box-shadow: var(--shadow-sm);
         }
 
         body.dark-mode .nutrition-item {
             background: var(--card-dark);
-            border-color: var(--border-dark);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
         .nutrition-icon {
@@ -2192,27 +2196,27 @@
         .meal-slot {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px;
+            gap: 12px;
+            padding: 14px;
             background: var(--card-light);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-sm);
+            border: none;
+            border-radius: var(--radius-md);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.15s;
+            box-shadow: var(--shadow-sm);
         }
 
         body.dark-mode .meal-slot {
             background: var(--card-dark);
-            border-color: var(--border-dark);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
         .meal-slot.filled {
-            border-style: solid;
-            border-color: var(--primary);
+            border-left: 3px solid var(--primary);
         }
 
-        .meal-slot:hover {
-            transform: translateX(5px);
+        .meal-slot:active {
+            transform: scale(0.98);
         }
 
         .meal-icon {
@@ -2743,8 +2747,11 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-light);
+            padding: 12px;
+            margin-bottom: 6px;
+            background: var(--card-light);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-sm);
         }
         body.dark-mode .shopping-item { border-color: var(--border-dark); }
         .shopping-item:last-child { border: none; }
@@ -3420,8 +3427,8 @@
             padding: 12px 0;
             border-bottom: 1px solid var(--border-light);
         }
-        body.dark-mode .notif-toggle-row { border-color: var(--border-dark); }
-        .notif-toggle-row:last-child { border-bottom: none; }
+        body.dark-mode .notif-toggle-row { background: var(--card-dark); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .notif-toggle-row:last-child { margin-bottom: 0; }
         .notif-toggle-info {
             display: flex;
             align-items: center;
@@ -3472,7 +3479,7 @@
             border-radius: 50%;
             transition: 0.3s;
         }
-        .notif-switch input:checked + .notif-slider { background: var(--accent); }
+        .notif-switch input:checked + .notif-slider { background: var(--primary); }
         .notif-switch input:checked + .notif-slider::before { transform: translateX(22px); }
         body.dark-mode .notif-slider { background: #475569; }
 
@@ -3761,27 +3768,28 @@
             flex-wrap: wrap;
         }
         .water-glass {
-            width: 38px; height: 38px;
+            width: 40px; height: 40px;
             border-radius: var(--radius-sm);
-            border: 2px solid #93c5fd;
+            border: none;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: white;
+            transition: all 0.15s;
+            background: #EEF2FF;
+            box-shadow: var(--shadow-sm);
         }
         body.dark-mode .water-glass {
-            background: transparent;
-            border-color: #3A3A3C;
+            background: rgba(255,255,255,0.06);
+            box-shadow: none;
         }
         .water-glass.filled {
             background: var(--primary);
-            border-color: var(--primary);
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 2px 12px rgba(108, 92, 231, 0.35);
+            transform: scale(1.05);
         }
-        .water-glass:hover { transform: scale(1.15); }
+        .water-glass:active { transform: scale(0.9); }
 
         .health-tips {
             background: white;
