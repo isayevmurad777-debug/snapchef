@@ -4086,8 +4086,8 @@
         </div>
     </div>
 
-    <!-- Premium Modal -->
-    <div class="premium-modal" id="premiumModal">
+    <!-- Premium Modal (hidden for Play Store) -->
+    <div class="premium-modal" id="premiumModal" style="display:none !important;">
         <div class="premium-content">
             <div class="premium-icon">👑</div>
             <h2 class="premium-title" data-i18n="goPremium">Go Premium</h2>
@@ -4117,8 +4117,8 @@
         </div>
     </div>
 
-    <!-- Buy Credits Modal -->
-    <div class="premium-modal" id="buyCreditsModal">
+    <!-- Buy Credits Modal (hidden for Play Store) -->
+    <div class="premium-modal" id="buyCreditsModal" style="display:none !important;">
         <div class="premium-content">
             <div class="premium-icon">💎</div>
             <h2 class="premium-title" data-i18n="buyCredits">Buy Credits</h2>
@@ -4252,7 +4252,7 @@
             </button>
             
             <p style="text-align: center; margin-top: 16px; font-size: 12px; color: var(--text-muted);">
-                🎁 First 10 recipes are free!
+                🎁 Free AI-powered recipe generation!
             </p>
         </div>
     </div>
@@ -4260,8 +4260,8 @@
     <!-- App Container -->
     <div class="app-container" id="appContainer" style="display: none;">
         <div class="container">
-            <!-- Subscription Banner -->
-            <div class="subscription-banner" id="subBanner" onclick="openPremiumModal()">
+            <!-- Subscription Banner (hidden for Play Store) -->
+            <div class="subscription-banner" id="subBanner" onclick="openPremiumModal()" style="display:none !important;">
                 <span class="sub-icon">👑</span>
                 <div class="sub-text">
                     <div class="sub-title" data-i18n="upgradePremium">Upgrade to Premium</div>
@@ -4270,9 +4270,9 @@
                 <button class="sub-btn" data-i18n="upgrade">Upgrade</button>
             </div>
 
-            <!-- Usage Counter -->
-            <div class="usage-counter" id="usageCounter">
-                <span class="usage-text"><span id="usageCount">0</span>/5 <span data-i18n="recipesToday">recipes today</span> <span style="color:var(--text-muted);font-size:11px;">(or use credits)</span></span>
+            <!-- Usage Counter (hidden for Play Store) -->
+            <div class="usage-counter" id="usageCounter" style="display:none !important;">
+                <span class="usage-text"><span id="usageCount">0</span>/5 <span data-i18n="recipesToday">recipes today</span></span>
                 <div class="usage-bar"><div class="usage-fill" id="usageFill"></div></div>
             </div>
 
@@ -4284,7 +4284,7 @@
                     <span class="premium-badge hidden" id="premiumBadge">PRO</span>
                 </div>
                 <div class="header-btns">
-                    <div class="credits-display" onclick="CreditSystem.showBuyModal()">
+                    <div class="credits-display" onclick="CreditSystem.showBuyModal()" style="display:none !important;">
                         💎
                         <span id="creditsDisplay">10</span>
                     </div>
@@ -4322,7 +4322,7 @@
                         <div style="font-size: 22px;">✨</div>
                         <div style="flex:1;">
                             <div style="font-weight: 700; font-size: 13px; color: var(--primary);" id="usageCounter">Loading...</div>
-                            <div style="font-size: 11px; color: var(--primary); margin-top: 2px;">Upgrade to Premium for unlimited</div>
+                            <div style="font-size: 11px; color: var(--primary); margin-top: 2px;">AI-powered recipe generation</div>
                         </div>
                     </div>
                 </div>
@@ -4588,10 +4588,9 @@
                         <img id="userAvatar" src="" style="width: 40px; height: 40px; border-radius: 50%; background: #e2e8f0; display: none;" onerror="this.style.opacity='0'">
                         <div style="text-align: left;">
                             <div style="font-weight: 700; color: var(--text-light);" id="userDisplayName">User</div>
-                            <div style="font-size: 12px; color: var(--text-muted);">Free Plan</div>
+                            <div style="font-size: 12px; color: var(--text-muted);">SnapChef User</div>
                         </div>
                     </div>
-                    <button class="test-btn" onclick="showPremiumModal()" style="width: 100%; background: var(--primary); color: white; font-weight: 700; margin-bottom: 8px;">👑 Upgrade to Premium</button>
                     <button class="clear-key-btn" onclick="signOut()" style="width: 100%; padding: 8px;">🚪 Sign Out</button>
                 </section>
                 <input type="hidden" id="apiKey" value="BACKEND">
@@ -4754,7 +4753,7 @@
                 getFrom: "Get from",
                 noRecipes: "No saved recipes yet",
                 noHistory: "No recent recipes",
-                dailyLimitReached: "Daily limit reached! Upgrade to Premium for unlimited recipes.",
+                dailyLimitReached: "Daily limit reached! Try again tomorrow.",
                 recipeGenerated: "Recipe generated!",
                 ingredientsDetected: "ingredients detected",
                 enterIngredient: "Enter at least one ingredient",
@@ -5100,7 +5099,7 @@
         var CONFIG = {
             MAX_IMAGE_SIZE: 4 * 1024 * 1024,
             MAX_INGREDIENTS_LENGTH: 500,
-            FREE_DAILY_LIMIT: 5,
+            FREE_DAILY_LIMIT: 15,
             REQUEST_TIMEOUT: 30000
         };
 
@@ -5268,7 +5267,8 @@
         // PREMIUM FUNCTIONS
         // ========================================
         function openPremiumModal() {
-            document.getElementById('premiumModal').classList.add('active');
+            // Disabled for Play Store version
+            return;
         }
 
         function closePremiumModal() {
@@ -5303,7 +5303,7 @@
             }
             updateUsageUI();
             if (!isPremium && dailyUsage.count >= CONFIG.FREE_DAILY_LIMIT) {
-                openPremiumModal();
+                toast('Daily limit reached. Try again tomorrow!', '⏰');
                 return false;
             }
             return true;
@@ -5343,14 +5343,7 @@
             },
 
             useCredits: function(amount) {
-                if (isPremium) return true;
-                if (this.credits < amount) {
-                    this.showBuyModal();
-                    return false;
-                }
-                this.credits -= amount;
-                this.save();
-                this.updateUI();
+                // Credits bypassed for Play Store version
                 return true;
             },
 
@@ -5371,8 +5364,8 @@
             },
 
             showBuyModal: function() {
-                var modal = document.getElementById('buyCreditsModal');
-                if (modal) modal.classList.add('active');
+                // Disabled for Play Store version
+                return;
             },
 
             buyPackage: function(packageType) {
@@ -6089,7 +6082,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             var data = await response.json();
             if (!response.ok) {
                 if (data.error === 'free_limit_exceeded' || data.error === 'Free limit reached') {
-                    showPremiumModal();
+                    toast('Daily limit reached. Try again tomorrow!', '⏰');
                     throw new Error('FREE_LIMIT');
                 }
                 throw new Error(data.error || 'API Error');
@@ -6877,7 +6870,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             } catch (e) {
                 console.error('Detection error:', e);
                 if (e.message === 'FREE_LIMIT') {
-                    tagsContainer.innerHTML = '<span style="color:#f59e0b;font-size:13px;">⭐ Free limit reached. Upgrade to Premium or type ingredients manually below.</span>';
+                    tagsContainer.innerHTML = '<span style="color:#f59e0b;font-size:13px;">⭐ Daily limit reached. Try again tomorrow or type ingredients manually below.</span>';
                 } else if (e.message && e.message.includes('403')) {
                     tagsContainer.innerHTML = '<span style="color:#ef4444;font-size:13px;">⚠️ API not connected. Please check Settings → API Key.</span>';
                 } else {
