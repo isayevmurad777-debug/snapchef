@@ -1,12 +1,8 @@
-[
-  {
-    "relation": ["delegate_permission/common.handle_all_urls"],
-    "target": {
-      "namespace": "android_app",
-      "package_name": "com.snapchef.app",
-      "sha256_cert_fingerprints": [
-        "REPLACE_WITH_YOUR_SHA256_FINGERPRINT"
-      ]
-    }
-  }
-]
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.snapchef.app",
+        "sha256_cert_fingerprints": ["C8:43:70:E9:97:29:3F:17:DE:82:07:D3:D9:EA:06:74:58:91:5E:1A:73:00:11:8F:C0:B6:5D:68:43:BE:69:D2"]
+      }
+    }]
