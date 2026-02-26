@@ -6860,10 +6860,12 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
                     toast(ingredients.length + ' ' + t('ingredientsDetected'), '✅');
                     
-                    // Scroll down to show detected + generate button
-                    setTimeout(function() {
-                        detectedBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 300);
+                    // Scroll down to show detected + generate button (only for recipe tab)
+                    if (type === 'recipe') {
+                        setTimeout(function() {
+                            detectedBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 300);
+                    }
                 } else {
                     tagsContainer.innerHTML = '<span style="color:#ef4444;font-size:13px;">Could not detect ingredients. Try a clearer photo.</span>';
                 }
