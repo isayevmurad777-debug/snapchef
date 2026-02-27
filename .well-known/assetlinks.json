@@ -3,6 +3,6 @@
       "target": {
         "namespace": "android_app",
         "package_name": "com.snapchef.app",
-        "sha256_cert_fingerprints": ["C8:43:70:E9:97:29:3F:17:DE:82:07:D3:D9:EA:06:74:58:91:5E:1A:73:00:11:8F:C0:B6:5D:68:43:BE:69:D2"]
+        "sha256_cert_fingerprints": ["33:83:EF:FE:84:77:A1:E5:00:F1:33:42:2F:A7:BF:33:95:76:32:DD:CA:FB:3F:41:8C:19:F2:D8:E1:70:0E:3D"]
       }
     }]
