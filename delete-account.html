@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Account - SnapChef</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .logo span { color: #f97316; }
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 32px;
+            font-size: 14px;
+        }
+        h1 {
+            font-size: 22px;
+            margin-bottom: 16px;
+            color: #f1f5f9;
+        }
+        p {
+            color: #94a3b8;
+            line-height: 1.7;
+            margin-bottom: 16px;
+            font-size: 15px;
+        }
+        .warning {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 10px;
+            padding: 16px;
+            margin: 24px 0;
+        }
+        .warning h3 {
+            color: #f87171;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        .warning ul {
+            list-style: none;
+            padding: 0;
+        }
+        .warning ul li {
+            color: #94a3b8;
+            font-size: 14px;
+            padding: 4px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        .warning ul li::before {
+            content: "•";
+            color: #f87171;
+            position: absolute;
+            left: 4px;
+        }
+        .steps {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        .steps h3 {
+            color: #f1f5f9;
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+        .step {
+            display: flex;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        .step-num {
+            background: #f97316;
+            color: #fff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .step-text {
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .contact {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .contact p { font-size: 14px; }
+        .contact a {
+            color: #f97316;
+            text-decoration: none;
+        }
+        .contact a:hover { text-decoration: underline; }
+        .btn-delete {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 24px;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .btn-delete:hover { background: #b91c1c; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">Snap<span>Chef</span></div>
+        <p class="subtitle">AI Recipe Generator</p>
+        
+        <h1>Delete Your Account</h1>
+        <p>We're sorry to see you go. If you'd like to delete your SnapChef account and all associated data, please follow the steps below.</p>
+        
+        <div class="warning">
+            <h3>What will be deleted:</h3>
+            <ul>
+                <li>Your account and profile information</li>
+                <li>Saved recipes and meal plans</li>
+                <li>Nutrition tracking history</li>
+                <li>All personal preferences and settings</li>
+            </ul>
+        </div>
+        
+        <p>This action is <strong style="color:#f87171;">permanent and cannot be undone</strong>. Once your account is deleted, all your data will be permanently removed from our servers within 30 days.</p>
+        
+        <div class="steps">
+            <h3>How to delete your account:</h3>
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-text">Open the SnapChef app and sign in to your account</div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-text">Go to Settings (tap the gear icon)</div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-text">Scroll down and tap "Delete Account"</div>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-text">Confirm your decision by tapping "Yes, Delete My Account"</div>
+            </div>
+        </div>
+        
+        <p>Alternatively, you can request account deletion by emailing us directly:</p>
+        
+        <a href="mailto:isayevmurad777@gmail.com?subject=SnapChef%20Account%20Deletion%20Request&body=Please%20delete%20my%20SnapChef%20account.%0A%0AEmail%20associated%20with%20account%3A%20%0A" class="btn-delete">
+            📧 Request Account Deletion via Email
+        </a>
+        
+        <div class="contact">
+            <p>Questions? Contact us at <a href="mailto:isayevmurad777@gmail.com">isayevmurad777@gmail.com</a></p>
+            <p style="margin-top: 8px;"><a href="/">← Back to SnapChef</a></p>
+        </div>
+    </div>
+</body>
+</html>
