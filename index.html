@@ -2636,6 +2636,184 @@
 
 
 
+        /* ===== MEAL SELECTOR MODAL ===== */
+        .meal-option-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #e8e8e8;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .meal-option-card:active { transform: scale(0.98); }
+        body.dark-mode .meal-option-card { background: #1e293b; border-color: #334155; }
+        .meal-option-icon { font-size: 28px; flex-shrink: 0; }
+        .meal-option-info { flex: 1; }
+        .meal-option-title { font-size: 15px; font-weight: 700; color: #1e293b; }
+        body.dark-mode .meal-option-title { color: #f1f5f9; }
+        .meal-option-desc { font-size: 12px; color: #64748b; margin-top: 2px; }
+        body.dark-mode .meal-option-desc { color: #94a3b8; }
+        .meal-option-arrow { font-size: 22px; color: #94a3b8; font-weight: 300; }
+
+        .meal-input-group { display: flex; flex-direction: column; gap: 12px; }
+        .meal-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            background: white;
+            color: #1e293b;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .meal-input:focus { border-color: var(--primary); outline: none; }
+        body.dark-mode .meal-input { background: #1e293b; border-color: #334155; color: #f1f5f9; }
+        .meal-textarea { resize: none; }
+        .meal-label { font-size: 14px; font-weight: 600; color: #475569; }
+        body.dark-mode .meal-label { color: #94a3b8; }
+
+        .meal-input-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+        .meal-input-btn:active { opacity: 0.85; }
+        .meal-input-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .calorie-slider-group { text-align: center; }
+        .calorie-display {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--secondary);
+            margin: 8px 0;
+        }
+        .calorie-slider {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #e2e8f0;
+            border-radius: 4px;
+            outline: none;
+        }
+        .calorie-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--secondary);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(45,106,79,0.3);
+        }
+        body.dark-mode .calorie-slider { background: #334155; }
+        .calorie-range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .meal-type-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+        .meal-chip {
+            padding: 8px 14px;
+            border-radius: 20px;
+            background: #f1f5f9;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .meal-chip.selected { background: #ecfdf5; border-color: var(--secondary); color: var(--secondary); }
+        body.dark-mode .meal-chip { background: #1e293b; color: #94a3b8; }
+        body.dark-mode .meal-chip.selected { background: #064e3b; border-color: var(--secondary); color: #6ee7b7; }
+
+        .meal-results { margin-top: 16px; }
+
+        .meal-suggestion-card {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #e8e8e8;
+            padding: 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .meal-suggestion-card:active { transform: scale(0.98); }
+        body.dark-mode .meal-suggestion-card { background: #1e293b; border-color: #334155; }
+        .meal-sug-name { font-size: 16px; font-weight: 700; color: #1e293b; }
+        body.dark-mode .meal-sug-name { color: #f1f5f9; }
+        .meal-sug-meta { font-size: 13px; color: #64748b; margin-top: 4px; }
+        body.dark-mode .meal-sug-meta { color: #94a3b8; }
+        .meal-sug-desc { font-size: 13px; color: #475569; margin-top: 8px; line-height: 1.4; }
+        body.dark-mode .meal-sug-desc { color: #94a3b8; }
+        .meal-sug-add {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 18px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .meal-selector-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            justify-content: center;
+        }
+        .meal-back-btn {
+            padding: 10px 20px;
+            background: #f1f5f9;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #475569;
+        }
+        body.dark-mode .meal-back-btn { background: #334155; color: #94a3b8; }
+
+        .meal-loading-spinner {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+            font-size: 14px;
+        }
+        .meal-loading-spinner::before {
+            content: '';
+            display: block;
+            width: 36px;
+            height: 36px;
+            border: 3px solid #e2e8f0;
+            border-top-color: var(--secondary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+
         /* ===== WELCOME EMPTY STATE ===== */
         .welcome-empty {
             padding: 16px 0;
@@ -4364,14 +4542,94 @@
 
     <!-- Meal Selector Modal -->
     <div class="premium-modal" id="mealSelectorModal">
-        <div class="premium-content">
-            <h3 class="premium-title">Select Recipe</h3>
-            <div id="recipeSelectorList" class="recipe-selector-list"></div>
-            <button class="main-btn" onclick="switchTab('recipe')" style="margin-top: 15px; background: var(--secondary);">
-                <span>➕</span>
-                <span>Create New Recipe</span>
-            </button>
-            <button class="premium-close" onclick="document.getElementById('mealSelectorModal').classList.remove('active')">Close</button>
+        <div class="premium-content" style="max-height: 85vh; overflow-y: auto;">
+            <h3 class="premium-title" id="mealSelectorTitle">Add Meal</h3>
+            
+            <!-- Main Options View -->
+            <div id="mealSelectorOptions">
+                <div class="meal-option-card" onclick="MealSelector.showSearchByName()">
+                    <div class="meal-option-icon">🔍</div>
+                    <div class="meal-option-info">
+                        <div class="meal-option-title">Search by Name</div>
+                        <div class="meal-option-desc">Type a dish name and get the full recipe</div>
+                    </div>
+                    <div class="meal-option-arrow">›</div>
+                </div>
+                <div class="meal-option-card" onclick="MealSelector.showSuggestByCalories()">
+                    <div class="meal-option-icon">🎯</div>
+                    <div class="meal-option-info">
+                        <div class="meal-option-title">Suggest by Calories</div>
+                        <div class="meal-option-desc">Get meal ideas that fit your calorie target</div>
+                    </div>
+                    <div class="meal-option-arrow">›</div>
+                </div>
+                <div class="meal-option-card" onclick="MealSelector.showCookWithIngredients()">
+                    <div class="meal-option-icon">🥕</div>
+                    <div class="meal-option-info">
+                        <div class="meal-option-title">Cook with Ingredients</div>
+                        <div class="meal-option-desc">Enter what you have, get a matching recipe</div>
+                    </div>
+                    <div class="meal-option-arrow">›</div>
+                </div>
+
+                <!-- Saved recipes section -->
+                <div id="savedRecipesSection" style="display:none; margin-top: 16px;">
+                    <div style="font-size:13px; font-weight:600; color:#64748b; margin-bottom:8px;">📚 From Your Recipes</div>
+                    <div id="recipeSelectorList" class="recipe-selector-list"></div>
+                </div>
+            </div>
+
+            <!-- Search by Name View -->
+            <div id="mealSearchView" style="display:none;">
+                <div class="meal-input-group">
+                    <input type="text" id="mealSearchInput" class="meal-input" placeholder="e.g. Chicken Plov, Caesar Salad..." autocomplete="off">
+                    <button class="meal-input-btn" onclick="MealSelector.searchByName()">
+                        <span>✨</span> Generate
+                    </button>
+                </div>
+                <div id="mealSearchResults" class="meal-results"></div>
+            </div>
+
+            <!-- Suggest by Calories View -->
+            <div id="mealCalorieView" style="display:none;">
+                <div class="meal-input-group">
+                    <div class="calorie-slider-group">
+                        <label class="meal-label">Target Calories</label>
+                        <div class="calorie-display" id="calorieDisplay">400 kcal</div>
+                        <input type="range" id="calorieSlider" class="calorie-slider" min="100" max="1200" step="50" value="400" oninput="document.getElementById('calorieDisplay').textContent = this.value + ' kcal'">
+                        <div class="calorie-range-labels">
+                            <span>100</span><span>Light</span><span>Medium</span><span>Heavy</span><span>1200</span>
+                        </div>
+                    </div>
+                    <div class="meal-type-chips" id="mealTypeChips">
+                        <span class="meal-chip selected" onclick="MealSelector.selectMealType(this)" data-type="any">🍽️ Any</span>
+                        <span class="meal-chip" onclick="MealSelector.selectMealType(this)" data-type="breakfast">🌅 Breakfast</span>
+                        <span class="meal-chip" onclick="MealSelector.selectMealType(this)" data-type="lunch">☀️ Lunch</span>
+                        <span class="meal-chip" onclick="MealSelector.selectMealType(this)" data-type="dinner">🌙 Dinner</span>
+                        <span class="meal-chip" onclick="MealSelector.selectMealType(this)" data-type="snack">🍎 Snack</span>
+                    </div>
+                    <button class="meal-input-btn" onclick="MealSelector.suggestByCalories()">
+                        <span>🎯</span> Suggest Meals
+                    </button>
+                </div>
+                <div id="mealCalorieResults" class="meal-results"></div>
+            </div>
+
+            <!-- Cook with Ingredients View -->
+            <div id="mealIngredientsView" style="display:none;">
+                <div class="meal-input-group">
+                    <textarea id="mealIngredientsInput" class="meal-input meal-textarea" placeholder="e.g. chicken, rice, tomatoes, onion..." rows="3"></textarea>
+                    <button class="meal-input-btn" onclick="MealSelector.cookWithIngredients()">
+                        <span>👨‍🍳</span> Find Recipe
+                    </button>
+                </div>
+                <div id="mealIngredientResults" class="meal-results"></div>
+            </div>
+
+            <div class="meal-selector-footer">
+                <button class="meal-back-btn" id="mealBackBtn" style="display:none;" onclick="MealSelector.goBack()">← Back</button>
+                <button class="premium-close" onclick="MealSelector.close()">Close</button>
+            </div>
         </div>
     </div>
 
@@ -5882,37 +6140,7 @@
             },
 
             openMealSelector: function(dayIndex, mealType) {
-                var modal = document.getElementById('mealSelectorModal');
-                if (!modal) return;
-                modal.dataset.dayIndex = dayIndex;
-                modal.dataset.mealType = mealType;
-                modal.classList.add('active');
-                this.renderRecipeSelector();
-            },
-
-            renderRecipeSelector: function() {
-                var list = document.getElementById('recipeSelectorList');
-                if (!list) return;
-
-                var recipes = recipeHistory.concat(favorites);
-
-                if (recipes.length === 0) {
-                    list.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title">' + t('noRecipes') + '</div></div>';
-                    return;
-                }
-
-                var html = '';
-                recipes.forEach(function(r, i) {
-                    var imgUrl = r.image || getRecipeImageURL(r.name, r.imageKeyword);
-                    html += '<div class="recipe-selector-item" onclick="MealPlanner.selectRecipe(' + i + ')">' +
-                        '<img class="recipe-selector-thumb" src="' + imgUrl + '" alt="" onerror="this.src=\'' + fallbackFoodImage + '\'">' +
-                        '<div class="recipe-info">' +
-                        '<div class="recipe-name">' + escapeHTML(r.name) + '</div>' +
-                        '<div class="recipe-meta">' + (r.calories || 0) + ' cal • ' + (r.prepTime || 30) + ' min</div>' +
-                        '</div></div>';
-                });
-
-                list.innerHTML = html;
+                MealSelector.open(dayIndex, mealType);
             },
 
             selectRecipe: function(index) {
@@ -5926,6 +6154,202 @@
                     this.addRecipeToDay(dayIndex, mealType, recipe);
                 }
                 modal.classList.remove('active');
+            }
+        };
+
+        // ========================================
+        // MEAL SELECTOR (Smart Add to Plan)
+        // ========================================
+        var MealSelector = {
+            dayIndex: 0,
+            mealType: 'dinner',
+            selectedMealType: 'any',
+
+            open: function(dayIndex, mealType) {
+                this.dayIndex = dayIndex;
+                this.mealType = mealType;
+                var modal = document.getElementById('mealSelectorModal');
+                modal.dataset.dayIndex = dayIndex;
+                modal.dataset.mealType = mealType;
+
+                // Reset to main view
+                this.goBack();
+
+                // Show saved recipes if any
+                var recipes = recipeHistory.concat(favorites);
+                var savedSection = document.getElementById('savedRecipesSection');
+                var list = document.getElementById('recipeSelectorList');
+                if (recipes.length > 0 && savedSection && list) {
+                    savedSection.style.display = 'block';
+                    var html = '';
+                    recipes.slice(0, 5).forEach(function(r, i) {
+                        var imgUrl = r.image || getRecipeImageURL(r.name, r.imageKeyword);
+                        html += '<div class="recipe-selector-item" onclick="MealPlanner.selectRecipe(' + i + ')">' +
+                            '<img class="recipe-selector-thumb" src="' + imgUrl + '" alt="" onerror="this.src=\'' + fallbackFoodImage + '\'">' +
+                            '<div class="recipe-info">' +
+                            '<div class="recipe-name">' + escapeHTML(r.name) + '</div>' +
+                            '<div class="recipe-meta">' + (r.calories || 0) + ' cal</div>' +
+                            '</div></div>';
+                    });
+                    list.innerHTML = html;
+                } else if (savedSection) {
+                    savedSection.style.display = 'none';
+                }
+
+                modal.classList.add('active');
+            },
+
+            close: function() {
+                document.getElementById('mealSelectorModal').classList.remove('active');
+            },
+
+            goBack: function() {
+                document.getElementById('mealSelectorOptions').style.display = 'block';
+                document.getElementById('mealSearchView').style.display = 'none';
+                document.getElementById('mealCalorieView').style.display = 'none';
+                document.getElementById('mealIngredientsView').style.display = 'none';
+                document.getElementById('mealBackBtn').style.display = 'none';
+                document.getElementById('mealSelectorTitle').textContent = 'Add Meal';
+            },
+
+            showView: function(viewId, title) {
+                document.getElementById('mealSelectorOptions').style.display = 'none';
+                document.getElementById('mealSearchView').style.display = 'none';
+                document.getElementById('mealCalorieView').style.display = 'none';
+                document.getElementById('mealIngredientsView').style.display = 'none';
+                document.getElementById(viewId).style.display = 'block';
+                document.getElementById('mealBackBtn').style.display = 'inline-block';
+                document.getElementById('mealSelectorTitle').textContent = title;
+            },
+
+            showSearchByName: function() {
+                this.showView('mealSearchView', '🔍 Search by Name');
+                setTimeout(function() { document.getElementById('mealSearchInput').focus(); }, 100);
+            },
+
+            showSuggestByCalories: function() {
+                this.showView('mealCalorieView', '🎯 Suggest by Calories');
+            },
+
+            showCookWithIngredients: function() {
+                this.showView('mealIngredientsView', '🥕 Cook with Ingredients');
+                setTimeout(function() { document.getElementById('mealIngredientsInput').focus(); }, 100);
+            },
+
+            selectMealType: function(el) {
+                document.querySelectorAll('#mealTypeChips .meal-chip').forEach(function(c) { c.classList.remove('selected'); });
+                el.classList.add('selected');
+                this.selectedMealType = el.dataset.type;
+            },
+
+            searchByName: async function() {
+                var name = document.getElementById('mealSearchInput').value.trim();
+                if (!name) { toast('Enter a dish name', '✏️'); return; }
+
+                var resultsEl = document.getElementById('mealSearchResults');
+                resultsEl.innerHTML = '<div class="meal-loading-spinner">Generating recipe...</div>';
+
+                try {
+                    var data = await callAI([{
+                        role: 'user',
+                        content: 'Generate a recipe for "' + name + '". Return ONLY JSON: {"name":"Dish Name","description":"Short description","calories":400,"protein":25,"carbs":40,"fat":15,"prepTime":30,"ingredients":["item1","item2"],"steps":["Step 1","Step 2"]}'
+                    }], { response_format: { type: "json_object" }, max_tokens: 800 });
+
+                    var recipe = JSON.parse(data.response);
+                    this.showRecipeResult(resultsEl, recipe);
+                } catch (e) {
+                    if (e.message === 'FREE_LIMIT') {
+                        resultsEl.innerHTML = '';
+                        return;
+                    }
+                    resultsEl.innerHTML = '<div style="text-align:center;color:#ef4444;padding:20px;">Could not generate recipe. Try again.</div>';
+                }
+            },
+
+            suggestByCalories: async function() {
+                var calories = document.getElementById('calorieSlider').value;
+                var mealType = this.selectedMealType;
+                var resultsEl = document.getElementById('mealCalorieResults');
+                resultsEl.innerHTML = '<div class="meal-loading-spinner">Finding meals...</div>';
+
+                try {
+                    var prompt = 'Suggest 3 meals' + (mealType !== 'any' ? ' for ' + mealType : '') + ' around ' + calories + ' calories each. Return ONLY JSON array: [{"name":"Dish","description":"Brief desc","calories":' + calories + ',"protein":20,"carbs":30,"fat":15,"prepTime":25,"ingredients":["item1"],"steps":["Step 1"]}]';
+
+                    var data = await callAI([{
+                        role: 'user',
+                        content: prompt
+                    }], { response_format: { type: "json_object" }, max_tokens: 1200 });
+
+                    var response = data.response.trim();
+                    var match = response.match(/\[.*\]/s);
+                    var meals = match ? JSON.parse(match[0]) : JSON.parse(response);
+                    if (!Array.isArray(meals)) meals = meals.meals || meals.suggestions || [meals];
+
+                    var html = '';
+                    var self = this;
+                    meals.forEach(function(meal, i) {
+                        html += '<div class="meal-suggestion-card">' +
+                            '<div class="meal-sug-name">' + escapeHTML(meal.name) + '</div>' +
+                            '<div class="meal-sug-meta">🔥 ' + meal.calories + ' cal • 🥩 ' + (meal.protein || '?') + 'g protein • ⏱️ ' + (meal.prepTime || 30) + ' min</div>' +
+                            '<div class="meal-sug-desc">' + escapeHTML(meal.description || '') + '</div>' +
+                            '<button class="meal-sug-add" onclick="MealSelector.addMeal(' + i + ')">📅 Add to Plan</button>' +
+                            '</div>';
+                    });
+                    resultsEl.innerHTML = html;
+                    this._lastSuggestions = meals;
+                } catch (e) {
+                    if (e.message === 'FREE_LIMIT') {
+                        resultsEl.innerHTML = '';
+                        return;
+                    }
+                    resultsEl.innerHTML = '<div style="text-align:center;color:#ef4444;padding:20px;">Could not suggest meals. Try again.</div>';
+                }
+            },
+
+            cookWithIngredients: async function() {
+                var ingredients = document.getElementById('mealIngredientsInput').value.trim();
+                if (!ingredients) { toast('Enter your ingredients', '✏️'); return; }
+
+                var resultsEl = document.getElementById('mealIngredientResults');
+                resultsEl.innerHTML = '<div class="meal-loading-spinner">Creating recipe...</div>';
+
+                try {
+                    var data = await callAI([{
+                        role: 'user',
+                        content: 'Create a recipe using these ingredients: ' + ingredients + '. Return ONLY JSON: {"name":"Dish Name","description":"Short description","calories":400,"protein":25,"carbs":40,"fat":15,"prepTime":30,"ingredients":["item1","item2"],"steps":["Step 1","Step 2"]}'
+                    }], { response_format: { type: "json_object" }, max_tokens: 800 });
+
+                    var recipe = JSON.parse(data.response);
+                    this.showRecipeResult(resultsEl, recipe);
+                } catch (e) {
+                    if (e.message === 'FREE_LIMIT') {
+                        resultsEl.innerHTML = '';
+                        return;
+                    }
+                    resultsEl.innerHTML = '<div style="text-align:center;color:#ef4444;padding:20px;">Could not generate recipe. Try again.</div>';
+                }
+            },
+
+            showRecipeResult: function(container, recipe) {
+                container.innerHTML = '<div class="meal-suggestion-card">' +
+                    '<div class="meal-sug-name">' + escapeHTML(recipe.name) + '</div>' +
+                    '<div class="meal-sug-meta">🔥 ' + recipe.calories + ' cal • 🥩 ' + (recipe.protein || '?') + 'g protein • ⏱️ ' + (recipe.prepTime || 30) + ' min</div>' +
+                    '<div class="meal-sug-desc">' + escapeHTML(recipe.description || '') + '</div>' +
+                    '<button class="meal-sug-add" onclick="MealSelector.addGeneratedMeal()">📅 Add to Plan</button>' +
+                    '</div>';
+                this._lastGenerated = recipe;
+            },
+
+            addGeneratedMeal: function() {
+                if (!this._lastGenerated) return;
+                MealPlanner.addRecipeToDay(this.dayIndex, this.mealType, this._lastGenerated);
+                this.close();
+            },
+
+            addMeal: function(index) {
+                if (!this._lastSuggestions || !this._lastSuggestions[index]) return;
+                MealPlanner.addRecipeToDay(this.dayIndex, this.mealType, this._lastSuggestions[index]);
+                this.close();
             }
         };
 
