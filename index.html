@@ -2635,6 +2635,113 @@
         }
 
 
+
+        /* ===== WELCOME EMPTY STATE ===== */
+        .welcome-empty {
+            padding: 16px 0;
+        }
+        .welcome-tips {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .tip-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #f0f0f0;
+            transition: all 0.2s;
+        }
+        body.dark-mode .tip-card {
+            background: var(--card-dark);
+            border-color: #333;
+        }
+        .tip-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        .tip-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+        }
+        body.dark-mode .tip-text { color: #94a3b8; }
+
+        /* ===== SKELETON LOADING ===== */
+        .skeleton-container {
+            padding: 16px;
+        }
+        .skeleton-line {
+            height: 14px;
+            background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+            background-size: 200% 100%;
+            animation: skeletonShimmer 1.5s ease-in-out infinite;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        .skeleton-line.short { width: 60%; }
+        .skeleton-line.medium { width: 80%; }
+        .skeleton-line.long { width: 95%; }
+        .skeleton-title {
+            height: 22px;
+            width: 50%;
+            background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+            background-size: 200% 100%;
+            animation: skeletonShimmer 1.5s ease-in-out infinite;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        .skeleton-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 12px;
+            border: 1px solid #f0f0f0;
+        }
+        body.dark-mode .skeleton-card { background: var(--card-dark); border-color: #333; }
+        body.dark-mode .skeleton-line, body.dark-mode .skeleton-title {
+            background: linear-gradient(90deg, #334155 25%, #475569 50%, #334155 75%);
+            background-size: 200% 100%;
+            animation: skeletonShimmer 1.5s ease-in-out infinite;
+        }
+        @keyframes skeletonShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* ===== PREMIUM UPSELL BANNER ===== */
+        .limit-banner {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 16px;
+        }
+        .limit-banner-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .limit-banner-desc {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 14px;
+        }
+        .limit-banner-btn {
+            background: white;
+            color: #6366f1;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
         /* ===== FLOATING GENERATE BUTTON ===== */
         .floating-generate {
             position: sticky;
@@ -4406,6 +4513,24 @@
                     <div class="history-list" id="historyList"></div>
                 </div>
 
+                <!-- Empty State Welcome -->
+                <div class="welcome-empty" id="welcomeEmpty">
+                    <div class="welcome-tips">
+                        <div class="tip-card">
+                            <span class="tip-icon">📸</span>
+                            <span class="tip-text">Scan ingredients with camera</span>
+                        </div>
+                        <div class="tip-card">
+                            <span class="tip-icon">✍️</span>
+                            <span class="tip-text">Type ingredients manually</span>
+                        </div>
+                        <div class="tip-card">
+                            <span class="tip-icon">🔗</span>
+                            <span class="tip-text">Import from YouTube / TikTok</span>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Upload Section -->
                 <div class="upload-section" role="region" aria-label="Upload ingredients">
                     <span class="upload-icon">📸</span>
@@ -5946,14 +6071,17 @@
         function renderHistory() {
             var list = document.getElementById('historyList');
             var section = document.getElementById('historySection');
+            var welcomeEl = document.getElementById('welcomeEmpty');
             if (!list) return;
 
             if (!recipeHistory.length) {
                 section.style.display = 'none';
+                if (welcomeEl) welcomeEl.style.display = 'block';
                 return;
             }
 
             section.style.display = 'block';
+            if (welcomeEl) welcomeEl.style.display = 'none';
             var html = '';
             recipeHistory.slice(0, 3).forEach(function(r, i) {
                 var date = new Date(r.date).toLocaleDateString();
@@ -6186,7 +6314,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             var data = await response.json();
             if (!response.ok) {
                 if (data.error === 'free_limit_exceeded' || data.error === 'Free limit reached') {
-                    toast('Daily limit reached. Try again tomorrow!', '⏰');
+                    showLimitBanner();
                     throw new Error('FREE_LIMIT');
                 }
                 throw new Error(data.error || 'API Error');
@@ -6969,6 +7097,10 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                         setTimeout(function() {
                             detectedBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }, 300);
+                        // Auto-generate recipe after ingredients detected
+                        setTimeout(function() {
+                            generateRecipe();
+                        }, 1000);
                     }
 
                     // Auto-analyze food after detection (skip manual button press)
@@ -7952,6 +8084,15 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 '<div class="spinner"></div>' +
                 '<div class="loading-steps">';
             
+            // Add skeleton preview below loading steps
+            var skeletonHtml = '<div class="skeleton-container">' +
+                '<div class="skeleton-card">' +
+                '<div class="skeleton-title"></div>' +
+                '<div class="skeleton-line long"></div>' +
+                '<div class="skeleton-line medium"></div>' +
+                '<div class="skeleton-line short"></div>' +
+                '</div></div>';
+            
             steps.forEach(function(step, i) {
                 html += '<div class="loading-step' + (i === 0 ? ' active' : '') + '" id="loadStep' + i + '">' +
                     '<div class="loading-step-icon">' + (i === 0 ? '⏳' : '○') + '</div>' +
@@ -7959,6 +8100,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             });
 
             html += '</div></div>';
+            html += skeletonHtml;
             container.innerHTML = html;
             container.classList.add('show');
 
@@ -7984,6 +8126,25 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             }, 2500);
 
             return interval;
+        }
+
+        // ========================================
+        // PREMIUM UPSELL BANNER ON LIMIT
+        // ========================================
+        function showLimitBanner() {
+            toast('Daily limit reached!', '⏰');
+            
+            // Show premium banner in active tab results
+            var activeTab = document.querySelector('.tab-content[style*="block"]') || document.getElementById('recipeTab');
+            var resultsEl = activeTab ? activeTab.querySelector('.results') : null;
+            if (resultsEl) {
+                resultsEl.innerHTML = '<div class="limit-banner">' +
+                    '<div class="limit-banner-title">👑 Daily Limit Reached</div>' +
+                    '<div class="limit-banner-desc">Upgrade to Premium for unlimited recipes, meal plans, and more!</div>' +
+                    '<button class="limit-banner-btn" onclick="openPremiumModal()">Go Premium</button>' +
+                    '</div>';
+                resultsEl.classList.add('show');
+            }
         }
 
         // ========================================
