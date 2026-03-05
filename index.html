@@ -4550,31 +4550,31 @@
                 <div class="meal-option-card" onclick="MealSelector.showSearchByName()">
                     <div class="meal-option-icon">🔍</div>
                     <div class="meal-option-info">
-                        <div class="meal-option-title">Search by Name</div>
-                        <div class="meal-option-desc">Type a dish name and get the full recipe</div>
+                        <div class="meal-option-title" data-i18n="searchByName">Search by Name</div>
+                        <div class="meal-option-desc" data-i18n="searchByNameDesc">Type a dish name and get the full recipe</div>
                     </div>
                     <div class="meal-option-arrow">›</div>
                 </div>
                 <div class="meal-option-card" onclick="MealSelector.showSuggestByCalories()">
                     <div class="meal-option-icon">🎯</div>
                     <div class="meal-option-info">
-                        <div class="meal-option-title">Suggest by Calories</div>
-                        <div class="meal-option-desc">Get meal ideas that fit your calorie target</div>
+                        <div class="meal-option-title" data-i18n="suggestByCalories">Suggest by Calories</div>
+                        <div class="meal-option-desc" data-i18n="suggestByCaloriesDesc">Get meal ideas that fit your calorie target</div>
                     </div>
                     <div class="meal-option-arrow">›</div>
                 </div>
                 <div class="meal-option-card" onclick="MealSelector.showCookWithIngredients()">
                     <div class="meal-option-icon">🥕</div>
                     <div class="meal-option-info">
-                        <div class="meal-option-title">Cook with Ingredients</div>
-                        <div class="meal-option-desc">Enter what you have, get a matching recipe</div>
+                        <div class="meal-option-title" data-i18n="cookWithIngredients">Cook with Ingredients</div>
+                        <div class="meal-option-desc" data-i18n="cookWithIngredientsDesc">Enter what you have, get a matching recipe</div>
                     </div>
                     <div class="meal-option-arrow">›</div>
                 </div>
 
                 <!-- Saved recipes section -->
                 <div id="savedRecipesSection" style="display:none; margin-top: 16px;">
-                    <div style="font-size:13px; font-weight:600; color:#64748b; margin-bottom:8px;">📚 From Your Recipes</div>
+                    <div style="font-size:13px; font-weight:600; color:#64748b; margin-bottom:8px;" data-i18n="fromYourRecipes">📚 From Your Recipes</div>
                     <div id="recipeSelectorList" class="recipe-selector-list"></div>
                 </div>
             </div>
@@ -4594,9 +4594,9 @@
             <div id="mealCalorieView" style="display:none;">
                 <div class="meal-input-group">
                     <div class="calorie-slider-group">
-                        <label class="meal-label">Target Calories</label>
-                        <div class="calorie-display" id="calorieDisplay">400 kcal</div>
-                        <input type="range" id="calorieSlider" class="calorie-slider" min="100" max="1200" step="50" value="400" oninput="document.getElementById('calorieDisplay').textContent = this.value + ' kcal'">
+                        <label class="meal-label" data-i18n="targetCalories">Target Calories</label>
+                        <div class="calorie-display" id="mealCalorieDisplay">400 kcal</div>
+                        <input type="range" id="mealCalorieSlider" class="calorie-slider" min="100" max="1200" step="50" value="400" oninput="document.getElementById('mealCalorieDisplay').textContent = this.value + ' kcal'">
                         <div class="calorie-range-labels">
                             <span>100</span><span>Light</span><span>Medium</span><span>Heavy</span><span>1200</span>
                         </div>
@@ -4627,8 +4627,8 @@
             </div>
 
             <div class="meal-selector-footer">
-                <button class="meal-back-btn" id="mealBackBtn" style="display:none;" onclick="MealSelector.goBack()">← Back</button>
-                <button class="premium-close" onclick="MealSelector.close()">Close</button>
+                <button class="meal-back-btn" id="mealBackBtn" style="display:none;" onclick="MealSelector.goBack()" data-i18n="back">← Back</button>
+                <button class="premium-close" onclick="MealSelector.close()" data-i18n="close">Close</button>
             </div>
         </div>
     </div>
@@ -5123,27 +5123,27 @@
 <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
         <button class="nav-item active" onclick="switchTab('recipe')" data-tab="recipe" type="button">
             <span class="nav-icon">🍳</span>
-            <span class="nav-label">Recipe</span>
+            <span class="nav-label" data-i18n="recipe">Recipe</span>
         </button>
         <button class="nav-item" onclick="switchTab('analyze')" data-tab="analyze" type="button">
             <span class="nav-icon">🔍</span>
-            <span class="nav-label">Analyze</span>
+            <span class="nav-label" data-i18n="analyze">Analyze</span>
         </button>
         <button class="nav-item" onclick="switchTab('health')" data-tab="health" type="button">
             <span class="nav-icon">💪</span>
-            <span class="nav-label">Health</span>
+            <span class="nav-label" data-i18n="health">Health</span>
         </button>
         <button class="nav-item" onclick="switchTab('mealplan')" data-tab="mealplan" type="button">
             <span class="nav-icon">📅</span>
-            <span class="nav-label">Plan</span>
+            <span class="nav-label" data-i18n="plan">Plan</span>
         </button>
         <button class="nav-item" onclick="switchTab('favorites')" data-tab="favorites" type="button">
             <span class="nav-icon">❤️</span>
-            <span class="nav-label">Saved</span>
+            <span class="nav-label" data-i18n="saved">Saved</span>
         </button>
         <button class="nav-item" onclick="switchTab('settings')" data-tab="settings" type="button">
             <span class="nav-icon">⚙️</span>
-            <span class="nav-label">Settings</span>
+            <span class="nav-label" data-i18n="settings">Settings</span>
         </button>
     </nav>
 
@@ -5243,7 +5243,95 @@
                 lunch: "Lunch",
                 dinner: "Dinner",
                 wantToCook: "Want to cook something specific?",
-                cook: "Cook!"
+                cook: "Cook!",
+                health: "Health",
+                plan: "Plan",
+                healthGoalTitle: "Your Health Goal",
+                healthGoalDesc: "Set your daily nutrition target",
+                whatsYourGoal: "🎯 What's your goal?",
+                loseWeight: "Lose Weight",
+                cutCalories: "Cut calories",
+                maintain: "Maintain",
+                keepCurrent: "Keep current",
+                bulkUp: "Bulk Up",
+                buildMuscle: "Build muscle",
+                eatHealthy: "Eat Healthy",
+                balancedDiet: "Balanced diet",
+                dailyCalTarget: "🔥 Daily calorie target",
+                dietPref: "🍽️ Diet preference (optional)",
+                dailyWaterGoal: "💧 Daily water goal (glasses)",
+                dietBalanced: "⚖️ Balanced",
+                dietLowCarb: "🥩 Low Carb",
+                dietHighProtein: "💪 High Protein",
+                dietVegetarian: "🌿 Vegetarian",
+                dietMediterranean: "🫒 Mediterranean",
+                dietVegan: "🥬 Vegan",
+                save: "Save",
+                cancel: "Cancel",
+                notifications: "Notifications",
+                signOut: "Sign Out",
+                darkModeDescShort: "Switch between light and dark theme",
+                monday: "Monday", tuesday: "Tuesday", wednesday: "Wednesday",
+                thursday: "Thursday", friday: "Friday", saturday: "Saturday", sunday: "Sunday",
+                todaysGoal: "Today's Goal",
+                edit: "Edit",
+                dailyHealthScore: "Daily health score",
+                daysStreak: "days",
+                calories: "Calories",
+                protein: "Protein",
+                carbs: "Carbs",
+                fat: "Fat",
+                waterTracker: "Water Tracker",
+                glasses: "glasses",
+                todaysMeals: "Today's Meals",
+                addMeal: "Add Meal",
+                noMealsYet: "No meals logged yet",
+                tips: "Tips",
+                setHealthGoal: "Set Your Health Goal",
+                setHealthGoalDesc: "Set your daily calorie, macro, and water targets to start eating healthy",
+                getStartedBtn: "Get Started",
+                scoreExcellent: "Excellent work! 🎉",
+                scoreGood: "Good progress 👏",
+                scoreOnTrack: "On the right track 💪",
+                scoreNeedsAttention: "Needs more attention",
+                scoreStartLogging: "Start logging your meals!",
+                goalLoss: "⬇️ Weight Loss",
+                goalMaintain: "⚖️ Maintain",
+                goalGain: "💪 Muscle Gain",
+                goalHealthy: "🥗 Healthy Eating",
+                addMealTitle: "Add Meal",
+                searchByName: "Search by Name",
+                searchByNameDesc: "Type a dish name and get the full recipe",
+                suggestByCalories: "Suggest by Calories",
+                suggestByCaloriesDesc: "Get meal ideas that fit your calorie target",
+                cookWithIngredients: "Cook with Ingredients",
+                cookWithIngredientsDesc: "Enter what you have, get a matching recipe",
+                fromYourRecipes: "From Your Recipes",
+                targetCalories: "Target Calories",
+                any: "Any",
+                snack: "Snack",
+                generate: "Generate",
+                suggestMeals: "Suggest Meals",
+                findRecipe: "Find Recipe",
+                addToPlan: "Add to Plan",
+                back: "Back",
+                close: "Close",
+                searchPlaceholder: "e.g. Chicken Plov, Caesar Salad...",
+                ingredientsPlaceholderMeal: "e.g. chicken, rice, tomatoes, onion...",
+                generatingRecipe: "Generating recipe...",
+                findingMeals: "Finding meals...",
+                creatingRecipe: "Creating recipe...",
+                tipNoMeals: "No meals logged yet today. Start by adding breakfast!",
+                tipLowProtein: "Protein is low. Add eggs, chicken, or fish to your meals.",
+                tipNearLimit: "Near calorie limit but few meals eaten. Try smaller portions.",
+                tipDrinkWater: "Don't forget to drink water!",
+                tipExceeded: "You've exceeded your daily calorie target. Be more mindful tomorrow.",
+                tipGreat: "You're doing great! Keep up the balanced nutrition.",
+                tipWeightLoss: "For weight loss, choose high-fiber foods: vegetables, fruits, whole grains.",
+                tipMuscleGain: "For muscle gain, balance protein and carbs in every meal.",
+                shoppingList: "Shopping List",
+                clearAll: "Clear All",
+                aiMealPrep: "AI Meal Prep"
             },
             az: {
                 onboard1Title: "İnqredientləri Skan Et",
@@ -5320,7 +5408,95 @@
                 lunch: "Günorta yeməyi",
                 dinner: "Axşam yeməyi",
                 wantToCook: "Konkret bir yemək bişirmək istəyirsiniz?",
-                cook: "Bişir!"
+                cook: "Bişir!",
+                health: "Sağlamlıq",
+                plan: "Plan",
+                healthGoalTitle: "Sağlamlıq Hədəfiniz",
+                healthGoalDesc: "Gündəlik qida hədəfinizi təyin edin",
+                whatsYourGoal: "🎯 Hədəfiniz nədir?",
+                loseWeight: "Arıqlamaq",
+                cutCalories: "Kalori azalt",
+                maintain: "Saxlamaq",
+                keepCurrent: "Mövcud çəkini saxla",
+                bulkUp: "Kütlə yığmaq",
+                buildMuscle: "Əzələ qurmaq",
+                eatHealthy: "Sağlam Qidalanmaq",
+                balancedDiet: "Balanslaşdırılmış pəhriz",
+                dailyCalTarget: "🔥 Gündəlik kalori hədəfi",
+                dietPref: "🍽️ Pəhriz seçimi (könüllü)",
+                dailyWaterGoal: "💧 Gündəlik su hədəfi (stəkan)",
+                dietBalanced: "⚖️ Balanslaşdırılmış",
+                dietLowCarb: "🥩 Az Karbohidrat",
+                dietHighProtein: "💪 Yüksək Protein",
+                dietVegetarian: "🌿 Vegetarian",
+                dietMediterranean: "🫒 Aralıq dənizi",
+                dietVegan: "🥬 Vegan",
+                save: "Saxla",
+                cancel: "Ləğv et",
+                notifications: "Bildirişlər",
+                signOut: "Çıxış",
+                darkModeDescShort: "Açıq və qaranlıq tema arasında keçid",
+                monday: "Bazar ertəsi", tuesday: "Çərşənbə axşamı", wednesday: "Çərşənbə",
+                thursday: "Cümə axşamı", friday: "Cümə", saturday: "Şənbə", sunday: "Bazar",
+                todaysGoal: "Bugünkü Hədəf",
+                edit: "Redaktə",
+                dailyHealthScore: "Gündəlik sağlamlıq balı",
+                daysStreak: "gün",
+                calories: "Kalori",
+                protein: "Protein",
+                carbs: "Karbohidrat",
+                fat: "Yağ",
+                waterTracker: "Su İzləyici",
+                glasses: "stəkan",
+                todaysMeals: "Bugünkü Yeməklər",
+                addMeal: "Yemək Əlavə Et",
+                noMealsYet: "Hələ yemək qeyd olunmayıb",
+                tips: "Məsləhətlər",
+                setHealthGoal: "Sağlamlıq Hədəfinizi Təyin Edin",
+                setHealthGoalDesc: "Sağlam qidalanmaq üçün gündəlik kalori, makro və su hədəflərinizi təyin edin",
+                getStartedBtn: "Başla",
+                scoreExcellent: "Əla iş! 🎉",
+                scoreGood: "Yaxşı irəliləyiş 👏",
+                scoreOnTrack: "Doğru yoldasan 💪",
+                scoreNeedsAttention: "Daha çox diqqət lazımdır",
+                scoreStartLogging: "Yeməklərinizi qeyd etməyə başlayın!",
+                goalLoss: "⬇️ Arıqlama",
+                goalMaintain: "⚖️ Saxlama",
+                goalGain: "💪 Kütlə Yığma",
+                goalHealthy: "🥗 Sağlam Qidalanma",
+                addMealTitle: "Yemək Əlavə Et",
+                searchByName: "Ada Görə Axtar",
+                searchByNameDesc: "Yemək adı yazın və tam resepti alın",
+                suggestByCalories: "Kaloriyə Görə Təklif",
+                suggestByCaloriesDesc: "Kalori hədəfinizə uyğun yemək fikirləri alın",
+                cookWithIngredients: "İnqredientlərlə Bişir",
+                cookWithIngredientsDesc: "Əlinizdəkiləri daxil edin, uyğun resept alın",
+                fromYourRecipes: "Reseptlərinizdən",
+                targetCalories: "Hədəf Kalori",
+                any: "Hamısı",
+                snack: "Qəlyanaltı",
+                generate: "Yarat",
+                suggestMeals: "Yemək Təklif Et",
+                findRecipe: "Resept Tap",
+                addToPlan: "Plana Əlavə Et",
+                back: "Geri",
+                close: "Bağla",
+                searchPlaceholder: "məs. Toyuq Plovü, Sezar Salatı...",
+                ingredientsPlaceholderMeal: "məs. toyuq, düyü, pomidor, soğan...",
+                generatingRecipe: "Resept yaradılır...",
+                findingMeals: "Yeməklər axtarılır...",
+                creatingRecipe: "Resept hazırlanır...",
+                tipNoMeals: "Bu gün hələ yemək qeyd olunmayıb. Səhər yeməyi ilə başlayın!",
+                tipLowProtein: "Protein azdır. Yeməklərinizə yumurta, toyuq və ya balıq əlavə edin.",
+                tipNearLimit: "Kalori limitinə yaxınsınız amma az yemək yemişsiniz. Kiçik porsiyalar sınayın.",
+                tipDrinkWater: "Su içməyi unutmayın!",
+                tipExceeded: "Gündəlik kalori hədəfinizi keçmisiniz. Sabah daha diqqətli olun.",
+                tipGreat: "Əla gedirsən! Balanslaşdırılmış qidanı davam etdir.",
+                tipWeightLoss: "Arıqlamaq üçün lifli qidalar seçin: tərəvəz, meyvə, tam taxıl.",
+                tipMuscleGain: "Əzələ artımı üçün hər yeməkdə protein və karbohidrat balansını qoruyun.",
+                shoppingList: "Alış-veriş Siyahısı",
+                clearAll: "Hamısını Sil",
+                aiMealPrep: "AI Yemək Hazırlığı"
             },
             ru: {
                 onboard1Title: "Сканировать ингредиенты",
@@ -5397,7 +5573,95 @@
                 lunch: "Обед",
                 dinner: "Ужин",
                 wantToCook: "Хотите приготовить что-то конкретное?",
-                cook: "Готовить!"
+                cook: "Готовить!",
+                health: "Здоровье",
+                plan: "План",
+                healthGoalTitle: "Ваша цель здоровья",
+                healthGoalDesc: "Установите ежедневную цель по питанию",
+                whatsYourGoal: "🎯 Какая ваша цель?",
+                loseWeight: "Похудеть",
+                cutCalories: "Сократить калории",
+                maintain: "Поддерживать",
+                keepCurrent: "Сохранить текущий вес",
+                bulkUp: "Набрать массу",
+                buildMuscle: "Нарастить мышцы",
+                eatHealthy: "Здоровое питание",
+                balancedDiet: "Сбалансированная диета",
+                dailyCalTarget: "🔥 Дневная цель калорий",
+                dietPref: "🍽️ Предпочтения по диете (необязательно)",
+                dailyWaterGoal: "💧 Дневная цель воды (стаканов)",
+                dietBalanced: "⚖️ Сбалансированная",
+                dietLowCarb: "🥩 Низкоуглеводная",
+                dietHighProtein: "💪 Высокобелковая",
+                dietVegetarian: "🌿 Вегетарианская",
+                dietMediterranean: "🫒 Средиземноморская",
+                dietVegan: "🥬 Веганская",
+                save: "Сохранить",
+                cancel: "Отмена",
+                notifications: "Уведомления",
+                signOut: "Выйти",
+                darkModeDescShort: "Переключение между светлой и темной темой",
+                monday: "Понедельник", tuesday: "Вторник", wednesday: "Среда",
+                thursday: "Четверг", friday: "Пятница", saturday: "Суббота", sunday: "Воскресенье",
+                todaysGoal: "Цель на сегодня",
+                edit: "Изменить",
+                dailyHealthScore: "Дневной показатель здоровья",
+                daysStreak: "дней",
+                calories: "Калории",
+                protein: "Белки",
+                carbs: "Углеводы",
+                fat: "Жиры",
+                waterTracker: "Учет воды",
+                glasses: "стаканов",
+                todaysMeals: "Сегодняшние приемы пищи",
+                addMeal: "Добавить прием пищи",
+                noMealsYet: "Пока нет записей о еде",
+                tips: "Советы",
+                setHealthGoal: "Установите цель здоровья",
+                setHealthGoalDesc: "Установите дневные цели по калориям, макронутриентам и воде для здорового питания",
+                getStartedBtn: "Начать",
+                scoreExcellent: "Отличная работа! 🎉",
+                scoreGood: "Хороший прогресс 👏",
+                scoreOnTrack: "На верном пути 💪",
+                scoreNeedsAttention: "Требуется больше внимания",
+                scoreStartLogging: "Начните записывать приемы пищи!",
+                goalLoss: "⬇️ Похудение",
+                goalMaintain: "⚖️ Поддержание",
+                goalGain: "💪 Набор массы",
+                goalHealthy: "🥗 Здоровое питание",
+                addMealTitle: "Добавить прием пищи",
+                searchByName: "Поиск по названию",
+                searchByNameDesc: "Введите название блюда и получите полный рецепт",
+                suggestByCalories: "Подбор по калориям",
+                suggestByCaloriesDesc: "Получите идеи блюд под вашу цель калорий",
+                cookWithIngredients: "Готовить из ингредиентов",
+                cookWithIngredientsDesc: "Введите что у вас есть, получите подходящий рецепт",
+                fromYourRecipes: "Из ваших рецептов",
+                targetCalories: "Целевые калории",
+                any: "Любой",
+                snack: "Перекус",
+                generate: "Создать",
+                suggestMeals: "Предложить блюда",
+                findRecipe: "Найти рецепт",
+                addToPlan: "Добавить в план",
+                back: "Назад",
+                close: "Закрыть",
+                searchPlaceholder: "напр. Плов с курицей, Салат Цезарь...",
+                ingredientsPlaceholderMeal: "напр. курица, рис, помидоры, лук...",
+                generatingRecipe: "Создание рецепта...",
+                findingMeals: "Поиск блюд...",
+                creatingRecipe: "Создание рецепта...",
+                tipNoMeals: "Сегодня еще нет записей. Начните с завтрака!",
+                tipLowProtein: "Мало белка. Добавьте яйца, курицу или рыбу в рацион.",
+                tipNearLimit: "Близко к лимиту калорий, но мало приемов пищи. Попробуйте меньшие порции.",
+                tipDrinkWater: "Не забывайте пить воду!",
+                tipExceeded: "Вы превысили дневную цель по калориям. Будьте внимательнее завтра.",
+                tipGreat: "Отлично! Продолжайте сбалансированное питание.",
+                tipWeightLoss: "Для похудения выбирайте продукты с клетчаткой: овощи, фрукты, цельное зерно.",
+                tipMuscleGain: "Для набора мышц балансируйте белки и углеводы в каждом приеме пищи.",
+                shoppingList: "Список покупок",
+                clearAll: "Очистить все",
+                aiMealPrep: "ИИ план питания"
             }
         };
 
@@ -6092,7 +6356,7 @@
                 var container = document.getElementById('mealPlanContainer');
                 if (!container) return;
 
-                var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                var days = [t('monday'), t('tuesday'), t('wednesday'), t('thursday'), t('friday'), t('saturday'), t('sunday')];
                 var self = this;
 
                 var html = '';
@@ -6209,7 +6473,7 @@
                 document.getElementById('mealCalorieView').style.display = 'none';
                 document.getElementById('mealIngredientsView').style.display = 'none';
                 document.getElementById('mealBackBtn').style.display = 'none';
-                document.getElementById('mealSelectorTitle').textContent = 'Add Meal';
+                document.getElementById('mealSelectorTitle').textContent = t('addMealTitle');
             },
 
             showView: function(viewId, title) {
@@ -6223,16 +6487,16 @@
             },
 
             showSearchByName: function() {
-                this.showView('mealSearchView', '🔍 Search by Name');
+                this.showView('mealSearchView', '🔍 ' + t('searchByName'));
                 setTimeout(function() { document.getElementById('mealSearchInput').focus(); }, 100);
             },
 
             showSuggestByCalories: function() {
-                this.showView('mealCalorieView', '🎯 Suggest by Calories');
+                this.showView('mealCalorieView', '🎯 ' + t('suggestByCalories'));
             },
 
             showCookWithIngredients: function() {
-                this.showView('mealIngredientsView', '🥕 Cook with Ingredients');
+                this.showView('mealIngredientsView', '🥕 ' + t('cookWithIngredients'));
                 setTimeout(function() { document.getElementById('mealIngredientsInput').focus(); }, 100);
             },
 
@@ -6247,7 +6511,7 @@
                 if (!name) { toast('Enter a dish name', '✏️'); return; }
 
                 var resultsEl = document.getElementById('mealSearchResults');
-                resultsEl.innerHTML = '<div class="meal-loading-spinner">Generating recipe...</div>';
+                resultsEl.innerHTML = '<div class="meal-loading-spinner">' + t('generatingRecipe') + '</div>';
 
                 try {
                     var data = await callAI([{
@@ -6267,10 +6531,10 @@
             },
 
             suggestByCalories: async function() {
-                var calories = document.getElementById('calorieSlider').value;
+                var calories = document.getElementById('mealCalorieSlider').value;
                 var mealType = this.selectedMealType;
                 var resultsEl = document.getElementById('mealCalorieResults');
-                resultsEl.innerHTML = '<div class="meal-loading-spinner">Finding meals...</div>';
+                resultsEl.innerHTML = '<div class="meal-loading-spinner">' + t('findingMeals') + '</div>';
 
                 try {
                     var prompt = 'Suggest 3 meals' + (mealType !== 'any' ? ' for ' + mealType : '') + ' around ' + calories + ' calories each. Return ONLY JSON array: [{"name":"Dish","description":"Brief desc","calories":' + calories + ',"protein":20,"carbs":30,"fat":15,"prepTime":25,"ingredients":["item1"],"steps":["Step 1"]}]';
@@ -6292,7 +6556,7 @@
                             '<div class="meal-sug-name">' + escapeHTML(meal.name) + '</div>' +
                             '<div class="meal-sug-meta">🔥 ' + meal.calories + ' cal • 🥩 ' + (meal.protein || '?') + 'g protein • ⏱️ ' + (meal.prepTime || 30) + ' min</div>' +
                             '<div class="meal-sug-desc">' + escapeHTML(meal.description || '') + '</div>' +
-                            '<button class="meal-sug-add" onclick="MealSelector.addMeal(' + i + ')">📅 Add to Plan</button>' +
+                            '<button class="meal-sug-add" onclick="MealSelector.addMeal(' + i + ')">📅 ' + t('addToPlan') + '</button>' +
                             '</div>';
                     });
                     resultsEl.innerHTML = html;
@@ -6311,7 +6575,7 @@
                 if (!ingredients) { toast('Enter your ingredients', '✏️'); return; }
 
                 var resultsEl = document.getElementById('mealIngredientResults');
-                resultsEl.innerHTML = '<div class="meal-loading-spinner">Creating recipe...</div>';
+                resultsEl.innerHTML = '<div class="meal-loading-spinner">' + t('creatingRecipe') + '</div>';
 
                 try {
                     var data = await callAI([{
@@ -6335,7 +6599,7 @@
                     '<div class="meal-sug-name">' + escapeHTML(recipe.name) + '</div>' +
                     '<div class="meal-sug-meta">🔥 ' + recipe.calories + ' cal • 🥩 ' + (recipe.protein || '?') + 'g protein • ⏱️ ' + (recipe.prepTime || 30) + ' min</div>' +
                     '<div class="meal-sug-desc">' + escapeHTML(recipe.description || '') + '</div>' +
-                    '<button class="meal-sug-add" onclick="MealSelector.addGeneratedMeal()">📅 Add to Plan</button>' +
+                    '<button class="meal-sug-add" onclick="MealSelector.addGeneratedMeal()">📅 ' + t('addToPlan') + '</button>' +
                     '</div>';
                 this._lastGenerated = recipe;
             },
@@ -8067,15 +8331,15 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             },
 
             getScoreMessage: function(score) {
-                if (score >= 85) return 'Excellent work! 🎉';
-                if (score >= 70) return 'Good progress 👏';
-                if (score >= 50) return 'On the right track 💪';
-                if (score >= 30) return 'Needs more attention';
-                return 'Start logging your meals!';
+                if (score >= 85) return t('scoreExcellent');
+                if (score >= 70) return t('scoreGood');
+                if (score >= 50) return t('scoreOnTrack');
+                if (score >= 30) return t('scoreNeedsAttention');
+                return t('scoreStartLogging');
             },
 
             getGoalLabel: function(goal) {
-                var labels = { loss: '⬇️ Weight Loss', maintain: '⚖️ Maintain', gain: '💪 Muscle Gain', healthy: '🥗 Healthy Eating' };
+                var labels = { loss: t('goalLoss'), maintain: t('goalMaintain'), gain: t('goalGain'), healthy: t('goalHealthy') };
                 return labels[goal] || '🥗 Healthy';
             },
 
@@ -8085,8 +8349,8 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             getDietLabel: function(diet) {
                 var labels = {
-                    balanced: '⚖️ Balanced', lowcarb: '🥩 Low Carb', highprotein: '💪 High Protein',
-                    vegetarian: '🌿 Vegetarian', mediterranean: '🫒 Mediterranean', vegan: '🥬 Vegan'
+                    balanced: t('dietBalanced'), lowcarb: t('dietLowCarb'), highprotein: t('dietHighProtein'),
+                    vegetarian: t('dietVegetarian'), mediterranean: t('dietMediterranean'), vegan: t('dietVegan')
                 };
                 return labels[diet] || diet;
             },
@@ -8098,28 +8362,28 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 var cal = this.profile ? this.profile.calories : 2000;
 
                 if (log.calories === 0) {
-                    tips.push({ icon: '🍳', text: 'No meals logged yet today. Start by adding breakfast!' });
+                    tips.push({ icon: '🍳', text: t('tipNoMeals') });
                 }
                 if (log.protein < macros.protein * 0.5 && log.calories > cal * 0.3) {
-                    tips.push({ icon: '🥚', text: 'Protein is low. Add eggs, chicken, or fish to your meals.' });
+                    tips.push({ icon: '🥚', text: t('tipLowProtein') });
                 }
                 if (log.calories > cal * 0.9 && log.meals.length < 3) {
-                    tips.push({ icon: '⚠️', text: 'Near calorie limit but few meals eaten. Try smaller portions.' });
+                    tips.push({ icon: '⚠️', text: t('tipNearLimit') });
                 }
                 if (log.water < 4) {
-                    tips.push({ icon: '💧', text: 'Don\'t forget to drink water! Your goal is ' + (this.profile ? this.profile.waterTarget : 8) + ' glasses.' });
+                    tips.push({ icon: '💧', text: t('tipDrinkWater') + ' ' + (this.profile ? this.profile.waterTarget : 8) + ' ' + t('glasses') + '.' });
                 }
                 if (log.calories > cal * 1.2) {
-                    tips.push({ icon: '🔴', text: 'You\'ve exceeded your daily calorie target. Be more mindful tomorrow.' });
+                    tips.push({ icon: '🔴', text: t('tipExceeded') });
                 }
                 if (tips.length === 0) {
-                    tips.push({ icon: '✨', text: 'You\'re doing great! Keep up the balanced nutrition.' });
+                    tips.push({ icon: '✨', text: t('tipGreat') });
                 }
 
                 // Add goal-specific tip
                 var goal = this.profile ? this.profile.goal : 'healthy';
-                if (goal === 'loss') tips.push({ icon: '🥗', text: 'For weight loss, choose high-fiber foods: vegetables, fruits, whole grains.' });
-                if (goal === 'gain') tips.push({ icon: '🍚', text: 'For muscle gain, balance protein and carbs in every meal.' });
+                if (goal === 'loss') tips.push({ icon: '🥗', text: t('tipWeightLoss') });
+                if (goal === 'gain') tips.push({ icon: '🍚', text: t('tipMuscleGain') });
 
                 return tips.slice(0, 3);
             },
@@ -8143,9 +8407,9 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 if (!this.profile) {
                     container.innerHTML = '<div class="health-no-profile">' +
                         '<div class="health-no-profile-icon">🎯</div>' +
-                        '<div class="health-no-profile-title">Set Your Health Goal</div>' +
-                        '<div class="health-no-profile-desc">Set your daily calorie, macro, and water targets to start eating healthy</div>' +
-                        '<button class="health-setup-btn" onclick="HealthTarget.openProfile()">🚀 Get Started</button>' +
+                        '<div class="health-no-profile-title">' + t('setHealthGoal') + '</div>' +
+                        '<div class="health-no-profile-desc">' + t('setHealthGoalDesc') + '</div>' +
+                        '<button class="health-setup-btn" onclick="HealthTarget.openProfile()">🚀 ' + t('getStartedBtn') + '</button>' +
                         '</div>';
                     return;
                 }
@@ -8167,8 +8431,8 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
                 // Header
                 html += '<div class="health-dash-header">' +
-                    '<div class="health-dash-title">🎯 Today\'s Goal</div>' +
-                    '<button class="health-edit-btn" onclick="HealthTarget.openProfile()">✏️ Edit</button>' +
+                    '<div class="health-dash-title">🎯 ' + t('todaysGoal') + '</div>' +
+                    '<button class="health-edit-btn" onclick="HealthTarget.openProfile()">✏️ ' + t('edit') + '</button>' +
                     '</div>';
 
                 // Goal badge + diet
@@ -8184,9 +8448,9 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                     '<div class="daily-score-circle" style="background:' + this.getScoreColor(score) + ';">' + score + '</div>' +
                     '<div class="daily-score-info">' +
                     '<div class="daily-score-title">' + this.getScoreMessage(score) + '</div>' +
-                    '<div class="daily-score-desc">Daily health score</div>' +
+                    '<div class="daily-score-desc">' + t('dailyHealthScore') + '</div>' +
                     '</div>' +
-                    '<div class="daily-score-streak">🔥 ' + streak + ' days</div>' +
+                    '<div class="daily-score-streak">🔥 ' + streak + ' ' + t('daysStreak') + '</div>' +
                     '</div>';
 
                 // Progress Rings
@@ -8195,29 +8459,29 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 html += '<div class="ring-item">' +
                     this.buildRingSVG(calPct, calPct > 110 ? '#DC3545' : '#6366f1') +
                     '<div class="ring-value">' + log.calories + '</div>' +
-                    '<div class="ring-label">Calories /' + cal + '</div></div>';
+                    '<div class="ring-label">' + t('calories') + ' /' + cal + '</div></div>';
                 // Protein
                 html += '<div class="ring-item">' +
                     this.buildRingSVG(protPct, '#f59e0b') +
                     '<div class="ring-value">' + log.protein + 'g</div>' +
-                    '<div class="ring-label">Protein /' + macros.protein + 'g</div></div>';
+                    '<div class="ring-label">' + t('protein') + ' /' + macros.protein + 'g</div></div>';
                 // Carbs
                 html += '<div class="ring-item">' +
                     this.buildRingSVG(carbPct, '#3b82f6') +
                     '<div class="ring-value">' + log.carbs + 'g</div>' +
-                    '<div class="ring-label">Carbs /' + macros.carbs + 'g</div></div>';
+                    '<div class="ring-label">' + t('carbs') + ' /' + macros.carbs + 'g</div></div>';
                 // Fat
                 html += '<div class="ring-item">' +
                     this.buildRingSVG(fatPct, '#2D6A4F') +
                     '<div class="ring-value">' + log.fat + 'g</div>' +
-                    '<div class="ring-label">Fat /' + macros.fat + 'g</div></div>';
+                    '<div class="ring-label">' + t('fat') + ' /' + macros.fat + 'g</div></div>';
                 html += '</div>';
 
                 // Water Tracker
                 html += '<div class="health-water-section">' +
                     '<div class="water-header">' +
-                    '<div class="water-title">💧 Water Tracker</div>' +
-                    '<div class="water-count">' + log.water + '/' + waterTarget + ' glasses</div>' +
+                    '<div class="water-title">💧 ' + t('waterTracker') + '</div>' +
+                    '<div class="water-count">' + log.water + '/' + waterTarget + ' ' + t('glasses') + '</div>' +
                     '</div><div class="water-glasses">';
                 for (var i = 0; i < waterTarget; i++) {
                     html += '<div class="water-glass' + (i < log.water ? ' filled' : '') + '" onclick="HealthTarget.toggleWater(' + i + ')">' +
@@ -8228,8 +8492,8 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 // Quick Meal Logging
                 html += '<div class="health-water-section" style="margin-bottom:14px;">' +
                     '<div class="water-header">' +
-                    '<div class="water-title">🍽️ Today\'s Meals (' + log.meals.length + ')</div>' +
-                    '<button class="health-edit-btn" onclick="HealthTarget.openMealLogger()">+ Add Meal</button>' +
+                    '<div class="water-title">🍽️ ' + t('todaysMeals') + ' (' + log.meals.length + ')</div>' +
+                    '<button class="health-edit-btn" onclick="HealthTarget.openMealLogger()">+ ' + t('addMeal') + '</button>' +
                     '</div>';
                 if (log.meals.length > 0) {
                     log.meals.forEach(function(meal, idx) {
@@ -8243,13 +8507,13 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                             '</div>';
                     });
                 } else {
-                    html += '<div style="text-align:center;padding:16px;color:#64748b;font-size:13px;">No meals logged yet</div>';
+                    html += '<div style="text-align:center;padding:16px;color:#64748b;font-size:13px;">' + t('noMealsYet') + '</div>';
                 }
                 html += '</div>';
 
                 // Tips
                 html += '<div class="health-tips">' +
-                    '<div style="font-weight:600;font-size:13px;margin-bottom:8px;color:var(--text-light);">💡 Tips</div>';
+                    '<div style="font-weight:600;font-size:13px;margin-bottom:8px;color:var(--text-light);">💡 ' + t('tips') + '</div>';
                 tips.forEach(function(tip) {
                     html += '<div class="health-tip"><span class="tip-icon">' + tip.icon + '</span><span>' + tip.text + '</span></div>';
                 });
@@ -9135,38 +9399,38 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
         <div class="api-guide-content" style="max-width: 420px;">
             <div style="text-align: center; margin-bottom: 15px;">
                 <div style="font-size: 50px;">🎯</div>
-                <h2 class="premium-title" style="margin-top: 10px;">Your Health Goal</h2>
-                <p style="color: var(--text-muted); font-size: 13px;">Set your daily nutrition target</p>
+                <h2 class="premium-title" style="margin-top: 10px;" data-i18n="healthGoalTitle">Your Health Goal</h2>
+                <p style="color: var(--text-muted); font-size: 13px;" data-i18n="healthGoalDesc">Set your daily nutrition target</p>
             </div>
 
             <div class="profile-field">
-                <label>🎯 What's your goal?</label>
+                <label data-i18n="whatsYourGoal">🎯 What's your goal?</label>
                 <div class="goal-options" id="goalOptions">
                     <div class="goal-option" data-goal="loss" onclick="HealthTarget.selectGoal('loss')">
                         <div class="goal-option-icon">⬇️</div>
-                        <div class="goal-option-name">Lose Weight</div>
-                        <div class="goal-option-desc">Cut calories</div>
+                        <div class="goal-option-name" data-i18n="loseWeight">Lose Weight</div>
+                        <div class="goal-option-desc" data-i18n="cutCalories">Cut calories</div>
                     </div>
                     <div class="goal-option" data-goal="maintain" onclick="HealthTarget.selectGoal('maintain')">
                         <div class="goal-option-icon">⚖️</div>
-                        <div class="goal-option-name">Maintain</div>
-                        <div class="goal-option-desc">Keep current</div>
+                        <div class="goal-option-name" data-i18n="maintain">Maintain</div>
+                        <div class="goal-option-desc" data-i18n="keepCurrent">Keep current</div>
                     </div>
                     <div class="goal-option" data-goal="gain" onclick="HealthTarget.selectGoal('gain')">
                         <div class="goal-option-icon">💪</div>
-                        <div class="goal-option-name">Bulk Up</div>
-                        <div class="goal-option-desc">Build muscle</div>
+                        <div class="goal-option-name" data-i18n="bulkUp">Bulk Up</div>
+                        <div class="goal-option-desc" data-i18n="buildMuscle">Build muscle</div>
                     </div>
                     <div class="goal-option" data-goal="healthy" onclick="HealthTarget.selectGoal('healthy')">
                         <div class="goal-option-icon">🥗</div>
-                        <div class="goal-option-name">Eat Healthy</div>
-                        <div class="goal-option-desc">Balanced diet</div>
+                        <div class="goal-option-name" data-i18n="eatHealthy">Eat Healthy</div>
+                        <div class="goal-option-desc" data-i18n="balancedDiet">Balanced diet</div>
                     </div>
                 </div>
             </div>
 
             <div class="profile-field">
-                <label>🔥 Daily calorie target</label>
+                <label data-i18n="dailyCalTarget">🔥 Daily calorie target</label>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <input type="range" id="calorieSlider" min="1200" max="3500" value="2000" step="50" style="flex:1;" oninput="document.getElementById('calorieDisplay').textContent=this.value">
                     <span id="calorieDisplay" style="font-weight:700; font-size:18px; color:var(--primary); min-width:55px; text-align:center;">2000</span>
@@ -9175,19 +9439,19 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             </div>
 
             <div class="profile-field">
-                <label>🍽️ Diet preference (optional)</label>
+                <label data-i18n="dietPref">🍽️ Diet preference (optional)</label>
                 <div class="diet-chips" id="dietChips">
-                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="balanced">⚖️ Balanced</div>
-                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="lowcarb">🥩 Low Carb</div>
-                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="highprotein">💪 High Protein</div>
-                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="vegetarian">🌿 Vegetarian</div>
-                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="mediterranean">🫒 Mediterranean</div>
-                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="vegan">🥬 Vegan</div>
+                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="balanced" data-i18n="dietBalanced">⚖️ Balanced</div>
+                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="lowcarb" data-i18n="dietLowCarb">🥩 Low Carb</div>
+                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="highprotein" data-i18n="dietHighProtein">💪 High Protein</div>
+                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="vegetarian" data-i18n="dietVegetarian">🌿 Vegetarian</div>
+                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="mediterranean" data-i18n="dietMediterranean">🫒 Mediterranean</div>
+                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="vegan" data-i18n="dietVegan">🥬 Vegan</div>
                 </div>
             </div>
 
             <div class="profile-field">
-                <label>💧 Daily water goal (glasses)</label>
+                <label data-i18n="dailyWaterGoal">💧 Daily water goal (glasses)</label>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <input type="range" id="waterSlider" min="4" max="15" value="8" step="1" style="flex:1;" oninput="document.getElementById('waterDisplay').textContent=this.value">
                     <span id="waterDisplay" style="font-weight:700; font-size:18px; color:#3b82f6; min-width:30px; text-align:center;">8</span>
