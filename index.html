@@ -3907,7 +3907,7 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
             border-color: var(--border-dark);
         }
-        .in-app-notif.show { top: 20px; }
+        .in-app-notif.show { top: calc(20px + env(safe-area-inset-top)); }
         .in-app-notif-icon { font-size: 28px; flex-shrink: 0; }
         .in-app-notif-body { flex: 1; }
         .in-app-notif-title {
@@ -5062,7 +5062,7 @@
                             <div style="font-size: 12px; color: var(--text-muted);">SnapChef User</div>
                         </div>
                     </div>
-                    <button class="clear-key-btn" onclick="signOut()" style="width: 100%; padding: 8px;">🚪 Sign Out</button>
+                    <button class="clear-key-btn" onclick="signOut()" style="width: 100%; padding: 8px;">🚪 <span data-i18n="signOut">Sign Out</span></button>
                 </section>
                 <input type="hidden" id="apiKey" value="BACKEND">
 
@@ -5080,7 +5080,7 @@
                 <!-- Notifications -->
                 <div class="settings-item" id="notifSettingsPanel">
                     <div style="font-weight: 600; color: var(--text-light); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                        🔔 Notifications
+                        🔔 <span data-i18n="notifications">Notifications</span>
                     </div>
                     <div id="notifPermissionArea"></div>
                     <div id="notifToggles"></div>
@@ -5331,7 +5331,36 @@
                 tipMuscleGain: "For muscle gain, balance protein and carbs in every meal.",
                 shoppingList: "Shopping List",
                 clearAll: "Clear All",
-                aiMealPrep: "AI Meal Prep"
+                aiMealPrep: "AI Meal Prep",
+                welcomeNotif: "Welcome! Scan ingredients or search recipes to get started.",
+                waterReminders: "Water Reminders",
+                waterRemindDesc: "Remind every {min} min to drink water",
+                mealReminders: "Meal Reminders",
+                dailySummary: "Daily Summary",
+                dailySummaryDesc: "Evening recap at {time} with your health score",
+                healthTips: "Health Tips",
+                healthTipsDesc: "Smart nutrition tips every {h}h based on your goals",
+                enableNotifications: "Enable Notifications",
+                enableNotifDesc: "Get reminders for water, meals, and daily health tips",
+                allowNotifications: "Allow Notifications",
+                notifBlocked: "Notifications Blocked",
+                notifBlockedDesc: "Enable in your browser settings to receive reminders",
+                notifActive: "Notifications active",
+                testNotification: "Test Notification",
+                testNotifTitle: "Test Notification",
+                testNotifMsg: "Notifications are working! You'll receive reminders for water, meals, and health tips.",
+                timeToHydrate: "Time to hydrate! 💧",
+                waterBreak: "Water break! 💧",
+                stayHydrated: "Stay hydrated! 💧",
+                drinkSomeWater: "Drink some water!",
+                moreGlasses: "more glasses to go. Keep going!",
+                toGo: "to go",
+                breakfastTip: "A healthy breakfast boosts your energy for the day!",
+                lunchTip: "Time for a balanced lunch to keep you going!",
+                dinnerTip: "Keep dinner light and nutritious!",
+                time: "time",
+                viewHealth: "View Health",
+                open: "Open"
             },
             az: {
                 onboard1Title: "İnqredientləri Skan Et",
@@ -5496,7 +5525,53 @@
                 tipMuscleGain: "Əzələ artımı üçün hər yeməkdə protein və karbohidrat balansını qoruyun.",
                 shoppingList: "Alış-veriş Siyahısı",
                 clearAll: "Hamısını Sil",
-                aiMealPrep: "AI Yemək Hazırlığı"
+                aiMealPrep: "AI Yemək Hazırlığı",
+                welcomeNotif: "Xoş gəldiniz! İnqredientləri skan edin və ya resept axtarın.",
+                waterReminders: "Su Xatırlatmaları",
+                waterRemindDesc: "Hər {min} dəqiqədən bir su içməyi xatırlat",
+                mealReminders: "Yemək Xatırlatmaları",
+                dailySummary: "Gündəlik Xülasə",
+                dailySummaryDesc: "Saat {time}-da sağlamlıq balınızla axşam xülasəsi",
+                healthTips: "Sağlamlıq Məsləhətləri",
+                healthTipsDesc: "Hədəflərinizə əsasən hər {h} saatda ağıllı qida məsləhətləri",
+                enableNotifications: "Bildirişləri Aktiv Et",
+                enableNotifDesc: "Su, yemək və gündəlik sağlamlıq məsləhətləri üçün xatırlatmalar alın",
+                allowNotifications: "Bildirişlərə İcazə Ver",
+                notifBlocked: "Bildirişlər Bloklanıb",
+                notifBlockedDesc: "Xatırlatmalar almaq üçün brauzer parametrlərindən aktiv edin",
+                notifActive: "Bildirişlər aktivdir",
+                testNotification: "Test Bildirişi",
+                testNotifTitle: "Test Bildirişi",
+                testNotifMsg: "Bildirişlər işləyir! Su, yemək və sağlamlıq məsləhətləri üçün xatırlatmalar alacaqsınız.",
+                timeToHydrate: "Su içmə vaxtı! 💧",
+                waterBreak: "Su fasiləsi! 💧",
+                stayHydrated: "Susuz qalmayın! 💧",
+                drinkSomeWater: "Su için!",
+                moreGlasses: "stəkan daha lazımdır. Davam edin!",
+                toGo: "qalıb",
+                breakfastTip: "Sağlam səhər yeməyi gün boyu enerji verir!",
+                lunchTip: "Balanslaşdırılmış günorta yeməyi vaxtıdır!",
+                dinnerTip: "Axşam yeməyini yüngül və qidalandırıcı saxlayın!",
+                time: "vaxtı",
+                viewHealth: "Sağlamlığa Bax",
+                open: "Aç",
+                errApiKeyTitle: "API Açar Tapılmadı",
+                errApiKeyDesc: "Resept yaratmaq üçün API açar lazımdır.",
+                errApiKeyAction: "API Açar Daxil Et",
+                errNetworkTitle: "İnternet Bağlantısı Yoxdur",
+                errNetworkDesc: "Bu funksiya internet bağlantısı tələb edir.",
+                errRetry: "Yenidən Cəhd Et",
+                errApiTitle: "API Xətası",
+                errApiDesc: "Qoşulmaq mümkün olmadı. Yenidən cəhd edin.",
+                errCheckApi: "Parametrləri Yoxla",
+                errRateTitle: "Çox Sayda Sorğu",
+                errRateDesc: "Gözləyin və yenidən cəhd edin.",
+                errGoPremium: "Premium Al",
+                errImageTitle: "Şəkil Lazımdır",
+                errImageDesc: "Yeməyin şəklini çəkin və ya yükləyin.",
+                errAnalysisTitle: "Təhlil Uğursuz Oldu",
+                errAnalysisDesc: "Yeməyi tanımaq mümkün olmadı. Daha aydın şəkil çəkin.",
+                errTryAgain: "Yenidən Cəhd Et"
             },
             ru: {
                 onboard1Title: "Сканировать ингредиенты",
@@ -5661,7 +5736,53 @@
                 tipMuscleGain: "Для набора мышц балансируйте белки и углеводы в каждом приеме пищи.",
                 shoppingList: "Список покупок",
                 clearAll: "Очистить все",
-                aiMealPrep: "ИИ план питания"
+                aiMealPrep: "ИИ план питания",
+                welcomeNotif: "Добро пожаловать! Сканируйте ингредиенты или ищите рецепты.",
+                waterReminders: "Напоминания о воде",
+                waterRemindDesc: "Напоминать пить воду каждые {min} мин",
+                mealReminders: "Напоминания о еде",
+                dailySummary: "Дневной итог",
+                dailySummaryDesc: "Вечерний отчет в {time} с вашим показателем здоровья",
+                healthTips: "Советы по здоровью",
+                healthTipsDesc: "Умные советы по питанию каждые {h}ч на основе ваших целей",
+                enableNotifications: "Включить уведомления",
+                enableNotifDesc: "Получайте напоминания о воде, еде и ежедневные советы по здоровью",
+                allowNotifications: "Разрешить уведомления",
+                notifBlocked: "Уведомления заблокированы",
+                notifBlockedDesc: "Включите в настройках браузера для получения напоминаний",
+                notifActive: "Уведомления активны",
+                testNotification: "Тест уведомления",
+                testNotifTitle: "Тест уведомления",
+                testNotifMsg: "Уведомления работают! Вы будете получать напоминания о воде, еде и советы по здоровью.",
+                timeToHydrate: "Время пить воду! 💧",
+                waterBreak: "Перерыв на воду! 💧",
+                stayHydrated: "Не забывайте о воде! 💧",
+                drinkSomeWater: "Выпейте воды!",
+                moreGlasses: "стаканов осталось. Продолжайте!",
+                toGo: "осталось",
+                breakfastTip: "Здоровый завтрак заряжает энергией на весь день!",
+                lunchTip: "Время сбалансированного обеда!",
+                dinnerTip: "Ужин должен быть легким и питательным!",
+                time: "время",
+                viewHealth: "Здоровье",
+                open: "Открыть",
+                errApiKeyTitle: "API ключ не найден",
+                errApiKeyDesc: "Для создания рецептов требуется API ключ.",
+                errApiKeyAction: "Ввести API ключ",
+                errNetworkTitle: "Нет подключения к интернету",
+                errNetworkDesc: "Эта функция требует подключения к интернету.",
+                errRetry: "Повторить",
+                errApiTitle: "Ошибка API",
+                errApiDesc: "Не удалось подключиться. Попробуйте снова.",
+                errCheckApi: "Проверить настройки",
+                errRateTitle: "Слишком много запросов",
+                errRateDesc: "Подождите и попробуйте снова.",
+                errGoPremium: "Премиум",
+                errImageTitle: "Нужно фото",
+                errImageDesc: "Сделайте или загрузите фото еды.",
+                errAnalysisTitle: "Анализ не удался",
+                errAnalysisDesc: "Не удалось определить еду. Попробуйте более четкое фото.",
+                errTryAgain: "Попробовать снова"
             }
         };
 
@@ -8868,44 +8989,44 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             var errors = {
                 'api_key': {
                     icon: '🔑',
-                    title: 'API Key Not Found',
-                    desc: 'An OpenAI API key is required to generate recipes. Enter it in Settings.',
-                    action: 'Enter API Key',
+                    title: t('errApiKeyTitle') || 'API Key Not Found',
+                    desc: t('errApiKeyDesc') || 'An OpenAI API key is required.',
+                    action: t('errApiKeyAction') || 'Enter API Key',
                     handler: 'showApiGuide()'
                 },
                 'network': {
                     icon: '📡',
-                    title: 'No Internet Connection',
-                    desc: 'This feature requires an internet connection. Please check your network.',
-                    action: 'Retry',
+                    title: t('errNetworkTitle') || 'No Internet Connection',
+                    desc: t('errNetworkDesc') || 'This feature requires an internet connection.',
+                    action: t('errRetry') || 'Retry',
                     handler: 'updateOnlineStatus()'
                 },
                 'api_error': {
                     icon: '⚠️',
-                    title: 'API Error',
-                    desc: 'Could not connect to OpenAI. Make sure your API key is valid.',
-                    action: 'Check API Key',
+                    title: t('errApiTitle') || 'API Error',
+                    desc: t('errApiDesc') || 'Could not connect. Please try again.',
+                    action: t('errCheckApi') || 'Check Settings',
                     handler: 'switchTab("settings")'
                 },
                 'rate_limit': {
                     icon: '⏰',
-                    title: 'Too Many Requests',
-                    desc: 'Please wait and try again. If daily limit is reached, upgrade to Premium.',
-                    action: 'Go Premium',
+                    title: t('errRateTitle') || 'Too Many Requests',
+                    desc: t('errRateDesc') || 'Please wait and try again.',
+                    action: t('errGoPremium') || 'Go Premium',
                     handler: 'openPremiumModal()'
                 },
                 'image_required': {
                     icon: '📸',
-                    title: 'Image Required',
-                    desc: 'Take or upload a photo of the food to analyze it.',
+                    title: t('errImageTitle') || 'Image Required',
+                    desc: t('errImageDesc') || 'Take or upload a photo of the food.',
                     action: null,
                     handler: null
                 },
                 'analysis_failed': {
                     icon: '❌',
-                    title: 'Analysis Failed',
-                    desc: 'Could not identify the food. Try taking a clearer photo.',
-                    action: 'Try Again',
+                    title: t('errAnalysisTitle') || 'Analysis Failed',
+                    desc: t('errAnalysisDesc') || 'Could not identify the food. Try a clearer photo.',
+                    action: t('errTryAgain') || 'Try Again',
                     handler: 'removeImage("analyze")'
                 }
             };
@@ -8961,6 +9082,16 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 this.settings = JSON.parse(localStorage.getItem('snapchef_notif_settings') || 'null') || JSON.parse(JSON.stringify(this.DEFAULTS));
                 this.renderSettingsPanel();
                 this.startScheduler();
+
+                // Show welcome notification on first visit
+                var welcomed = localStorage.getItem('snapchef_notif_welcomed');
+                if (!welcomed) {
+                    var self = this;
+                    setTimeout(function() {
+                        self.sendNotification('🍳', 'SnapChef', t('welcomeNotif') || 'Welcome! Scan ingredients or search recipes to get started.', 'switchTab("recipe")');
+                        localStorage.setItem('snapchef_notif_welcomed', '1');
+                    }, 3000);
+                }
             },
 
             save: function() {
@@ -9002,22 +9133,22 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 if (perm === 'default') {
                     permArea.innerHTML = '<div class="notif-permission-banner">' +
                         '<div style="font-size:24px;margin-bottom:6px;">🔔</div>' +
-                        '<div style="font-weight:700;font-size:14px;color:#92400e;">Enable Notifications</div>' +
-                        '<div style="font-size:12px;color:#a16207;margin-top:4px;">Get reminders for water, meals, and daily health tips</div>' +
-                        '<button class="notif-permission-btn" onclick="NotifSystem.requestPermission()">Allow Notifications</button>' +
+                        '<div style="font-weight:700;font-size:14px;color:#92400e;">' + t('enableNotifications') + '</div>' +
+                        '<div style="font-size:12px;color:#a16207;margin-top:4px;">' + t('enableNotifDesc') + '</div>' +
+                        '<button class="notif-permission-btn" onclick="NotifSystem.requestPermission()">' + t('allowNotifications') + '</button>' +
                         '</div>';
                 } else if (perm === 'denied') {
                     permArea.innerHTML = '<div class="notif-permission-banner" style="background:linear-gradient(135deg,#fee2e2,#fecaca);border-color:#fca5a5;">' +
                         '<div style="font-size:24px;margin-bottom:6px;">🚫</div>' +
-                        '<div style="font-weight:700;font-size:14px;color:#991b1b;">Notifications Blocked</div>' +
-                        '<div style="font-size:12px;color:#b91c1c;margin-top:4px;">Enable in your browser settings to receive reminders</div>' +
+                        '<div style="font-weight:700;font-size:14px;color:#991b1b;">' + t('notifBlocked') + '</div>' +
+                        '<div style="font-size:12px;color:#b91c1c;margin-top:4px;">' + t('notifBlockedDesc') + '</div>' +
                         '</div>';
                 } else if (perm === 'unsupported') {
                     permArea.innerHTML = '<div style="text-align:center;padding:10px;color:#64748b;font-size:12px;">Browser notifications not supported. In-app reminders will still work.</div>';
                 } else {
                     permArea.innerHTML = '<div style="display:flex;align-items:center;gap:8px;padding:8px 0;margin-bottom:8px;">' +
                         '<div style="width:8px;height:8px;border-radius:50%;background:#22c55e;"></div>' +
-                        '<div style="font-size:12px;color:#22c55e;font-weight:600;">Notifications active</div></div>';
+                        '<div style="font-size:12px;color:#22c55e;font-weight:600;">' + t('notifActive') + '</div></div>';
                 }
 
                 // Toggle rows
@@ -9028,8 +9159,8 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 html += '<div class="notif-toggle-row">' +
                     '<div class="notif-toggle-info">' +
                     '<div class="notif-toggle-icon" style="background:#dbeafe;">💧</div>' +
-                    '<div><div class="notif-toggle-text">Water Reminders</div>' +
-                    '<div class="notif-toggle-desc">Remind every ' + s.water.interval + ' min to drink water</div>' +
+                    '<div><div class="notif-toggle-text">' + t('waterReminders') + '</div>' +
+                    '<div class="notif-toggle-desc">' + t('waterRemindDesc').replace('{min}', s.water.interval) + '</div>' +
                     '<div class="notif-time-picker">' +
                     '<div class="notif-time-btn' + (s.water.interval === 30 ? ' selected' : '') + '" onclick="NotifSystem.setWaterInterval(30)">30m</div>' +
                     '<div class="notif-time-btn' + (s.water.interval === 60 ? ' selected' : '') + '" onclick="NotifSystem.setWaterInterval(60)">1h</div>' +
@@ -9043,8 +9174,8 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 html += '<div class="notif-toggle-row">' +
                     '<div class="notif-toggle-info">' +
                     '<div class="notif-toggle-icon" style="background:#fef3c7;">🍽️</div>' +
-                    '<div><div class="notif-toggle-text">Meal Reminders</div>' +
-                    '<div class="notif-toggle-desc">Breakfast ' + s.meals.times[0] + ' · Lunch ' + s.meals.times[1] + ' · Dinner ' + s.meals.times[2] + '</div>' +
+                    '<div><div class="notif-toggle-text">' + t('mealReminders') + '</div>' +
+                    '<div class="notif-toggle-desc">' + t('breakfast') + ' ' + s.meals.times[0] + ' · ' + t('lunch') + ' ' + s.meals.times[1] + ' · ' + t('dinner') + ' ' + s.meals.times[2] + '</div>' +
                     '</div></div>' +
                     '<label class="notif-switch"><input type="checkbox" ' + (s.meals.enabled ? 'checked' : '') + ' onchange="NotifSystem.toggle(\'meals\', this.checked)"><span class="notif-slider"></span></label>' +
                     '</div>';
@@ -9053,8 +9184,8 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 html += '<div class="notif-toggle-row">' +
                     '<div class="notif-toggle-info">' +
                     '<div class="notif-toggle-icon" style="background:#ede9fe;">📊</div>' +
-                    '<div><div class="notif-toggle-text">Daily Summary</div>' +
-                    '<div class="notif-toggle-desc">Evening recap at ' + s.summary.time + ' with your health score</div>' +
+                    '<div><div class="notif-toggle-text">' + t('dailySummary') + '</div>' +
+                    '<div class="notif-toggle-desc">' + t('dailySummaryDesc').replace('{time}', s.summary.time) + '</div>' +
                     '</div></div>' +
                     '<label class="notif-switch"><input type="checkbox" ' + (s.summary.enabled ? 'checked' : '') + ' onchange="NotifSystem.toggle(\'summary\', this.checked)"><span class="notif-slider"></span></label>' +
                     '</div>';
@@ -9063,10 +9194,15 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 html += '<div class="notif-toggle-row">' +
                     '<div class="notif-toggle-info">' +
                     '<div class="notif-toggle-icon" style="background:#dcfce7;">💡</div>' +
-                    '<div><div class="notif-toggle-text">Health Tips</div>' +
-                    '<div class="notif-toggle-desc">Smart nutrition tips every ' + (s.tips.interval / 60) + 'h based on your goals</div>' +
+                    '<div><div class="notif-toggle-text">' + t('healthTips') + '</div>' +
+                    '<div class="notif-toggle-desc">' + t('healthTipsDesc').replace('{h}', (s.tips.interval / 60)) + '</div>' +
                     '</div></div>' +
                     '<label class="notif-switch"><input type="checkbox" ' + (s.tips.enabled ? 'checked' : '') + ' onchange="NotifSystem.toggle(\'tips\', this.checked)"><span class="notif-slider"></span></label>' +
+                    '</div>';
+
+                // Test button
+                html += '<div style="text-align:center;margin-top:12px;">' +
+                    '<button onclick="NotifSystem.testNotification()" style="padding:10px 20px;background:var(--primary);color:white;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;">🧪 ' + t('testNotification') + '</button>' +
                     '</div>';
 
                 togglesArea.innerHTML = html;
@@ -9090,7 +9226,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             },
 
             _getTypeName: function(type) {
-                var names = { water: 'Water reminders', meals: 'Meal reminders', summary: 'Daily summary', tips: 'Health tips' };
+                var names = { water: t('waterReminders'), meals: t('mealReminders'), summary: t('dailySummary'), tips: t('healthTips') };
                 return names[type] || type;
             },
 
@@ -9132,6 +9268,9 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                         self.sendRandomTip();
                     }, this.settings.tips.interval * 60 * 1000);
                     this.timers.push(tipsTimer);
+
+                    // Send first tip after 30 seconds
+                    setTimeout(function() { self.sendRandomTip(); }, 30000);
                 }
             },
 
@@ -9156,9 +9295,9 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
                 var remaining = target - current;
                 var messages = [
-                    { title: 'Time to hydrate! 💧', msg: 'You\'ve had ' + current + '/' + target + ' glasses. Drink some water!' },
-                    { title: 'Water break! 💧', msg: remaining + ' more glasses to reach your goal. Keep going!' },
-                    { title: 'Stay hydrated! 💧', msg: 'Your body needs water. ' + current + ' down, ' + remaining + ' to go!' }
+                    { title: t('timeToHydrate'), msg: current + '/' + target + ' ' + t('glasses') + '. ' + t('drinkSomeWater') },
+                    { title: t('waterBreak'), msg: remaining + ' ' + t('moreGlasses') },
+                    { title: t('stayHydrated'), msg: current + ' ✓, ' + remaining + ' ' + t('toGo') }
                 ];
                 var pick = messages[Math.floor(Math.random() * messages.length)];
                 this.sendNotification('💧', pick.title, pick.msg, 'switchTab("health")');
@@ -9174,12 +9313,12 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 var sentKey = 'snapchef_meal_notif_' + new Date().toISOString().split('T')[0];
                 var sent = JSON.parse(localStorage.getItem(sentKey) || '[]');
 
-                var mealNames = ['Breakfast', 'Lunch', 'Dinner'];
+                var mealNames = [t('breakfast'), t('lunch'), t('dinner')];
                 var mealIcons = ['🌅', '☀️', '🌙'];
                 var mealTips = [
-                    'A healthy breakfast boosts your energy for the day!',
-                    'Time for a balanced lunch to keep you going!',
-                    'Keep dinner light and nutritious!'
+                    t('breakfastTip'),
+                    t('lunchTip'),
+                    t('dinnerTip')
                 ];
 
                 for (var i = 0; i < times.length; i++) {
@@ -9190,7 +9329,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                         var alreadyLogged = log && log.meals && log.meals.some(function(m) { return m.type === mealTypeMap[i]; });
 
                         if (!alreadyLogged) {
-                            this.sendNotification(mealIcons[i], mealNames[i] + ' time!', mealTips[i], 'switchTab("health")');
+                            this.sendNotification(mealIcons[i], mealNames[i] + ' ' + t('time') + '!', mealTips[i], 'switchTab("health")');
                             sent.push(times[i]);
                             localStorage.setItem(sentKey, JSON.stringify(sent));
                         }
@@ -9313,7 +9452,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
                 if (item.action) {
                     actionBtn.style.display = 'inline-block';
-                    actionBtn.textContent = item.action.indexOf('health') !== -1 ? 'View Health' : 'Open';
+                    actionBtn.textContent = item.action.indexOf('health') !== -1 ? t('viewHealth') : t('open');
                     actionBtn.setAttribute('onclick', item.action + '; NotifSystem.dismissInApp();');
                 } else {
                     actionBtn.style.display = 'none';
@@ -9338,7 +9477,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             // ---- Test notification ----
             testNotification: function() {
-                this.sendNotification('🧪', 'Test Notification', 'Notifications are working! You\'ll receive reminders for water, meals, and health tips.', 'switchTab("health")');
+                this.sendNotification('🧪', t('testNotifTitle'), t('testNotifMsg'), 'switchTab("health")');
             }
         };
 
