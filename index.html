@@ -2636,6 +2636,59 @@
 
 
 
+        /* ===== AUTO-CAPTURE COUNTDOWN ===== */
+        .auto-capture-countdown {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            font-size: 72px;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            animation: countdownPop 0.5s ease-out;
+            pointer-events: none;
+        }
+        @keyframes countdownPop {
+            0% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        .auto-capture-progress {
+            position: absolute;
+            bottom: 140px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 15;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .auto-capture-bar {
+            width: 160px;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .auto-capture-fill {
+            height: 100%;
+            background: white;
+            border-radius: 4px;
+            animation: autoCaptureFill 3s linear forwards;
+        }
+        @keyframes autoCaptureFill {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        .auto-capture-text {
+            color: rgba(255,255,255,0.9);
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
         /* ===== MEAL SELECTOR MODAL ===== */
         .meal-option-card {
             display: flex;
@@ -4827,10 +4880,14 @@
                         <button class="cam-top-btn" onclick="switchCamera('recipe')">🔄</button>
                     </div>
                     <div class="camera-bottom-area">
-                        <div class="camera-guide-text">Point at your ingredients</div>
+                        <div class="camera-guide-text" id="recipeCameraGuide">Point at your ingredients</div>
+                        <div class="auto-capture-progress" id="recipeAutoProgress" style="display:none;">
+                            <div class="auto-capture-bar"><div class="auto-capture-fill"></div></div>
+                            <div class="auto-capture-text">Auto-capturing...</div>
+                        </div>
                         <div class="camera-controls">
                             <button class="cam-side-btn" onclick="triggerUpload('recipe')">🖼️</button>
-                            <button class="capture-btn" onclick="capturePhoto('recipe')"></button>
+                            <button class="capture-btn" onclick="capturePhoto('recipe')" title="Tap to capture now"></button>
                             <button class="cam-side-btn" onclick="closeCamera('recipe')">✕</button>
                         </div>
                     </div>
@@ -4953,10 +5010,14 @@
                         <button class="cam-top-btn" onclick="switchCamera('analyze')">🔄</button>
                     </div>
                     <div class="camera-bottom-area">
-                        <div class="camera-guide-text">Point at your food</div>
+                        <div class="camera-guide-text" id="analyzeCameraGuide">Point at your food</div>
+                        <div class="auto-capture-progress" id="analyzeAutoProgress" style="display:none;">
+                            <div class="auto-capture-bar"><div class="auto-capture-fill"></div></div>
+                            <div class="auto-capture-text">Auto-capturing...</div>
+                        </div>
                         <div class="camera-controls">
                             <button class="cam-side-btn" onclick="triggerUpload('analyze')">🖼️</button>
-                            <button class="capture-btn" onclick="capturePhoto('analyze')"></button>
+                            <button class="capture-btn" onclick="capturePhoto('analyze')" title="Tap to capture now"></button>
                             <button class="cam-side-btn" onclick="closeCamera('analyze')">✕</button>
                         </div>
                     </div>
@@ -7753,7 +7814,15 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             }
         }
 
+        var autoCaptureTimers = {};
+
         function startCamera(type) {
+            // Clear any previous auto-capture timer
+            if (autoCaptureTimers[type]) {
+                clearTimeout(autoCaptureTimers[type]);
+                autoCaptureTimers[type] = null;
+            }
+
             navigator.mediaDevices.getUserMedia({ 
                 video: { 
                     facingMode: 'environment',
@@ -7768,6 +7837,26 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                     var video = document.getElementById(type + 'Video');
                     video.srcObject = stream;
                     document.getElementById(type + 'CameraPreview').classList.add('active');
+
+                    // Start auto-capture countdown (3 seconds)
+                    var guideEl = document.getElementById(type + 'CameraGuide');
+                    var progressEl = document.getElementById(type + 'AutoProgress');
+                    
+                    if (guideEl) guideEl.style.display = 'none';
+                    if (progressEl) {
+                        progressEl.style.display = 'flex';
+                        // Reset animation
+                        var fill = progressEl.querySelector('.auto-capture-fill');
+                        if (fill) { fill.style.animation = 'none'; fill.offsetHeight; fill.style.animation = 'autoCaptureFill 3s linear forwards'; }
+                    }
+
+                    autoCaptureTimers[type] = setTimeout(function() {
+                        // Only capture if camera is still open
+                        var preview = document.getElementById(type + 'CameraPreview');
+                        if (preview && preview.classList.contains('active')) {
+                            capturePhoto(type);
+                        }
+                    }, 3000);
                 })
                 .catch(function() {
                     toast('Camera access denied', '📷');
@@ -7805,14 +7894,30 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
         }
 
         function closeCamera(type) {
+            // Clear auto-capture timer
+            if (autoCaptureTimers[type]) {
+                clearTimeout(autoCaptureTimers[type]);
+                autoCaptureTimers[type] = null;
+            }
             if (streams[type]) {
                 streams[type].getTracks().forEach(function(t) { t.stop(); });
                 streams[type] = null;
             }
             document.getElementById(type + 'CameraPreview').classList.remove('active');
+            // Reset guide/progress
+            var guideEl = document.getElementById(type + 'CameraGuide');
+            var progressEl = document.getElementById(type + 'AutoProgress');
+            if (guideEl) guideEl.style.display = '';
+            if (progressEl) progressEl.style.display = 'none';
         }
 
         function capturePhoto(type) {
+            // Clear auto-capture timer if user tapped manually
+            if (autoCaptureTimers[type]) {
+                clearTimeout(autoCaptureTimers[type]);
+                autoCaptureTimers[type] = null;
+            }
+
             var video = document.getElementById(type + 'Video');
             var canvas = document.getElementById('canvas');
             canvas.width = video.videoWidth;
@@ -9083,6 +9188,15 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 this.renderSettingsPanel();
                 this.startScheduler();
 
+                // Register SW notification click handler
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.addEventListener('message', function(event) {
+                        if (event.data && event.data.type === 'notificationClick') {
+                            window.focus();
+                        }
+                    });
+                }
+
                 // Show welcome notification on first visit
                 var welcomed = localStorage.getItem('snapchef_notif_welcomed');
                 if (!welcomed) {
@@ -9402,28 +9516,48 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 // Always send in-app
                 this.showInApp(icon, title, message, action);
 
-                // Try browser notification if granted
-                if (this.getPermissionStatus() === 'granted' && document.hidden) {
+                // Always try phone notification panel if granted
+                if (this.getPermissionStatus() === 'granted') {
                     this.sendBrowserNotif(title, message, icon);
                 }
             },
 
             sendBrowserNotif: function(title, body, icon) {
+                // Prefer ServiceWorker notification (shows in phone panel like WhatsApp)
+                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.ready.then(function(reg) {
+                        reg.showNotification(title, {
+                            body: body,
+                            icon: '/icons/icon-192x192.png',
+                            badge: '/icons/icon-72x72.png',
+                            tag: 'snapchef-' + Date.now(),
+                            vibrate: [100, 50, 100],
+                            data: { url: window.location.href },
+                            actions: [
+                                { action: 'open', title: 'Open SnapChef' }
+                            ]
+                        });
+                    }).catch(function(e) {
+                        console.log('SW notification failed, falling back:', e);
+                        NotifSystem._fallbackNotif(title, body, icon);
+                    });
+                } else {
+                    this._fallbackNotif(title, body, icon);
+                }
+            },
+
+            _fallbackNotif: function(title, body, icon) {
                 try {
                     var notif = new Notification(title, {
                         body: body,
                         icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">' + (icon || '🍳') + '</text></svg>',
-                        badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🍳</text></svg>',
                         tag: 'snapchef-' + Date.now(),
                         requireInteraction: false
                     });
-                    notif.onclick = function() {
-                        window.focus();
-                        notif.close();
-                    };
+                    notif.onclick = function() { window.focus(); notif.close(); };
                     setTimeout(function() { notif.close(); }, 8000);
                 } catch (e) {
-                    console.log('Browser notification failed:', e);
+                    console.log('Fallback notification failed:', e);
                 }
             },
 
