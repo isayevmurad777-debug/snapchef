@@ -13,5 +13,3 @@
     Access-Control-Allow-Headers = "Content-Type, Authorization"
 [functions."push-notify"]
   schedule = "*/15 * * * *"
-[functions."push-notify"]
-  schedule = "*/15 * * * *"
