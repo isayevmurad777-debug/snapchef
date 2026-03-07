@@ -1,16 +1,17 @@
 [build]
   publish = "."
   functions = "netlify/functions"
-
 [functions]
   node_bundler = "esbuild"
-
 [build.environment]
   SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
-
 [[headers]]
   for = "/*"
   [headers.values]
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Methods = "GET, POST, OPTIONS"
     Access-Control-Allow-Headers = "Content-Type, Authorization"
+[functions."push-notify"]
+  schedule = "*/15 * * * *"
+[functions."push-notify"]
+  schedule = "*/15 * * * *"

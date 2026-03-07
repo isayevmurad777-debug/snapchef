@@ -15,6 +15,8 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
     <style>
         *, *::before, *::after {
             margin: 0;
@@ -6455,7 +6457,7 @@
                         content: prompt
                     }], { response_format: { type: "json_object" } });
 
-                    var recipe = JSON.parse(data.response);
+                    var recipe = safeParseJSON(data.response);
 
                     // Add source badge
                     if (!recipe.description) recipe.description = '';
@@ -6701,7 +6703,7 @@
                         content: 'Generate a recipe for "' + name + '". Return ONLY JSON: {"name":"Dish Name","description":"Short description","calories":400,"protein":25,"carbs":40,"fat":15,"prepTime":30,"ingredients":["item1","item2"],"steps":["Step 1","Step 2"]}'
                     }], { response_format: { type: "json_object" }, max_tokens: 800 });
 
-                    var recipe = JSON.parse(data.response);
+                    var recipe = safeParseJSON(data.response);
                     this.showRecipeResult(resultsEl, recipe);
                 } catch (e) {
                     if (e.message === 'FREE_LIMIT') {
@@ -6765,7 +6767,7 @@
                         content: 'Create a recipe using these ingredients: ' + ingredients + '. Return ONLY JSON: {"name":"Dish Name","description":"Short description","calories":400,"protein":25,"carbs":40,"fat":15,"prepTime":30,"ingredients":["item1","item2"],"steps":["Step 1","Step 2"]}'
                     }], { response_format: { type: "json_object" }, max_tokens: 800 });
 
-                    var recipe = JSON.parse(data.response);
+                    var recipe = safeParseJSON(data.response);
                     this.showRecipeResult(resultsEl, recipe);
                 } catch (e) {
                     if (e.message === 'FREE_LIMIT') {
@@ -7083,11 +7085,28 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
    
         firebase.initializeApp(firebaseConfig);
         var auth = firebase.auth();
+        var db = firebase.firestore();
         var currentUser = null;
+
+        // Firebase Cloud Messaging for background notifications
+        var fcmMessaging = null;
+        try {
+            if ('serviceWorker' in navigator && firebase.messaging) {
+                fcmMessaging = firebase.messaging();
+            }
+        } catch(e) { console.log('FCM init skipped:', e.message); }
 
         auth.onAuthStateChanged(function(user) {
             currentUser = user;
             updateAuthUI(user);
+            // Save FCM token to Firestore when user logs in
+            if (user) {
+                setTimeout(function() {
+                    if (NotifSystem && NotifSystem.saveTokenToFirestore) {
+                        NotifSystem.saveTokenToFirestore();
+                    }
+                }, 3000);
+            }
         });
 
         function updateAuthUI(user) {
@@ -7161,6 +7180,33 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
         }
 
         // Backend API proxy call
+        // Safe JSON parser - handles when AI returns text instead of JSON
+        function safeParseJSON(text) {
+            if (!text || typeof text !== 'string') throw new Error('Empty response');
+            
+            // Try direct parse first
+            try { return JSON.parse(text); } catch(e) {}
+            
+            // Try to extract JSON from markdown code block
+            var codeMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+            if (codeMatch) {
+                try { return JSON.parse(codeMatch[1].trim()); } catch(e) {}
+            }
+            
+            // Try to find JSON object or array in the text
+            var jsonMatch = text.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                try { return JSON.parse(jsonMatch[0]); } catch(e) {}
+            }
+            var arrMatch = text.match(/\[[\s\S]*\]/);
+            if (arrMatch) {
+                try { return JSON.parse(arrMatch[0]); } catch(e) {}
+            }
+            
+            // Nothing worked
+            throw new Error('Invalid JSON response: ' + text.substring(0, 100));
+        }
+
         async function callAI(messages, options) {
             options = options || {};
             var idToken = null;
@@ -7254,7 +7300,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 );
 
                 clearInterval(loadingInterval);
-                var recipe = JSON.parse(data.response);
+                var recipe = safeParseJSON(data.response);
 
                 currentRecipeData = recipe;
                 displayRecipe(recipe);
@@ -7318,7 +7364,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 );
 
                 clearInterval(loadingInterval);
-                var recipe = JSON.parse(data.response);
+                var recipe = safeParseJSON(data.response);
 
                 currentRecipeData = recipe;
                 displayRecipe(recipe);
@@ -7496,7 +7542,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                         content: prompt
                     }], { response_format: { type: "json_object" }, max_tokens: 2000 });
 
-                    var plan = JSON.parse(data.response);
+                    var plan = safeParseJSON(data.response);
                     this.applyPlan(plan);
                     toast('Week plan generated! 🎉', '✅');
                 } catch(e) {
@@ -7728,7 +7774,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 }], { response_format: { type: "json_object" }, max_tokens: 800 });
 
                 clearInterval(loadingInterval);
-                var analysis = JSON.parse(data.response);
+                var analysis = safeParseJSON(data.response);
                 displayAnalysis(analysis);
                 showConfetti();
 
@@ -8828,6 +8874,10 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
                 localStorage.setItem('snapchef_health_profile', JSON.stringify(this.profile));
                 document.getElementById('healthProfileModal').classList.remove('active');
+                // Sync water target to Firestore for push notifications
+                if (NotifSystem && NotifSystem.saveTokenToFirestore) {
+                    NotifSystem.saveTokenToFirestore();
+                }
                 this.render();
                 toast('Health goal saved! 🎯', '✅');
                 showConfetti();
@@ -8893,7 +8943,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                         [{ role: 'user', content: 'Estimate nutrition for one serving of "' + sanitizeInput(name, 100) + '". Return ONLY JSON: {"calories":0,"protein":0,"carbs":0,"fat":0}' }],
                         { response_format: { type: "json_object" }, max_tokens: 100 }
                     );
-                    var est = JSON.parse(data.response);
+                    var est = safeParseJSON(data.response);
                     document.getElementById('mealLogCal').value = est.calories || 0;
                     document.getElementById('mealLogProt').value = est.protein || 0;
                     document.getElementById('mealLogCarb').value = est.carbs || 0;
@@ -9228,6 +9278,8 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                     if (perm === 'granted') {
                         toast('Notifications enabled! 🔔', '✅');
                         self.sendBrowserNotif('SnapChef 🍳', 'Notifications are now active! You\'ll get reminders for water, meals, and more.', '🎉');
+                        // Request FCM token for background notifications
+                        self.requestFCMToken();
                     } else if (perm === 'denied') {
                         toast('Notifications blocked. Enable in browser settings.', '⚠️');
                     }
@@ -9327,6 +9379,8 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 this.settings[type].enabled = enabled;
                 this.save();
                 this.restartScheduler();
+                this.scheduleBackgroundReminders();
+                this.saveTokenToFirestore();
                 if (enabled) toast(this._getTypeName(type) + ' enabled', '🔔');
                 else toast(this._getTypeName(type) + ' disabled', '🔕');
             },
@@ -9610,6 +9664,51 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             },
 
             // ---- Test notification ----
+            requestFCMToken: function() {
+                if (!fcmMessaging) return;
+                try {
+                    fcmMessaging.getToken().then(function(token) {
+                        if (token) {
+                            console.log('FCM Token obtained');
+                            localStorage.setItem('snapchef_fcm_token', token);
+                            // Save token to Firestore for server-side push
+                            NotifSystem.saveTokenToFirestore(token);
+                        }
+                    }).catch(function(e) { console.log('FCM token error:', e); });
+                } catch(e) { console.log('FCM unavailable:', e); }
+            },
+
+            saveTokenToFirestore: function(token) {
+                if (!currentUser || !db) return;
+                token = token || localStorage.getItem('snapchef_fcm_token');
+                if (!token) return;
+
+                db.collection('users').doc(currentUser.uid).set({
+                    fcmToken: token,
+                    notifSettings: this.settings,
+                    waterTarget: HealthTarget.profile ? HealthTarget.profile.waterTarget : 8,
+                    updatedAt: Date.now()
+                }, { merge: true }).then(function() {
+                    console.log('FCM token + settings saved to Firestore');
+                }).catch(function(e) {
+                    console.log('Firestore save error:', e);
+                });
+            },
+
+            // Schedule local notifications via SW even when app is in background
+            scheduleBackgroundReminders: function() {
+                if ('serviceWorker' in navigator && this.getPermissionStatus() === 'granted') {
+                    navigator.serviceWorker.ready.then(function(reg) {
+                        // Store reminder settings in SW via message
+                        reg.active.postMessage({
+                            type: 'SET_REMINDERS',
+                            settings: NotifSystem.settings,
+                            waterTarget: HealthTarget.profile ? HealthTarget.profile.waterTarget : 8
+                        });
+                    });
+                }
+            },
+
             testNotification: function() {
                 this.sendNotification('🧪', t('testNotifTitle'), t('testNotifMsg'), 'switchTab("health")');
             }
