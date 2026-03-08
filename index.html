@@ -6014,7 +6014,7 @@
                 .then(function(data) {
                     if (data.thumbnail && data.thumbnail.source) {
                         // Get higher resolution
-                        var url = data.thumbnail.source.replace(/\/\d+px-/, '/800px-');
+                        var url = data.thumbnail.source.replace(/\d+px-/, '800px-');
                         setFoodImage(recipeName, url);
                     } else if (data.originalimage && data.originalimage.source) {
                         setFoodImage(recipeName, data.originalimage.source);
@@ -6030,7 +6030,7 @@
 
         function loadWikiFoodFallback(keyword, recipeName) {
             if (foodImageCache[recipeName]) return;
-            // Try Wikipedia search API for broader matches
+            // Try Wikipedia search for broader matches
             var q = encodeURIComponent(keyword.trim() + ' food');
             fetch('https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=' + q + '&srnamespace=0&srlimit=3&format=json&origin=*')
                 .then(function(r) { return r.json(); })
@@ -6041,10 +6041,39 @@
                             .then(function(r) { return r.json(); })
                             .then(function(pageData) {
                                 if (pageData.thumbnail && pageData.thumbnail.source) {
-                                    var url = pageData.thumbnail.source.replace(/\/\d+px-/, '/800px-');
+                                    var url = pageData.thumbnail.source.replace(/\d+px-/, '800px-');
                                     setFoodImage(recipeName, url);
+                                } else {
+                                    // Last resort: Wikimedia Commons search
+                                    loadCommonsImage(keyword, recipeName);
                                 }
                             });
+                    } else {
+                        loadCommonsImage(keyword, recipeName);
+                    }
+                })
+                .catch(function() { loadCommonsImage(keyword, recipeName); });
+        }
+
+        function loadCommonsImage(keyword, recipeName) {
+            if (foodImageCache[recipeName]) return;
+            var q = encodeURIComponent(keyword.trim() + ' dish food');
+            fetch('https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=' + q + '&gsrnamespace=6&gsrlimit=5&prop=imageinfo&iiprop=url|size&iiurlwidth=800&format=json&origin=*')
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.query && data.query.pages) {
+                        var pages = Object.values(data.query.pages);
+                        // Find first JPEG/PNG image
+                        for (var i = 0; i < pages.length; i++) {
+                            var ii = pages[i].imageinfo;
+                            if (ii && ii[0]) {
+                                var imgUrl = ii[0].thumburl || ii[0].url;
+                                if (imgUrl && /\.(jpg|jpeg|png)/i.test(imgUrl)) {
+                                    setFoodImage(recipeName, imgUrl);
+                                    return;
+                                }
+                            }
+                        }
                     }
                 })
                 .catch(function() {});
@@ -6446,7 +6475,7 @@
             fetchVideoInfo: async function(url, platform) {
                 var titleEl = document.getElementById('importVideoTitle');
                 try {
-                    // Use noembed.com — free oEmbed proxy (supports YT, TikTok, IG, etc.)
+                    // Use noembed.com — free oEmbed proxy
                     var oembed = await fetch('https://noembed.com/embed?url=' + encodeURIComponent(url));
                     if (oembed.ok) {
                         var data = await oembed.json();
@@ -6455,11 +6484,41 @@
                                 title: data.title || '',
                                 author: data.author_name || '',
                                 thumbnail: data.thumbnail_url || '',
-                                platform: platform.name
+                                platform: platform.name,
+                                description: ''
                             };
+
+                            // For YouTube, try to get description
+                            if (platform.name === 'youtube') {
+                                var ytId = this.getYouTubeId(url);
+                                if (ytId) {
+                                    try {
+                                        var invResp = await fetch('https://vid.puffyan.us/api/v1/videos/' + ytId + '?fields=description');
+                                        if (invResp.ok) {
+                                            var invData = await invResp.json();
+                                            if (invData.description) {
+                                                this._videoInfo.description = invData.description.substring(0, 2000);
+                                            }
+                                        }
+                                    } catch(e2) {
+                                        // Try alternative invidious instance
+                                        try {
+                                            var inv2 = await fetch('https://invidious.fdn.fr/api/v1/videos/' + ytId + '?fields=description');
+                                            if (inv2.ok) {
+                                                var inv2Data = await inv2.json();
+                                                if (inv2Data.description) {
+                                                    this._videoInfo.description = inv2Data.description.substring(0, 2000);
+                                                }
+                                            }
+                                        } catch(e3) {}
+                                    }
+                                }
+                            }
+
                             var display = '';
                             if (data.title) display += '📺 ' + data.title;
                             if (data.author_name) display += '\n👤 ' + data.author_name;
+                            if (this._videoInfo.description) display += '\n📝 Description found';
                             titleEl.textContent = display;
                             titleEl.style.display = 'block';
                             titleEl.style.whiteSpace = 'pre-line';
@@ -6506,11 +6565,52 @@
                 if (videoInfo) {
                     if (videoInfo.title) context += '\nVideo title: "' + videoInfo.title + '"';
                     if (videoInfo.author) context += '\nCreator: ' + videoInfo.author;
+                    if (videoInfo.description) context += '\nVideo description: "' + videoInfo.description + '"';
                 }
 
-                var prompt = context + '\n\nThis is a cooking video/post. Based on the title, creator, and URL, figure out what dish this is and provide the COMPLETE recipe with exact measurements and detailed step-by-step cooking instructions.';
-                prompt += '\n\nReturn JSON: {"name":"Dish Name","description":"What this dish is and where it comes from","imageKeyword":"search keyword for food image","ingredients":["200g chicken breast","2 tbsp soy sauce","1 clove garlic, minced"],"steps":["Detailed step 1 with temperatures and times","Step 2 with specific techniques"],"prepTime":15,"cookTime":30,"servings":4,"calories":400,"tips":"Pro tip from the video creator","source":"' + (videoInfo ? videoInfo.author : 'imported') + '"}';
-                prompt += '\n\nIMPORTANT: Provide REAL measurements (grams, cups, tbsp), REAL cooking temperatures, and REAL timing. Be specific and detailed as if teaching a beginner.';
+                // Try to fetch page content for better extraction
+                var pageContent = '';
+                try {
+                    if (platform.name === 'website' || platform.name === 'pinterest') {
+                        // For recipe websites, try to get actual content
+                        var proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
+                        var pageResp = await fetch(proxyUrl);
+                        if (pageResp.ok) {
+                            var pageData = await pageResp.json();
+                            if (pageData.contents) {
+                                // Extract text from HTML
+                                var tempDiv = document.createElement('div');
+                                tempDiv.innerHTML = pageData.contents;
+                                // Get recipe-related content
+                                var scripts = tempDiv.querySelectorAll('script[type="application/ld+json"]');
+                                scripts.forEach(function(s) {
+                                    try {
+                                        var ld = JSON.parse(s.textContent);
+                                        if (ld['@type'] === 'Recipe' || (ld['@graph'] && JSON.stringify(ld).indexOf('Recipe') > -1)) {
+                                            pageContent = '\n\nStructured recipe data found on page: ' + s.textContent.substring(0, 3000);
+                                        }
+                                    } catch(e) {}
+                                });
+                                // If no structured data, get main text
+                                if (!pageContent) {
+                                    var bodyText = tempDiv.textContent.replace(/\s+/g, ' ').trim();
+                                    pageContent = '\n\nPage content (excerpt): ' + bodyText.substring(0, 2000);
+                                }
+                            }
+                        }
+                    }
+                } catch(e) { console.log('Page fetch skipped:', e); }
+
+                var prompt = context;
+                if (pageContent) {
+                    prompt += pageContent;
+                    prompt += '\n\nExtract the EXACT recipe from this content. Use the actual ingredients and steps from the page.';
+                } else {
+                    prompt += '\n\nI cannot access this video/page directly. Based on the title, creator name, and URL, identify the dish and create the most accurate recipe possible.';
+                    prompt += '\n\nIf the title mentions a specific dish, provide the authentic traditional recipe for it.';
+                }
+                prompt += '\n\nReturn JSON: {"name":"Dish Name","description":"What this dish is and where it comes from","imageKeyword":"simple english name of dish for image search","ingredients":["200g chicken breast","2 tbsp soy sauce","1 clove garlic, minced"],"steps":["Detailed step 1 with temperatures and times","Step 2 with specific techniques"],"prepTime":15,"cookTime":30,"servings":4,"calories":400,"tips":"Pro tip","source":"' + (videoInfo ? videoInfo.author : 'imported') + '"}';
+                prompt += '\n\nIMPORTANT: Use REAL measurements (grams, cups, tbsp), REAL temperatures, and REAL timing. Be specific as if teaching a beginner.';
 
                 var loadingInterval = showProgressiveLoading('recipeResults', [
                     platform.icon + ' Reading ' + platform.label + '...',
