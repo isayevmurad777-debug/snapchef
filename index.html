@@ -5984,123 +5984,127 @@
 
         function loadFoodImage(keyword, recipeName) {
             if (foodImageCache[recipeName]) return;
-            var searchKey = encodeURIComponent(keyword.trim());
-            var found = false;
+            var kw = keyword.trim();
+            var words = kw.split(/\s+/);
 
-            // Source 1: TheMealDB (best for common dishes)
-            fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=' + searchKey)
+            // Strategy: Try TheMealDB with full keyword, then individual words
+            tryTheMealDB(kw, recipeName, function() {
+                // If full keyword fails, try first word
+                if (words.length > 1) {
+                    tryTheMealDB(words[0], recipeName, function() {
+                        // Try second word
+                        if (words.length > 2) {
+                            tryTheMealDB(words[1], recipeName, function() {
+                                useDirectImageFallback(kw, recipeName);
+                            });
+                        } else {
+                            useDirectImageFallback(kw, recipeName);
+                        }
+                    });
+                } else {
+                    useDirectImageFallback(kw, recipeName);
+                }
+            });
+        }
+
+        function tryTheMealDB(searchTerm, recipeName, onFail) {
+            if (foodImageCache[recipeName]) return;
+            fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=' + encodeURIComponent(searchTerm))
                 .then(function(r) { return r.json(); })
                 .then(function(data) {
                     if (data.meals && data.meals.length > 0) {
-                        found = true;
-                        setFoodImage(recipeName, data.meals[0].strMealThumb);
+                        // Find best match by checking name similarity
+                        var best = data.meals[0];
+                        var term = searchTerm.toLowerCase();
+                        for (var i = 0; i < data.meals.length; i++) {
+                            if (data.meals[i].strMeal.toLowerCase().indexOf(term) !== -1) {
+                                best = data.meals[i];
+                                break;
+                            }
+                        }
+                        setFoodImage(recipeName, best.strMealThumb);
+                    } else if (onFail) {
+                        onFail();
                     }
                 })
-                .catch(function() {})
-                .finally(function() {
-                    // Source 2: Wikipedia food image (wide coverage)
-                    if (!found) {
-                        loadWikipediaImage(keyword, recipeName);
-                    }
-                });
+                .catch(function() { if (onFail) onFail(); });
         }
 
-        function loadWikipediaImage(keyword, recipeName) {
+        function useDirectImageFallback(keyword, recipeName) {
             if (foodImageCache[recipeName]) return;
-            var searchTerms = keyword.trim().split(' ').slice(0, 3).join(' ');
-
-            fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(searchTerms))
+            
+            // Try Wikipedia first (high quality, specific)
+            var wikiTerm = encodeURIComponent(keyword.trim().replace(/\s+/g, '_'));
+            fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + wikiTerm)
                 .then(function(r) { return r.json(); })
                 .then(function(data) {
                     if (data.thumbnail && data.thumbnail.source) {
-                        // Get higher resolution
-                        var url = data.thumbnail.source.replace(/\d+px-/, '800px-');
-                        setFoodImage(recipeName, url);
-                    } else if (data.originalimage && data.originalimage.source) {
-                        setFoodImage(recipeName, data.originalimage.source);
+                        setFoodImage(recipeName, data.originalimage ? data.originalimage.source : data.thumbnail.source);
                     } else {
-                        // Try with "food" or "dish" appended
-                        loadWikiFoodFallback(keyword, recipeName);
-                    }
-                })
-                .catch(function() {
-                    loadWikiFoodFallback(keyword, recipeName);
-                });
-        }
-
-        function loadWikiFoodFallback(keyword, recipeName) {
-            if (foodImageCache[recipeName]) return;
-            // Try Wikipedia search for broader matches
-            var q = encodeURIComponent(keyword.trim() + ' food');
-            fetch('https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=' + q + '&srnamespace=0&srlimit=3&format=json&origin=*')
-                .then(function(r) { return r.json(); })
-                .then(function(data) {
-                    if (data.query && data.query.search && data.query.search.length > 0) {
-                        var title = encodeURIComponent(data.query.search[0].title);
-                        return fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + title)
+                        // Wikipedia search with "food" keyword
+                        return fetch('https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=' + encodeURIComponent(keyword + ' food') + '&srnamespace=0&srlimit=1&format=json&origin=*')
                             .then(function(r) { return r.json(); })
-                            .then(function(pageData) {
-                                if (pageData.thumbnail && pageData.thumbnail.source) {
-                                    var url = pageData.thumbnail.source.replace(/\d+px-/, '800px-');
-                                    setFoodImage(recipeName, url);
+                            .then(function(sdata) {
+                                if (sdata.query && sdata.query.search && sdata.query.search[0]) {
+                                    var title = encodeURIComponent(sdata.query.search[0].title);
+                                    return fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + title)
+                                        .then(function(r) { return r.json(); })
+                                        .then(function(pdata) {
+                                            if (pdata.thumbnail) {
+                                                setFoodImage(recipeName, pdata.originalimage ? pdata.originalimage.source : pdata.thumbnail.source);
+                                            } else {
+                                                useLoremFlickr(keyword, recipeName);
+                                            }
+                                        });
                                 } else {
-                                    // Last resort: Wikimedia Commons search
-                                    loadCommonsImage(keyword, recipeName);
+                                    useLoremFlickr(keyword, recipeName);
                                 }
                             });
-                    } else {
-                        loadCommonsImage(keyword, recipeName);
                     }
                 })
-                .catch(function() { loadCommonsImage(keyword, recipeName); });
+                .catch(function() { useLoremFlickr(keyword, recipeName); });
         }
 
-        function loadCommonsImage(keyword, recipeName) {
+        function useLoremFlickr(keyword, recipeName) {
             if (foodImageCache[recipeName]) return;
-            var q = encodeURIComponent(keyword.trim() + ' dish food');
-            fetch('https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=' + q + '&gsrnamespace=6&gsrlimit=5&prop=imageinfo&iiprop=url|size&iiurlwidth=800&format=json&origin=*')
-                .then(function(r) { return r.json(); })
-                .then(function(data) {
-                    if (data.query && data.query.pages) {
-                        var pages = Object.values(data.query.pages);
-                        // Find first JPEG/PNG image
-                        for (var i = 0; i < pages.length; i++) {
-                            var ii = pages[i].imageinfo;
-                            if (ii && ii[0]) {
-                                var imgUrl = ii[0].thumburl || ii[0].url;
-                                if (imgUrl && /\.(jpg|jpeg|png)/i.test(imgUrl)) {
-                                    setFoodImage(recipeName, imgUrl);
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                })
-                .catch(function() {});
+            var kw = keyword.trim().split(' ').slice(0, 2).join(',');
+            var url = 'https://loremflickr.com/800/600/' + encodeURIComponent(kw) + ',food';
+            setFoodImage(recipeName, url);
         }
 
         function setFoodImage(recipeName, url) {
             if (!url) return;
             foodImageCache[recipeName] = url;
-            // Update all images for this recipe
-            try {
-                document.querySelectorAll('img[data-recipe="' + CSS.escape(recipeName) + '"]').forEach(function(img) {
-                    var newImg = new Image();
-                    newImg.onload = function() {
-                        img.src = url;
-                        img.style.opacity = '1';
-                    };
-                    newImg.src = url;
-                });
-            } catch(e) {
-                // CSS.escape not supported, try simpler selector
+            
+            // Preload image first
+            var preload = new Image();
+            // crossOrigin removed - breaks redirected image sources
+            preload.onload = function() {
+                // Update all images with this recipe name
                 document.querySelectorAll('img[data-recipe]').forEach(function(img) {
                     if (img.getAttribute('data-recipe') === recipeName) {
                         img.src = url;
                         img.style.opacity = '1';
                     }
                 });
-            }
+                // Also update recipe hero image if it's currently showing placeholder
+                var heroImg = document.querySelector('.recipe-img-box img');
+                if (heroImg && heroImg.getAttribute('data-recipe') === recipeName) {
+                    heroImg.src = url;
+                    heroImg.style.opacity = '1';
+                }
+                // Update history thumbnails
+                document.querySelectorAll('.history-img').forEach(function(img) {
+                    if (img.src && img.src.indexOf('data:image/svg') !== -1) {
+                        img.src = url;
+                    }
+                });
+            };
+            preload.onerror = function() {
+                // Image failed to load, remove from cache
+                delete foodImageCache[recipeName];
+            };
+            preload.src = url;
         }
 
         function getRandomFoodImage() {
@@ -7570,7 +7574,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             var html = '<div class="recipe-card">' +
                 '<div class="recipe-img-box">' +
-                '<img src="' + imageUrl + '" alt="' + escapeHTML(recipe.name) + '" data-recipe="' + escapeHTML(recipe.name) + '" onload="this.style.opacity=1" onerror="this.style.display=\'none\'" style="opacity:0;transition:opacity 0.3s">' +
+                '<img src="' + imageUrl + '" alt="' + escapeHTML(recipe.name) + '" data-recipe="' + escapeHTML(recipe.name) + '" onload="this.style.opacity=1" onerror="this.style.opacity=1;this.src=makeFoodPlaceholder(this.alt)" style="opacity:0;transition:opacity 0.3s">' +
                 '<div class="recipe-overlay">' +
                 '<div class="recipe-name">' + escapeHTML(recipe.name) + '</div>' +
                 '<div class="recipe-desc">' + escapeHTML(recipe.description || '') + '</div>' +
@@ -9969,6 +9973,15 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             // Init Health Target
             HealthTarget.init();
+
+            // Register Service Worker (required for phone notifications)
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js').then(function(reg) {
+                    console.log('SW registered:', reg.scope);
+                }).catch(function(err) {
+                    console.log('SW registration failed:', err);
+                });
+            }
 
             // Init Notification System
             NotifSystem.init();
