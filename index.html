@@ -3017,6 +3017,43 @@
         }
 
 
+
+        /* ===== ADS ===== */
+        .ad-container {
+            width: 100%;
+            min-height: 60px;
+            background: #f8fafc;
+            border: 1px dashed #e2e8f0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 12px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        body.dark-mode .ad-container {
+            background: #1e293b;
+            border-color: #334155;
+        }
+        .ad-container.premium-hidden { display: none; }
+        .ad-label {
+            position: absolute;
+            top: 2px;
+            right: 6px;
+            font-size: 9px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .ad-remove-hint {
+            font-size: 11px;
+            color: #94a3b8;
+            cursor: pointer;
+            text-align: center;
+            padding: 4px;
+        }
+        .ad-remove-hint:hover { color: #6366f1; }
         /* ===== COOKING TIMER ===== */
         .cook-timer-overlay {
             position: fixed;
@@ -4664,8 +4701,8 @@
         </div>
     </div>
 
-    <!-- Premium Modal (hidden for Play Store) -->
-    <div class="premium-modal" id="premiumModal" style="display:none !important;">
+    <!-- Premium Modal -->
+    <div class="premium-modal" id="premiumModal">
         <div class="premium-content">
             <div class="premium-icon">👑</div>
             <h2 class="premium-title" data-i18n="goPremium">Go Premium</h2>
@@ -4695,8 +4732,8 @@
         </div>
     </div>
 
-    <!-- Buy Credits Modal (hidden for Play Store) -->
-    <div class="premium-modal" id="buyCreditsModal" style="display:none !important;">
+    <!-- Buy Credits Modal -->
+    <div class="premium-modal" id="buyCreditsModal">
         <div class="premium-content">
             <div class="premium-icon">💎</div>
             <h2 class="premium-title" data-i18n="buyCredits">Buy Credits</h2>
@@ -4945,7 +4982,7 @@
     <div class="app-container" id="appContainer" style="display: none;">
         <div class="container">
             <!-- Subscription Banner (hidden for Play Store) -->
-            <div class="subscription-banner" id="subBanner" onclick="openPremiumModal()" style="display:none !important;">
+            <div class="subscription-banner" id="subBanner" onclick="openPremiumModal()">
                 <span class="sub-icon">👑</span>
                 <div class="sub-text">
                     <div class="sub-title" data-i18n="upgradePremium">Upgrade to Premium</div>
@@ -5166,6 +5203,13 @@
 
                 <!-- Results -->
                 <div class="results" id="recipeResults"></div>
+                <div class="ad-container" id="adSlotRecipe">
+                    <span class="ad-label">Ad</span>
+                    <div id="adRecipeContent" style="width:100%;text-align:center;padding:8px;">
+                        <div style="font-size:12px;color:#94a3b8;">Advertisement</div>
+                    </div>
+                    <div class="ad-remove-hint" onclick="openPremiumModal()">Remove ads with Premium 👑</div>
+                </div>
             </div>
 
             <!-- Analyze Tab -->
@@ -5231,6 +5275,12 @@
                 </button>
 
                 <div class="results" id="analyzeResults"></div>
+                <div class="ad-container" id="adSlotAnalyze">
+                    <span class="ad-label">Ad</span>
+                    <div id="adAnalyzeContent" style="width:100%;text-align:center;padding:8px;">
+                        <div style="font-size:12px;color:#94a3b8;">Advertisement</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Meal Plan Tab -->
@@ -5316,6 +5366,12 @@
                         </div>
                     </div>
                     <button class="clear-key-btn" onclick="signOut()" style="width: 100%; padding: 8px;">🚪 <span data-i18n="signOut">Sign Out</span></button>
+                </div>
+
+                <!-- Subscription Status -->
+                <div class="settings-item" id="premiumSettingsSection">
+                    <div style="font-weight: 600; color: var(--text-light); margin-bottom: 10px;">👑 Subscription</div>
+                    <div id="premiumSettingsContent"></div>
                 </section>
                 <input type="hidden" id="apiKey" value="BACKEND">
 
@@ -6039,6 +6095,54 @@
             }
         };
 
+        function renderPremiumSettings() {
+            var el = document.getElementById('premiumSettingsContent');
+            if (!el) return;
+            
+            if (isPremium) {
+                var plan = localStorage.getItem('snapchef_premium_plan') || 'monthly';
+                var date = parseInt(localStorage.getItem('snapchef_premium_date') || '0');
+                var dateStr = date ? new Date(date).toLocaleDateString() : '-';
+                el.innerHTML = '<div style="padding:16px;background:#f0fdf4;border-radius:12px;border:1px solid #bbf7d0;">' +
+                    '<div style="display:flex;align-items:center;gap:10px;">' +
+                    '<div style="font-size:28px;">👑</div>' +
+                    '<div>' +
+                    '<div style="font-weight:700;color:#166534;">Premium Active</div>' +
+                    '<div style="font-size:12px;color:#15803d;">Plan: ' + plan + ' · Since: ' + dateStr + '</div>' +
+                    '</div></div>' +
+                    '<button onclick="cancelPremium()" style="margin-top:10px;width:100%;padding:8px;background:none;border:1px solid #fca5a5;color:#ef4444;border-radius:8px;font-size:12px;cursor:pointer;">Cancel Subscription</button>' +
+                    '</div>';
+            } else {
+                el.innerHTML = '<div style="display:flex;align-items:center;gap:10px;padding:12px;background:#f1f5f9;border-radius:12px;cursor:pointer;" onclick="openPremiumModal()">' +
+                    '<div style="font-size:28px;">✨</div>' +
+                    '<div style="flex:1;">' +
+                    '<div style="font-weight:700;color:#1e293b;">Free Plan</div>' +
+                    '<div style="font-size:12px;color:#64748b;">' + dailyUsage.count + '/' + CONFIG.FREE_DAILY_LIMIT + ' recipes used today</div>' +
+                    '</div>' +
+                    '<div style="padding:6px 14px;background:#6366f1;color:white;border-radius:8px;font-size:12px;font-weight:700;">Upgrade</div>' +
+                    '</div>';
+            }
+        }
+
+        function cancelPremium() {
+            if (!confirm('Are you sure you want to cancel Premium? You will lose all premium features.')) return;
+            isPremium = false;
+            localStorage.removeItem('snapchef_premium');
+            localStorage.removeItem('snapchef_premium_plan');
+            localStorage.removeItem('snapchef_premium_date');
+            CONFIG.FREE_DAILY_LIMIT = 15;
+            updatePremiumUI();
+            renderPremiumSettings();
+            toast('Premium cancelled', '😢');
+
+            if (currentUser && db) {
+                db.collection('users').doc(currentUser.uid).set({
+                    isPremium: false,
+                    premiumCancelledAt: Date.now()
+                }, { merge: true }).catch(function() {});
+            }
+        }
+
         // ========================================
         // ERROR BOUNDARY
         // ========================================
@@ -6067,6 +6171,26 @@
         var currentLang = localStorage.getItem('snapchef_lang') || 'en';
         var currentSlide = 0;
         var isPremium = localStorage.getItem('snapchef_premium') === '1';
+        
+        // Check if returning from payment
+        (function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('payment') === 'cancelled') {
+                setTimeout(function() { toast('Payment cancelled', '❌'); }, 1000);
+                history.replaceState({}, '', '/');
+            }
+            // Check if premium was just activated (from payment-success page)
+            if (isPremium && !window._premiumWelcomed && localStorage.getItem('snapchef_premium_date')) {
+                var premDate = parseInt(localStorage.getItem('snapchef_premium_date'));
+                if (Date.now() - premDate < 60000) { // Within 1 minute
+                    window._premiumWelcomed = true;
+                    setTimeout(function() {
+                        showConfetti();
+                        toast('Welcome to Premium! 👑', '✅');
+                    }, 1500);
+                }
+            }
+        })();
         var dailyUsage = JSON.parse(localStorage.getItem('snapchef_daily') || '{"date":"","count":0}');
         var recipeHistory = JSON.parse(localStorage.getItem('snapchef_history') || '[]');
         var favorites = JSON.parse(localStorage.getItem('snapchef_favs') || '[]');
@@ -6497,8 +6621,11 @@
         // PREMIUM FUNCTIONS
         // ========================================
         function openPremiumModal() {
-            // Disabled for Play Store version
-            return;
+            if (isPremium) {
+                toast('You already have Premium! 👑', '✅');
+                return;
+            }
+            document.getElementById('premiumModal').classList.add('active');
         }
 
         function closePremiumModal() {
@@ -6506,23 +6633,121 @@
         }
 
         function selectPlan(plan) {
+            selectedPlanType = plan;
             document.querySelectorAll('.premium-plan').forEach(function(el) {
                 el.classList.toggle('selected', el.getAttribute('data-plan') === plan);
             });
         }
 
-        function subscribePremium() {
+        var selectedPlanType = 'monthly';
+
+        async function subscribePremium() {
+            var btn = document.querySelector('.premium-subscribe');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = 'Redirecting to payment...';
+            }
+
+            try {
+                var response = await fetch('/.netlify/functions/create-checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        plan: selectedPlanType,
+                        userId: currentUser ? currentUser.uid : 'anonymous',
+                        email: currentUser ? currentUser.email : null
+                    })
+                });
+
+                var data = await response.json();
+
+                if (data.url) {
+                    // Redirect to Stripe Checkout
+                    window.location.href = data.url;
+                } else if (data.error) {
+                    // Stripe not configured yet - use demo mode
+                    console.log('Stripe not configured, using demo mode:', data.error);
+                    activatePremiumDemo();
+                } else {
+                    activatePremiumDemo();
+                }
+            } catch (error) {
+                // Network error or Stripe not set up - use demo mode
+                console.log('Payment redirect failed, using demo mode:', error);
+                activatePremiumDemo();
+            }
+
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = t('subscribe');
+            }
+        }
+
+        // Demo mode - activates premium without real payment
+        // Remove this function when Stripe is fully configured
+        function activatePremiumDemo() {
             isPremium = true;
             localStorage.setItem('snapchef_premium', '1');
+            localStorage.setItem('snapchef_premium_plan', selectedPlanType);
+            localStorage.setItem('snapchef_premium_date', Date.now().toString());
+            
             closePremiumModal();
             updatePremiumUI();
-            toast(t('goPremium') + '!', '👑');
+            renderPremiumSettings();
+            showConfetti();
+            toast('Premium activated! 👑', '✅');
+
+            if (currentUser && db) {
+                db.collection('users').doc(currentUser.uid).set({
+                    isPremium: true,
+                    premiumPlan: selectedPlanType,
+                    premiumDate: Date.now()
+                }, { merge: true }).catch(function() {});
+            }
         }
 
         function updatePremiumUI() {
-            document.getElementById('subBanner').classList.toggle('hidden', isPremium);
-            document.getElementById('usageCounter').classList.toggle('hidden', isPremium);
-            document.getElementById('premiumBadge').classList.toggle('hidden', !isPremium);
+            var subBanner = document.getElementById('subBanner');
+            var usageCounter = document.getElementById('usageCounter');
+            var premiumBadge = document.getElementById('premiumBadge');
+            
+            if (subBanner) subBanner.classList.toggle('hidden', isPremium);
+            if (usageCounter) usageCounter.classList.toggle('hidden', isPremium);
+            if (premiumBadge) premiumBadge.classList.toggle('hidden', !isPremium);
+            
+            // Hide/show ads based on premium status
+            document.querySelectorAll('.ad-container').forEach(function(ad) {
+                ad.style.display = isPremium ? 'none' : 'flex';
+            });
+
+            // Update premium features
+            if (isPremium) {
+                CONFIG.FREE_DAILY_LIMIT = 999;
+            }
+        }
+
+        // Load AdSense (only for non-premium users)
+        function initAds() {
+            if (isPremium) return;
+            
+            // AdSense will be loaded here when you get an AdSense account
+            // For now, show placeholder ads with upgrade prompts
+            var adSlots = document.querySelectorAll('.ad-container');
+            adSlots.forEach(function(slot) {
+                var tips = [
+                    '👑 Go Premium — Unlimited recipes, no ads!',
+                    '🍳 Upgrade for AI Meal Planning + No Ads',
+                    '⭐ Premium: Unlimited + Offline + No Ads',
+                    '🔥 50% off yearly plan — $29.99/year'
+                ];
+                var tip = tips[Math.floor(Math.random() * tips.length)];
+                var content = slot.querySelector('[id$="Content"]');
+                if (content) {
+                    content.innerHTML = '<div style="padding:12px;cursor:pointer;" onclick="openPremiumModal()">' +
+                        '<div style="font-size:14px;font-weight:700;color:#6366f1;">' + tip + '</div>' +
+                        '</div>';
+                }
+            });
         }
 
         function checkDailyLimit() {
@@ -6543,6 +6768,54 @@
             dailyUsage.count++;
             localStorage.setItem('snapchef_daily', JSON.stringify(dailyUsage));
             updateUsageUI();
+            
+            // Smart upgrade prompts
+            if (!isPremium) {
+                var remaining = CONFIG.FREE_DAILY_LIMIT - dailyUsage.count;
+                if (remaining === 3) {
+                    setTimeout(function() {
+                        toast('3 free recipes remaining today', '⏰');
+                    }, 2000);
+                } else if (remaining === 1) {
+                    setTimeout(function() {
+                        toast('Last free recipe for today! Upgrade for unlimited 👑', '⚠️');
+                    }, 2000);
+                } else if (dailyUsage.count === 5) {
+                    // After 5th recipe ever, show premium value
+                    var totalEver = parseInt(localStorage.getItem('snapchef_total_recipes') || '0') + 1;
+                    localStorage.setItem('snapchef_total_recipes', totalEver.toString());
+                    if (totalEver === 5) {
+                        setTimeout(function() {
+                            showUpgradeNudge();
+                        }, 3000);
+                    }
+                }
+            }
+        }
+
+        function showUpgradeNudge() {
+            if (isPremium) return;
+            var html = '<div id="upgradeNudge" style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%);' +
+                'background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;border-radius:16px;padding:18px 22px;' +
+                'box-shadow:0 10px 40px rgba(99,102,241,0.4);z-index:9999;max-width:340px;width:calc(100% - 40px);' +
+                'animation:slideUp 0.5s cubic-bezier(0.34,1.56,0.64,1);">' +
+                '<div style="display:flex;align-items:center;gap:12px;">' +
+                '<div style="font-size:32px;">👑</div>' +
+                '<div style="flex:1;">' +
+                '<div style="font-weight:700;font-size:15px;">You love SnapChef!</div>' +
+                '<div style="font-size:12px;opacity:0.9;margin-top:2px;">Upgrade for unlimited recipes, no ads & more</div>' +
+                '</div>' +
+                '</div>' +
+                '<div style="display:flex;gap:8px;margin-top:12px;">' +
+                '<button onclick="document.getElementById(\'upgradeNudge\').remove();openPremiumModal();" style="flex:1;padding:10px;background:white;color:#6366f1;border:none;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;">See Plans</button>' +
+                '<button onclick="document.getElementById(\'upgradeNudge\').remove();" style="padding:10px 16px;background:rgba(255,255,255,0.2);color:white;border:none;border-radius:10px;font-size:13px;cursor:pointer;">Later</button>' +
+                '</div></div>';
+            document.body.insertAdjacentHTML('beforeend', html);
+            // Auto-dismiss after 10 seconds
+            setTimeout(function() {
+                var el = document.getElementById('upgradeNudge');
+                if (el) el.remove();
+            }, 10000);
         }
 
         function updateUsageUI() {
@@ -9565,17 +9838,52 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
         function showLimitBanner() {
             toast('Daily limit reached!', '⏰');
             
-            // Show premium banner in active tab results
             var activeTab = document.querySelector('.tab-content[style*="block"]') || document.getElementById('recipeTab');
             var resultsEl = activeTab ? activeTab.querySelector('.results') : null;
             if (resultsEl) {
                 resultsEl.innerHTML = '<div class="limit-banner">' +
-                    '<div class="limit-banner-title">👑 Daily Limit Reached</div>' +
-                    '<div class="limit-banner-desc">Upgrade to Premium for unlimited recipes, meal plans, and more!</div>' +
-                    '<button class="limit-banner-btn" onclick="openPremiumModal()">Go Premium</button>' +
-                    '</div>';
+                    '<div class="limit-banner-title">👑 ' + t('dailyLimitReached') + '</div>' +
+                    '<div class="limit-banner-desc">' + t('upgradePremium') + '</div>' +
+                    '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">' +
+                    '<button class="limit-banner-btn" onclick="openPremiumModal()">👑 Go Premium</button>' +
+                    '<button class="limit-banner-btn" style="background:#f59e0b;color:white;" onclick="watchRewardedAd()">📺 Watch Ad (+1)</button>' +
+                    '</div></div>';
                 resultsEl.classList.add('show');
             }
+        }
+
+        function watchRewardedAd() {
+            // Simulate rewarded ad (replace with real AdMob rewarded ad)
+            toast('Loading ad...', '📺');
+            
+            // Simulate ad watching (5 second wait)
+            var overlay = document.createElement('div');
+            overlay.id = 'rewardedAdOverlay';
+            overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;';
+            overlay.innerHTML = '<div style="font-size:48px;margin-bottom:20px;">📺</div>' +
+                '<div style="font-size:18px;font-weight:700;">Watching Ad...</div>' +
+                '<div id="adCountdown" style="font-size:48px;font-weight:800;margin-top:20px;color:#f59e0b;">5</div>' +
+                '<div style="font-size:13px;margin-top:10px;opacity:0.7;">You\'ll get +1 free recipe after this</div>';
+            document.body.appendChild(overlay);
+            
+            var count = 5;
+            var timer = setInterval(function() {
+                count--;
+                var el = document.getElementById('adCountdown');
+                if (el) el.textContent = count;
+                if (count <= 0) {
+                    clearInterval(timer);
+                    var ov = document.getElementById('rewardedAdOverlay');
+                    if (ov) ov.remove();
+                    
+                    // Grant reward
+                    dailyUsage.count = Math.max(0, dailyUsage.count - 1);
+                    localStorage.setItem('snapchef_daily', JSON.stringify(dailyUsage));
+                    updateUsageUI();
+                    toast('+1 free recipe! 🎉', '✅');
+                    showConfetti();
+                }
+            }, 1000);
         }
 
         // ========================================
@@ -10470,6 +10778,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             CreditSystem.init();
             MealPlanner.init();
             updatePremiumUI();
+            initAds();
             checkDailyLimit();
             renderHistory();
             initVoice();
@@ -10498,6 +10807,9 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             // Hide splash
             hideSplash();
+
+            // Render premium settings
+            renderPremiumSettings();
 
             // Init Health Target
             HealthTarget.init();
