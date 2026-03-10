@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
     <title>SnapChef - AI Recipe Generator & Meal Planner</title>
     <meta name="theme-color" content="#6366f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -10,6 +10,10 @@
     <meta name="description" content="Scan ingredients, get instant AI recipes & nutrition analysis. Free meal planning app.">
     <meta name="keywords" content="recipe generator, meal planner, calorie counter, ingredient scanner, AI cooking">
     <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://www.themealdb.com" crossorigin>
+    <link rel="preconnect" href="https://en.wikipedia.org" crossorigin>
+    <link rel="dns-prefetch" href="https://www.themealdb.com">
+    <link rel="dns-prefetch" href="https://en.wikipedia.org">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
     <!-- Firebase SDK -->
@@ -2980,6 +2984,164 @@
             cursor: pointer;
         }
 
+
+
+        /* Touch optimization for mobile */
+        .nav-item, .upload-btn, .main-btn, .capture-btn, 
+        .cam-side-btn, .prep-chip, .diet-chip, .detected-tag,
+        .meal-option-card, .recipe-selector-item, .history-item {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Smooth scrolling for tab content */
+        .tab-content { 
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+
+        /* GPU Acceleration for smooth animations */
+        .scan-line, .scan-corner, .capture-btn, .confetti-piece,
+        .in-app-notif, .toast, .premium-modal .premium-content,
+        .tab-content, .camera-preview {
+            will-change: transform, opacity;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+        /* Reduce motion for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+
+        /* ===== COOKING TIMER ===== */
+        .cook-timer-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            color: white;
+        }
+        .cook-timer-overlay.active { display: flex; }
+        .cook-timer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .cook-timer-title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .cook-timer-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        .cook-timer-step {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 24px;
+            text-align: center;
+        }
+        .cook-step-num {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .cook-step-text {
+            font-size: 22px;
+            font-weight: 600;
+            line-height: 1.5;
+            max-width: 500px;
+        }
+        .cook-timer-display {
+            margin-top: 30px;
+            font-size: 64px;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            color: #6366f1;
+        }
+        .cook-timer-display.warning { color: #f59e0b; }
+        .cook-timer-display.danger { color: #ef4444; animation: timerPulse 1s infinite; }
+        @keyframes timerPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .cook-timer-controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .cook-timer-btn {
+            padding: 14px 28px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 14px;
+            background: none;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .cook-timer-btn.primary {
+            background: #6366f1;
+            border-color: #6366f1;
+        }
+        .cook-timer-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .cook-nav-btn {
+            padding: 14px 24px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .cook-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .cook-nav-btn.next { background: #6366f1; }
+        .cook-progress-bar {
+            height: 3px;
+            background: rgba(255,255,255,0.1);
+        }
+        .cook-progress-fill {
+            height: 100%;
+            background: #6366f1;
+            transition: width 0.3s;
+        }
+        .cook-step-dots {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 16px;
+        }
+        .cook-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+        }
+        .cook-dot.active { background: #6366f1; }
+        .cook-dot.done { background: #22c55e; }
+
         /* ===== FLOATING GENERATE BUTTON ===== */
         .floating-generate {
             position: sticky;
@@ -4709,6 +4871,29 @@
         </div>
     </div>
 
+    <!-- Cooking Timer Overlay -->
+    <div class="cook-timer-overlay" id="cookTimerOverlay">
+        <div class="cook-timer-header">
+            <div class="cook-timer-title" id="cookTimerRecipeName">Cooking Mode</div>
+            <button class="cook-timer-close" onclick="CookTimer.close()">✕</button>
+        </div>
+        <div class="cook-progress-bar"><div class="cook-progress-fill" id="cookProgressFill"></div></div>
+        <div class="cook-timer-step">
+            <div class="cook-step-num" id="cookStepNum">Step 1 of 5</div>
+            <div class="cook-step-text" id="cookStepText">Loading...</div>
+            <div class="cook-step-dots" id="cookStepDots"></div>
+            <div class="cook-timer-display" id="cookTimerDisplay" style="display:none;">00:00</div>
+            <div class="cook-timer-controls" id="cookTimerControls" style="display:none;">
+                <button class="cook-timer-btn" onclick="CookTimer.resetTimer()">↺ Reset</button>
+                <button class="cook-timer-btn primary" id="cookTimerToggle" onclick="CookTimer.toggleTimer()">▶ Start</button>
+            </div>
+        </div>
+        <div class="cook-timer-nav">
+            <button class="cook-nav-btn" id="cookPrevBtn" onclick="CookTimer.prev()">← Prev</button>
+            <button class="cook-nav-btn next" id="cookNextBtn" onclick="CookTimer.next()">Next →</button>
+        </div>
+    </div>
+
     <!-- Toast -->
     <div class="toast" id="toast"></div>
 
@@ -4820,7 +5005,7 @@
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <div style="font-size: 22px;">✨</div>
                         <div style="flex:1;">
-                            <div style="font-weight: 700; font-size: 13px; color: var(--primary);" id="usageCounter">Loading...</div>
+                            <div style="font-weight: 700; font-size: 13px; color: var(--primary);" id="usageCounter2">Loading...</div>
                             <div style="font-size: 11px; color: var(--primary); margin-top: 2px;">AI-powered recipe generation</div>
                         </div>
                     </div>
@@ -4902,7 +5087,7 @@
 
                 <!-- Image Preview -->
                 <div class="image-preview" id="recipeImagePreview">
-                    <img id="recipeImage" alt="Uploaded ingredients">
+                    <img id="recipeImage" loading="lazy" alt="Uploaded ingredients">
                     <button class="remove-img" onclick="removeImage('recipe')">✕</button>
                 </div>
 
@@ -5031,7 +5216,7 @@
                 </div>
 
                 <div class="image-preview" id="analyzeImagePreview">
-                    <img id="analyzeImage" alt="Food to analyze">
+                    <img id="analyzeImage" loading="lazy" alt="Food to analyze">
                     <button class="remove-img" onclick="removeImage('analyze')">✕</button>
                 </div>
 
@@ -5855,6 +6040,28 @@
         };
 
         // ========================================
+        // ERROR BOUNDARY
+        // ========================================
+        window.onerror = function(msg, url, line, col, error) {
+            // Silently handle errors in production
+            if (msg.indexOf('Script error') > -1) return true;
+            // Log critical errors for debugging
+            try {
+                var errData = { msg: msg, line: line, time: Date.now() };
+                var errors = JSON.parse(localStorage.getItem('snapchef_errors') || '[]');
+                errors.push(errData);
+                if (errors.length > 10) errors = errors.slice(-10);
+                localStorage.setItem('snapchef_errors', JSON.stringify(errors));
+            } catch(e) {}
+            return false;
+        };
+
+        window.addEventListener('unhandledrejection', function(event) {
+            // Prevent promise errors from crashing the app
+            event.preventDefault();
+        });
+
+        // ========================================
         // GLOBAL VARIABLES
         // ========================================
         var currentLang = localStorage.getItem('snapchef_lang') || 'en';
@@ -6530,7 +6737,7 @@
                         }
                     }
                 } catch(e) {
-                    console.log('oEmbed fetch skipped:', e);
+                    // console.log('oEmbed fetch skipped:', e);
                 }
                 titleEl.style.display = 'none';
             },
@@ -7158,6 +7365,30 @@
             toast('Deleted', '🗑️');
         }
 
+        // Save recipe for offline access
+        function saveOffline() {
+            if (!currentRecipeData) return;
+            var saved = JSON.parse(localStorage.getItem('snapchef_offline_recipes') || '[]');
+            var exists = saved.some(function(r) { return r.name === currentRecipeData.name; });
+            if (exists) {
+                saved = saved.filter(function(r) { return r.name !== currentRecipeData.name; });
+                toast('Removed from offline', '📌');
+            } else {
+                // Save complete recipe data with image
+                var offlineRecipe = JSON.parse(JSON.stringify(currentRecipeData));
+                offlineRecipe.savedAt = Date.now();
+                offlineRecipe.offlineImage = foodImageCache[currentRecipeData.name] || null;
+                saved.push(offlineRecipe);
+                toast('Saved for offline! 📌', '✅');
+            }
+            localStorage.setItem('snapchef_offline_recipes', JSON.stringify(saved));
+        }
+
+        // Load offline recipes when offline
+        function getOfflineRecipes() {
+            return JSON.parse(localStorage.getItem('snapchef_offline_recipes') || '[]');
+        }
+
         function toggleFavorite() {
             if (!currentRecipeData) return;
             var index = favorites.findIndex(function(f) { return f.name === currentRecipeData.name; });
@@ -7582,6 +7813,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 '<div class="recipe-actions">' +
                 '<button class="recipe-action' + (isFav ? ' fav' : '') + '" onclick="toggleFavorite()" title="Favorite">' + (isFav ? '❤️' : '🤍') + '</button>' +
                 '<button class="recipe-action" onclick="Social.shareRecipe()" title="Share">📤</button>' +
+                '<button class="recipe-action" onclick="saveOffline()" title="Save Offline">📌</button>' +
                 '<button class="recipe-action" onclick="voiceCook.start(currentRecipeData)" title="Voice Cooking Mode" aria-label="Read recipe aloud">🔊</button>' +
                 '</div></div>' +
                 '<div class="recipe-stats">' +
@@ -7594,11 +7826,18 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 '<h3 class="section-title">🥗 Ingredients</h3>' +
                 '<div class="ingredients-grid">';
 
-            (recipe.ingredients || []).forEach(function(ing) {
-                html += '<div class="ing-item">' + escapeHTML(ing) + '</div>';
+            (recipe.ingredients || []).forEach(function(ing, idx) {
+                html += '<div class="ing-item" onclick="showSubstitute(this, \'' + escapeHTML(ing).replace(/'/g, "\\'") + '\')" style="cursor:pointer;" title="Tap for substitutes">' + 
+                    escapeHTML(ing) + 
+                    '<span style="float:right;opacity:0.3;font-size:12px;">↔</span></div>';
             });
 
-            html += '</div><h3 class="section-title">📝 Instructions</h3><div class="steps-list">';
+            html += '</div>' +
+                '<div class="substitute-popup" id="substitutePopup" style="display:none;margin:10px 0;padding:14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;">' +
+                '<div style="font-weight:700;font-size:13px;color:#166534;margin-bottom:6px;">↔ Substitutes</div>' +
+                '<div id="substituteContent" style="font-size:13px;color:#15803d;line-height:1.5;"></div>' +
+                '</div>' +
+                '<h3 class="section-title">📝 Instructions</h3><div class="steps-list">';
 
             (recipe.steps || []).forEach(function(step, i) {
                 html += '<div class="step-item"><div class="step-num">' + (i + 1) + '</div><div class="step-text">' + escapeHTML(step) + '</div></div>';
@@ -7606,7 +7845,9 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             html += '</div>' +
                 '<div style="display:flex;gap:8px;margin-top:15px;flex-wrap:wrap;">' +
-                '<button class="main-btn" onclick="voiceCook.start(currentRecipeData)" style="flex:1;min-width:45%; background: var(--primary);">' +
+                '<button class="main-btn" onclick="CookTimer.open(currentRecipeData)" style="flex:1;min-width:45%; background: var(--primary);">' +
+                '<span>👨‍🍳</span><span>Start Cooking</span></button>' +
+                '<button class="main-btn" onclick="voiceCook.start(currentRecipeData)" style="flex:1;min-width:45%; background: #8b5cf6;">' +
                 '<span>🗣️</span><span>Voice Cook</span></button>' +
                 '<button class="main-btn" onclick="ShoppingList.addFromRecipe(currentRecipeData)" style="flex:1;min-width:45%; background: var(--accent);">' +
                 '<span>🛒</span><span>Shopping List</span></button>' +
@@ -7635,7 +7876,53 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             }, 100);
         }
 
-        function addToMealPlan() {
+        function showSubstitute(el, ingredient) {
+            var popup = document.getElementById('substitutePopup');
+            var contentEl = document.getElementById('substituteContent');
+            if (!popup || !contentEl) return;
+
+            // Common substitutions map
+            var subs = {
+                'egg': 'Flaxseed (1 tbsp + 3 tbsp water), Banana (1/4 mashed), Applesauce (1/4 cup)',
+                'butter': 'Olive oil, Coconut oil, Greek yogurt, Avocado',
+                'milk': 'Almond milk, Oat milk, Coconut milk, Soy milk',
+                'cream': 'Coconut cream, Cashew cream, Greek yogurt',
+                'flour': 'Almond flour, Oat flour, Coconut flour, Rice flour',
+                'sugar': 'Honey, Maple syrup, Stevia, Coconut sugar',
+                'cheese': 'Nutritional yeast, Tofu ricotta, Cashew cheese',
+                'chicken': 'Tofu, Turkey, Tempeh, Chickpeas',
+                'beef': 'Turkey, Mushrooms, Lentils, Beyond Meat',
+                'rice': 'Quinoa, Cauliflower rice, Couscous, Bulgur',
+                'pasta': 'Zucchini noodles, Rice noodles, Spaghetti squash',
+                'bread': 'Lettuce wraps, Rice cakes, Sweet potato toast',
+                'soy sauce': 'Coconut aminos, Tamari, Worcestershire sauce',
+                'oil': 'Avocado oil, Coconut oil, Ghee, Butter',
+                'onion': 'Shallots, Leeks, Chives, Scallions',
+                'garlic': 'Garlic powder (1/4 tsp per clove), Shallots'
+            };
+
+            var ingLower = ingredient.toLowerCase();
+            var found = null;
+            for (var key in subs) {
+                if (ingLower.indexOf(key) > -1) {
+                    found = '<strong>' + key + '</strong> → ' + subs[key];
+                    break;
+                }
+            }
+
+            if (found) {
+                contentEl.innerHTML = found;
+            } else {
+                contentEl.innerHTML = '<em>No common substitutes found for this ingredient.</em>';
+            }
+            
+            popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
+            if (popup.style.display === 'block') {
+                popup.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+                function addToMealPlan() {
             if (!currentRecipeData) return;
             MealPlanner.openMealSelector(0, 'dinner');
         }
@@ -8509,7 +8796,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 var results = document.getElementById('recipeResults');
                 var existing = document.getElementById('shoppingListPanel');
                 if (existing) { existing.remove(); return; }
-                results.insertAdjacentHTML('beforeend', '<div class="shopping-list-panel" id="shoppingListPanel"></div>');
+                results.insertAdjacentHTML('beforeend', '<div class="shopping-list-panel" id="shoppingListPanel2"></div>');
                 this.render();
             }
         };
@@ -9398,6 +9685,229 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
         }
 
         // ========================================
+        // COOKING TIMER - Step by Step Mode
+        // ========================================
+        var CookTimer = {
+            steps: [],
+            currentStep: 0,
+            timerSeconds: 0,
+            timerInterval: null,
+            timerRunning: false,
+            wakeLock: null,
+
+            open: function(recipe) {
+                if (!recipe || !recipe.steps || !recipe.steps.length) {
+                    toast('No steps available', '⚠️');
+                    return;
+                }
+                this.steps = recipe.steps;
+                this.currentStep = 0;
+                document.getElementById('cookTimerRecipeName').textContent = recipe.name || 'Cooking Mode';
+                document.getElementById('cookTimerOverlay').classList.add('active');
+                this.renderStep();
+                this.keepScreenOn();
+
+                // Prevent back button from closing app
+                history.pushState({ cookMode: true }, '');
+            },
+
+            close: function() {
+                document.getElementById('cookTimerOverlay').classList.remove('active');
+                this.stopTimer();
+                this.releaseScreenLock();
+            },
+
+            renderStep: function() {
+                var step = this.steps[this.currentStep];
+                var total = this.steps.length;
+
+                document.getElementById('cookStepNum').textContent = t('step') || 'Step ' + (this.currentStep + 1) + ' / ' + total;
+                document.getElementById('cookStepText').textContent = step;
+                document.getElementById('cookProgressFill').style.width = ((this.currentStep + 1) / total * 100) + '%';
+
+                // Dots
+                var dotsHtml = '';
+                for (var i = 0; i < total; i++) {
+                    var cls = i === this.currentStep ? 'active' : (i < this.currentStep ? 'done' : '');
+                    dotsHtml += '<div class="cook-dot ' + cls + '"></div>';
+                }
+                document.getElementById('cookStepDots').innerHTML = dotsHtml;
+
+                // Nav buttons
+                document.getElementById('cookPrevBtn').disabled = this.currentStep === 0;
+                document.getElementById('cookNextBtn').textContent = this.currentStep === total - 1 ? '✅ Done' : 'Next →';
+
+                // Detect time in step text (e.g., "5 minutes", "10 min", "1 hour")
+                this.stopTimer();
+                var timeMatch = step.match(/(\d+)\s*(minute|min|hour|hr|second|sec)/i);
+                if (timeMatch) {
+                    var amount = parseInt(timeMatch[1]);
+                    var unit = timeMatch[2].toLowerCase();
+                    if (unit.indexOf('hour') > -1 || unit.indexOf('hr') > -1) amount *= 3600;
+                    else if (unit.indexOf('min') > -1) amount *= 60;
+                    this.timerSeconds = amount;
+                    this.showTimer();
+                } else {
+                    document.getElementById('cookTimerDisplay').style.display = 'none';
+                    document.getElementById('cookTimerControls').style.display = 'none';
+                }
+
+                // Speak step
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    var utter = new SpeechSynthesisUtterance('Step ' + (this.currentStep + 1) + '. ' + step);
+                    utter.rate = 0.85;
+                    utter.lang = currentLang === 'az' ? 'az-AZ' : currentLang === 'ru' ? 'ru-RU' : 'en-US';
+                    window.speechSynthesis.speak(utter);
+                }
+            },
+
+            showTimer: function() {
+                this.timerRunning = false;
+                this.updateTimerDisplay();
+                document.getElementById('cookTimerDisplay').style.display = 'block';
+                document.getElementById('cookTimerControls').style.display = 'flex';
+                document.getElementById('cookTimerToggle').textContent = '▶ Start';
+            },
+
+            toggleTimer: function() {
+                if (this.timerRunning) {
+                    this.pauseTimer();
+                } else {
+                    this.startTimer();
+                }
+            },
+
+            startTimer: function() {
+                if (this.timerSeconds <= 0) return;
+                this.timerRunning = true;
+                document.getElementById('cookTimerToggle').textContent = '⏸ Pause';
+                var self = this;
+                this.timerInterval = setInterval(function() {
+                    self.timerSeconds--;
+                    self.updateTimerDisplay();
+                    if (self.timerSeconds <= 0) {
+                        self.stopTimer();
+                        self.timerDone();
+                    }
+                }, 1000);
+            },
+
+            pauseTimer: function() {
+                this.timerRunning = false;
+                clearInterval(this.timerInterval);
+                document.getElementById('cookTimerToggle').textContent = '▶ Resume';
+            },
+
+            stopTimer: function() {
+                this.timerRunning = false;
+                clearInterval(this.timerInterval);
+            },
+
+            resetTimer: function() {
+                this.stopTimer();
+                // Re-detect time from step
+                var step = this.steps[this.currentStep];
+                var timeMatch = step.match(/(\d+)\s*(minute|min|hour|hr|second|sec)/i);
+                if (timeMatch) {
+                    var amount = parseInt(timeMatch[1]);
+                    var unit = timeMatch[2].toLowerCase();
+                    if (unit.indexOf('hour') > -1 || unit.indexOf('hr') > -1) amount *= 3600;
+                    else if (unit.indexOf('min') > -1) amount *= 60;
+                    this.timerSeconds = amount;
+                }
+                this.updateTimerDisplay();
+                document.getElementById('cookTimerToggle').textContent = '▶ Start';
+            },
+
+            updateTimerDisplay: function() {
+                var m = Math.floor(this.timerSeconds / 60);
+                var s = this.timerSeconds % 60;
+                var display = document.getElementById('cookTimerDisplay');
+                display.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+
+                // Color based on remaining time
+                display.className = 'cook-timer-display';
+                if (this.timerSeconds <= 10 && this.timerSeconds > 0) display.classList.add('danger');
+                else if (this.timerSeconds <= 30) display.classList.add('warning');
+            },
+
+            timerDone: function() {
+                // Vibrate + sound
+                if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 200]);
+
+                // Play alarm sound
+                try {
+                    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    [0, 0.2, 0.4].forEach(function(delay) {
+                        var osc = ctx.createOscillator();
+                        var gain = ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.frequency.value = 880;
+                        gain.gain.value = 0.3;
+                        osc.start(ctx.currentTime + delay);
+                        osc.stop(ctx.currentTime + delay + 0.15);
+                    });
+                } catch(e) {}
+
+                // Notification
+                if (NotifSystem.getPermissionStatus() === 'granted') {
+                    NotifSystem.sendBrowserNotif(
+                        '⏰ Timer Done!',
+                        'Step ' + (this.currentStep + 1) + ' is complete!',
+                        '⏰'
+                    );
+                }
+
+                document.getElementById('cookTimerDisplay').textContent = '✅ Done!';
+                document.getElementById('cookTimerToggle').textContent = '▶ Restart';
+                toast('Timer done! ⏰', '✅');
+            },
+
+            next: function() {
+                this.stopTimer();
+                if (this.currentStep >= this.steps.length - 1) {
+                    this.close();
+                    toast('Cooking complete! 🎉', '✅');
+                    showConfetti();
+                    return;
+                }
+                this.currentStep++;
+                this.renderStep();
+            },
+
+            prev: function() {
+                this.stopTimer();
+                if (this.currentStep <= 0) return;
+                this.currentStep--;
+                this.renderStep();
+            },
+
+            keepScreenOn: async function() {
+                try {
+                    if ('wakeLock' in navigator) {
+                        this.wakeLock = await navigator.wakeLock.request('screen');
+                    }
+                } catch(e) {}
+            },
+
+            releaseScreenLock: function() {
+                if (this.wakeLock) {
+                    this.wakeLock.release().catch(function() {});
+                    this.wakeLock = null;
+                }
+            }
+        };
+
+        // Handle back button in cook mode
+        window.addEventListener('popstate', function(e) {
+            if (document.getElementById('cookTimerOverlay').classList.contains('active')) {
+                CookTimer.close();
+            }
+        });
+
+        // ========================================
         // NOTIFICATION SYSTEM
         // ========================================
         var NotifSystem = {
@@ -9772,7 +10282,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                             ]
                         });
                     }).catch(function(e) {
-                        console.log('SW notification failed, falling back:', e);
+                        // console.log('SW notification failed, falling back:', e);
                         NotifSystem._fallbackNotif(title, body, icon);
                     });
                 } else {
@@ -9791,7 +10301,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                     notif.onclick = function() { window.focus(); notif.close(); };
                     setTimeout(function() { notif.close(); }, 8000);
                 } catch (e) {
-                    console.log('Fallback notification failed:', e);
+                    // console.log('Fallback notification failed:', e);
                 }
             },
 
@@ -9849,7 +10359,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 try {
                     fcmMessaging.getToken().then(function(token) {
                         if (token) {
-                            console.log('FCM Token obtained');
+                            // console.log('FCM Token obtained');
                             localStorage.setItem('snapchef_fcm_token', token);
                             // Save token to Firestore for server-side push
                             NotifSystem.saveTokenToFirestore(token);
@@ -9869,9 +10379,9 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                     waterTarget: HealthTarget.profile ? HealthTarget.profile.waterTarget : 8,
                     updatedAt: Date.now()
                 }, { merge: true }).then(function() {
-                    console.log('FCM token + settings saved to Firestore');
+                    // console.log('FCM token + settings saved to Firestore');
                 }).catch(function(e) {
-                    console.log('Firestore save error:', e);
+                    // console.log('Firestore save error:', e);
                 });
             },
 
@@ -9947,6 +10457,14 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             // Load saved API key
             // (no longer needed - API key is on server)
 
+            // Cache common DOM references for performance
+            window._snapchef = {
+                recipeTab: document.getElementById('recipeTab'),
+                analyzeTab: document.getElementById('analyzeTab'),
+                healthTab: document.getElementById('healthTab'),
+                toast: document.getElementById('toast')
+            };
+
             // Initialize systems
             setLanguage(currentLang);
             CreditSystem.init();
@@ -9960,6 +10478,16 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             // Event listeners
             window.addEventListener('online', updateOnlineStatus);
             window.addEventListener('offline', updateOnlineStatus);
+
+            // Debounced resize handler
+            var resizeTimeout;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(function() {
+                    // Recalculate any layout-dependent elements
+                    if (typeof renderHistory === 'function') renderHistory();
+                }, 250);
+            });
 
             // Close dropdowns on outside click
             document.addEventListener('click', function(e) {
@@ -9977,9 +10505,9 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             // Register Service Worker (required for phone notifications)
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('/sw.js').then(function(reg) {
-                    console.log('SW registered:', reg.scope);
+                    // console.log('SW registered:', reg.scope);
                 }).catch(function(err) {
-                    console.log('SW registration failed:', err);
+                    // console.log('SW registration failed:', err);
                 });
             }
 
