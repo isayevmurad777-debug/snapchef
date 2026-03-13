@@ -7071,10 +7071,11 @@
                                 description: ''
                             };
 
-                            // For YouTube, try to get description via multiple sources
+                            // For YouTube, try multiple methods to get description
                             if (platform.name === 'youtube') {
                                 var ytId = this.getYouTubeId(url);
                                 if (ytId) {
+                                    // Method 1: Invidious API
                                     var invInstances = [
                                         'https://vid.puffyan.us',
                                         'https://invidious.fdn.fr',
@@ -7083,7 +7084,7 @@
                                     ];
                                     for (var ii = 0; ii < invInstances.length; ii++) {
                                         try {
-                                            var invResp = await fetch(invInstances[ii] + '/api/v1/videos/' + ytId + '?fields=description', { signal: AbortSignal.timeout(5000) });
+                                            var invResp = await fetch(invInstances[ii] + '/api/v1/videos/' + ytId + '?fields=description', { signal: AbortSignal.timeout(4000) });
                                             if (invResp.ok) {
                                                 var invData = await invResp.json();
                                                 if (invData.description) {
@@ -7092,6 +7093,34 @@
                                                 }
                                             }
                                         } catch(invErr) { continue; }
+                                    }
+
+                                    // Method 2: If Invidious failed, try fetching YouTube page via proxy
+                                    if (!this._videoInfo.description) {
+                                        try {
+                                            var ytProxy = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.youtube.com/watch?v=' + ytId), { signal: AbortSignal.timeout(8000) });
+                                            if (ytProxy.ok) {
+                                                var ytPage = await ytProxy.json();
+                                                if (ytPage.contents) {
+                                                    // Extract description from meta tags
+                                                    var descMatch = ytPage.contents.match(/"shortDescription":"(.*?)"/);
+                                                    if (descMatch) {
+                                                        this._videoInfo.description = descMatch[1]
+                                                            .replace(/\\n/g, '\n')
+                                                            .replace(/\\u0026/g, '&')
+                                                            .replace(/\\"/g, '"')
+                                                            .substring(0, 3000);
+                                                    }
+                                                    // Also try to get more detail from page
+                                                    if (!this._videoInfo.description) {
+                                                        var metaDesc = ytPage.contents.match(/<meta name="description" content="(.*?)"/);
+                                                        if (metaDesc) {
+                                                            this._videoInfo.description = metaDesc[1].substring(0, 1000);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        } catch(proxyErr) { /* proxy failed */ }
                                     }
                                 }
                             }
@@ -7182,20 +7211,33 @@
                     }
                 } catch(e) { /* Page fetch skipped */ }
 
-                // For YouTube, also add transcript hint
-                if (platform.name === 'youtube' && videoInfo && videoInfo.description) {
-                    pageContent += '\n\nYouTube video description (may contain recipe):\n' + videoInfo.description;
+                // For YouTube/video, add description as content
+                if (videoInfo && videoInfo.description) {
+                    pageContent += '\n\nVideo description (likely contains the recipe or ingredients list):\n' + videoInfo.description;
                 }
 
                 var prompt = context;
-                if (pageContent) {
+                if (pageContent && pageContent.length > 100) {
                     prompt += pageContent;
-                    prompt += '\n\nExtract the EXACT recipe from this content. Use the ACTUAL ingredients, amounts, and steps mentioned. Do NOT make up a generic recipe - use what is specifically described in the content.';
+                    prompt += '\n\nIMPORTANT INSTRUCTIONS:';
+                    prompt += '\n1. Extract the EXACT recipe from the content above';
+                    prompt += '\n2. Use the ACTUAL ingredients and amounts mentioned (do NOT substitute or change them)';
+                    prompt += '\n3. If the description lists ingredients, use THOSE exact ingredients';
+                    prompt += '\n4. If the description has steps/instructions, follow THOSE steps';
+                    prompt += '\n5. The recipe name should match what is shown in the video/page title';
                 } else if (videoInfo && videoInfo.title) {
-                    prompt += '\n\nI cannot access this page directly, but I have the title: "' + videoInfo.title + '".';
-                    prompt += '\n\nBased on this title, identify the SPECIFIC dish and provide the traditional authentic recipe for it. Include exact measurements and detailed steps.';
+                    // No page content available - use title to identify dish
+                    var title = videoInfo.title;
+                    prompt += '\n\nThe video title is: "' + title + '"';
+                    prompt += '\n\nIMPORTANT INSTRUCTIONS:';
+                    prompt += '\n1. Identify the SPECIFIC dish mentioned in this title';
+                    prompt += '\n2. The recipe name MUST match what the title says (not a generic version)';
+                    prompt += '\n3. If the title says "Chicken Alfredo" give me Chicken Alfredo, not "creamy chicken pasta"';
+                    prompt += '\n4. If the title mentions a specific cuisine (Turkish, Italian, etc.), use authentic ingredients for that cuisine';
+                    prompt += '\n5. Provide the traditional/authentic version of this EXACT dish';
+                    prompt += '\n6. Include precise measurements (grams, cups, tbsp) and temperatures';
                 } else {
-                    prompt += '\n\nI cannot access this page. Based on the URL, try to identify what dish this is about and provide an accurate recipe.';
+                    prompt += '\n\nBased on the URL, identify the dish and provide an accurate, detailed recipe.';
                 }
                 prompt += '\n\nReturn JSON: {"name":"Dish Name","description":"What this dish is and where it comes from","imageKeyword":"simple english name of dish for image search","ingredients":["200g chicken breast","2 tbsp soy sauce","1 clove garlic, minced"],"steps":["Detailed step 1 with temperatures and times","Step 2 with specific techniques"],"prepTime":15,"cookTime":30,"servings":4,"calories":400,"tips":"Pro tip","source":"' + (videoInfo ? videoInfo.author : 'imported') + '"}';
                 prompt += '\n\nIMPORTANT: Use REAL measurements (grams, cups, tbsp), REAL temperatures, and REAL timing. Be specific as if teaching a beginner.';
