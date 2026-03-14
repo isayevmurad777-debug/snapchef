@@ -7170,12 +7170,16 @@
                 var platform = this.getPlatform(url);
                 var videoInfo = this._videoInfo;
 
-                // Build smart prompt based on what we know
-                var context = 'I have a ' + platform.label + ' link: ' + url;
+                // Build smart prompt - DO NOT include URL (AI cannot access links)
+                var context = 'I need a complete recipe.';
                 if (videoInfo) {
-                    if (videoInfo.title) context += '\nVideo title: "' + videoInfo.title + '"';
-                    if (videoInfo.author) context += '\nCreator: ' + videoInfo.author;
-                    if (videoInfo.description) context += '\nVideo description: "' + videoInfo.description + '"';
+                    if (videoInfo.title) context += '\nDish/Video name: "' + videoInfo.title + '"';
+                    if (videoInfo.author) context += '\nChef/Creator: ' + videoInfo.author;
+                    if (videoInfo.description) context += '\nRecipe details from source:\n' + videoInfo.description;
+                } else {
+                    // Extract dish name from URL as hint
+                    var urlHint = url.replace(/https?:\/\//,'').replace(/[-_/]/g,' ').replace(/\.(com|org|net|html|php).*/g,'');
+                    context += '\nLooking for: ' + urlHint;
                 }
 
                 // Try to fetch page content for better extraction
@@ -7226,18 +7230,15 @@
                     prompt += '\n4. If the description has steps/instructions, follow THOSE steps';
                     prompt += '\n5. The recipe name should match what is shown in the video/page title';
                 } else if (videoInfo && videoInfo.title) {
-                    // No page content available - use title to identify dish
-                    var title = videoInfo.title;
-                    prompt += '\n\nThe video title is: "' + title + '"';
-                    prompt += '\n\nIMPORTANT INSTRUCTIONS:';
-                    prompt += '\n1. Identify the SPECIFIC dish mentioned in this title';
-                    prompt += '\n2. The recipe name MUST match what the title says (not a generic version)';
-                    prompt += '\n3. If the title says "Chicken Alfredo" give me Chicken Alfredo, not "creamy chicken pasta"';
-                    prompt += '\n4. If the title mentions a specific cuisine (Turkish, Italian, etc.), use authentic ingredients for that cuisine';
-                    prompt += '\n5. Provide the traditional/authentic version of this EXACT dish';
-                    prompt += '\n6. Include precise measurements (grams, cups, tbsp) and temperatures';
+                    prompt += '\n\nCreate a detailed recipe for: "' + videoInfo.title + '"';
+                    prompt += '\n\nRULES:';
+                    prompt += '\n- Recipe name MUST be: "' + videoInfo.title.replace(/[|\-–—].*/,'').replace(/recipe|how to make|easy|best|homemade/gi,'').trim() + '" or close to it';
+                    prompt += '\n- Use authentic, traditional ingredients for this dish';
+                    prompt += '\n- Include exact measurements (grams, cups, tbsp)';
+                    prompt += '\n- Include exact temperatures and cooking times';
+                    prompt += '\n- Write detailed step-by-step instructions';
                 } else {
-                    prompt += '\n\nBased on the URL, identify the dish and provide an accurate, detailed recipe.';
+                    prompt += '\n\nProvide a detailed, authentic recipe with exact measurements and steps.';
                 }
                 prompt += '\n\nReturn JSON: {"name":"Dish Name","description":"What this dish is and where it comes from","imageKeyword":"simple english name of dish for image search","ingredients":["200g chicken breast","2 tbsp soy sauce","1 clove garlic, minced"],"steps":["Detailed step 1 with temperatures and times","Step 2 with specific techniques"],"prepTime":15,"cookTime":30,"servings":4,"calories":400,"tips":"Pro tip","source":"' + (videoInfo ? videoInfo.author : 'imported') + '"}';
                 prompt += '\n\nIMPORTANT: Use REAL measurements (grams, cups, tbsp), REAL temperatures, and REAL timing. Be specific as if teaching a beginner.';
@@ -10728,6 +10729,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                             body: body,
                             icon: '/icons/icon-192x192.png',
                             badge: '/icons/icon-72x72.png',
+                            silent: false,
                             tag: 'snapchef-' + Date.now(),
                             vibrate: [100, 50, 100],
                             data: { url: window.location.href },
