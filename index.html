@@ -7182,132 +7182,44 @@
                     context += '\nLooking for: ' + urlHint;
                 }
 
-                // ========= FETCH PAGE CONTENT BY PLATFORM =========
+                // ========= FETCH PAGE CONTENT VIA SERVER =========
                 var pageContent = '';
-                var proxies = [
-                    'https://api.allorigins.win/get?url=',
-                    'https://api.codetabs.com/v1/proxy?quest='
-                ];
-
-                // --- YOUTUBE: Special handling ---
-                if (platform.name === 'youtube') {
-                    var ytId = this.getYouTubeId(url);
+                try {
+                    // Use our Netlify function - server-side fetch (no CORS, proper User-Agent)
+                    var fetchResp = await fetch('/.netlify/functions/fetch-url', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ url: url, platform: platform.name })
+                    });
                     
-                    // Try 1: Fetch YouTube page via proxies → extract shortDescription
-                    for (var pi = 0; pi < proxies.length && !pageContent; pi++) {
-                        try {
-                            var ytResp = await fetch(proxies[pi] + encodeURIComponent('https://www.youtube.com/watch?v=' + ytId), { signal: AbortSignal.timeout(8000) });
-                            if (ytResp.ok) {
-                                var ytData = await ytResp.json ? await ytResp.json() : { contents: await ytResp.text() };
-                                var ytHtml = ytData.contents || ytData || '';
-                                if (typeof ytHtml !== 'string') ytHtml = JSON.stringify(ytHtml);
-                                
-                                // Extract shortDescription from YouTube's initial data
-                                var sdMatch = ytHtml.match(/"shortDescription"\s*:\s*"((?:[^"\\]|\\.)*)"/);
-                                if (sdMatch && sdMatch[1].length > 50) {
-                                    pageContent = sdMatch[1]
-                                        .replace(/\\n/g, '\n')
-                                        .replace(/\\u0026/g, '&')
-                                        .replace(/\\"/g, '"')
-                                        .replace(/\\t/g, ' ');
-                                    pageContent = '\n\nYouTube video description (this IS the recipe):\n' + pageContent.substring(0, 4000);
-                                }
+                    if (fetchResp.ok) {
+                        var fetchData = await fetchResp.json();
+                        if (fetchData.success && fetchData.content) {
+                            pageContent = '\n\nContent extracted from page:\n' + fetchData.content;
+                            // Update title if we got a better one
+                            if (fetchData.title && !videoInfo) {
+                                context += '\nPage title: "' + fetchData.title + '"';
                             }
-                        } catch(e) { continue; }
-                    }
-
-                    // Try 2: Invidious API for description
-                    if (!pageContent && ytId) {
-                        var invUrls = ['https://vid.puffyan.us', 'https://invidious.fdn.fr', 'https://inv.nadeko.net'];
-                        for (var ii = 0; ii < invUrls.length && !pageContent; ii++) {
-                            try {
-                                var invR = await fetch(invUrls[ii] + '/api/v1/videos/' + ytId + '?fields=description', { signal: AbortSignal.timeout(4000) });
-                                if (invR.ok) {
-                                    var invD = await invR.json();
-                                    if (invD.description && invD.description.length > 50) {
-                                        pageContent = '\n\nYouTube video description (this IS the recipe):\n' + invD.description.substring(0, 4000);
-                                    }
-                                }
-                            } catch(e) { continue; }
                         }
                     }
-
-                    // Try 3: Use videoInfo.description from oEmbed (already fetched)
-                    if (!pageContent && videoInfo && videoInfo.description && videoInfo.description.length > 50) {
-                        pageContent = '\n\nVideo description:\n' + videoInfo.description;
-                    }
-                }
-
-                // --- RECIPE WEBSITES & OTHER ---
-                else {
-                    for (var pi2 = 0; pi2 < proxies.length && !pageContent; pi2++) {
-                        try {
-                            var pResp = await fetch(proxies[pi2] + encodeURIComponent(url), { signal: AbortSignal.timeout(10000) });
-                            if (pResp.ok) {
-                                var pData = await pResp.json ? await pResp.json() : { contents: await pResp.text() };
-                                var rawHtml = pData.contents || '';
-                                if (typeof rawHtml !== 'string') rawHtml = JSON.stringify(rawHtml);
-
-                                if (rawHtml.length > 200) {
-                                    // Method A: JSON-LD structured recipe data
-                                    var ldRegex = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
-                                    var ldMatch;
-                                    while ((ldMatch = ldRegex.exec(rawHtml)) !== null) {
-                                        try {
-                                            var ldObj = JSON.parse(ldMatch[1].trim());
-                                            var ldStr = JSON.stringify(ldObj);
-                                            if (ldStr.indexOf('"Recipe"') > -1) {
-                                                pageContent = '\n\nStructured recipe data:\n' + ldStr.substring(0, 4000);
-                                                break;
-                                            }
-                                            // Check @graph array
-                                            if (ldObj['@graph']) {
-                                                var recipes = ldObj['@graph'].filter(function(item) { return item['@type'] === 'Recipe'; });
-                                                if (recipes.length > 0) {
-                                                    pageContent = '\n\nStructured recipe data:\n' + JSON.stringify(recipes[0]).substring(0, 4000);
-                                                    break;
-                                                }
-                                            }
-                                        } catch(e) {}
-                                    }
-
-                                    // Method B: Parse HTML for recipe content
-                                    if (!pageContent) {
-                                        var tempDiv = document.createElement('div');
-                                        tempDiv.innerHTML = rawHtml;
-                                        tempDiv.querySelectorAll('script,style,nav,footer,header,aside,.ad,.sidebar').forEach(function(el) { el.remove(); });
-                                        
-                                        // Look for recipe containers
-                                        var recipeEl = tempDiv.querySelector('[itemtype*="Recipe"], .recipe, .recipe-content, .wprm-recipe, .tasty-recipe, #recipe, .recipe-card, .recipe-body');
-                                        if (recipeEl) {
-                                            pageContent = '\n\nRecipe from page:\n' + recipeEl.textContent.replace(/\s+/g, ' ').trim().substring(0, 4000);
-                                        } else {
-                                            var mainEl = tempDiv.querySelector('main, article, .content, .post-content, .entry-content');
-                                            if (mainEl) {
-                                                pageContent = '\n\nPage content:\n' + mainEl.textContent.replace(/\s+/g, ' ').trim().substring(0, 3000);
-                                            } else {
-                                                var bText = tempDiv.textContent.replace(/\s+/g, ' ').trim();
-                                                if (bText.length > 200) {
-                                                    pageContent = '\n\nPage text:\n' + bText.substring(0, 3000);
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    // Method C: TikTok/Instagram meta tags
-                                    if (!pageContent && (platform.name === 'tiktok' || platform.name === 'instagram')) {
-                                        var ogD = rawHtml.match(/<meta[^>]*property="og:description"[^>]*content="([^"]*)"/);
-                                        if (ogD) pageContent = '\n\nPost description: ' + ogD[1];
-                                    }
-                                }
+                } catch(serverErr) {
+                    // Server fetch failed - try client-side fallback
+                    try {
+                        var proxyResp = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url), { signal: AbortSignal.timeout(8000) });
+                        if (proxyResp.ok) {
+                            var proxyData = await proxyResp.json();
+                            if (proxyData.contents) {
+                                // Extract meta description as fallback
+                                var metaD = proxyData.contents.match(/<meta[^>]*(?:name="description"|property="og:description")[^>]*content="([^"]*)"/);
+                                if (metaD) pageContent = '\n\nPage description: ' + metaD[1];
                             }
-                        } catch(e) { continue; }
-                    }
-
-                    // Add videoInfo description for non-website platforms
-                    if (!pageContent && videoInfo && videoInfo.description) {
-                        pageContent = '\n\nVideo description:\n' + videoInfo.description;
-                    }
+                        }
+                    } catch(e) {}
+                }
+                
+                // Add video description from oEmbed if page fetch was thin
+                if (videoInfo && videoInfo.description && pageContent.length < 200) {
+                    pageContent += '\n\nVideo description:\n' + videoInfo.description;
                 }
 
                 var prompt = context;
