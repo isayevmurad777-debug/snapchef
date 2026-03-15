@@ -7128,7 +7128,28 @@
                             var display = '';
                             if (data.title) display += '📺 ' + data.title;
                             if (data.author_name) display += '\n👤 ' + data.author_name;
-                            if (this._videoInfo.description) display += '\n📝 Description found';
+                            
+                            // For YouTube, fetch description via YouTube Data API
+                            if (platform.name === 'youtube') {
+                                var ytId2 = this.getYouTubeId(url);
+                                if (ytId2) {
+                                    try {
+                                        var ytKey = firebaseConfig.apiKey;
+                                        var ytR = await fetch('https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + ytId2 + '&key=' + ytKey);
+                                        if (ytR.ok) {
+                                            var ytD = await ytR.json();
+                                            if (ytD.items && ytD.items[0]) {
+                                                var desc = ytD.items[0].snippet.description || '';
+                                                this._videoInfo.description = desc.substring(0, 5000);
+                                                this._videoInfo.title = ytD.items[0].snippet.title || this._videoInfo.title;
+                                                if (desc.length > 50) display += '\n📝 Full description loaded (' + desc.length + ' chars)';
+                                            }
+                                        }
+                                    } catch(e) {}
+                                }
+                            }
+                            
+                            if (!this._videoInfo.description && this._videoInfo.description) display += '\n📝 Description found';
                             titleEl.textContent = display;
                             titleEl.style.display = 'block';
                             titleEl.style.whiteSpace = 'pre-line';
@@ -7185,13 +7206,49 @@
                 // ========= FETCH PAGE CONTENT =========
                 var pageContent = '';
                 
-                if (platform.name === 'youtube' || platform.name === 'tiktok' || platform.name === 'instagram') {
-                    // VIDEO PLATFORMS: Don't fetch HTML (YouTube blocks bots)
-                    // Use oEmbed title + description (already fetched in fetchVideoInfo)
+                if (platform.name === 'youtube') {
+                    // YOUTUBE: Use YouTube Data API v3 to get FULL video description
+                    var ytId = this.getYouTubeId(url);
+                    if (ytId) {
+                        try {
+                            var ytApiKey = firebaseConfig.apiKey;
+                            var ytApiUrl = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + ytId + '&key=' + ytApiKey;
+                            var ytResp = await fetch(ytApiUrl);
+                            if (ytResp.ok) {
+                                var ytData = await ytResp.json();
+                                if (ytData.items && ytData.items.length > 0) {
+                                    var snippet = ytData.items[0].snippet;
+                                    var ytDesc = snippet.description || '';
+                                    var ytTitle = snippet.title || '';
+                                    var ytChannel = snippet.channelTitle || '';
+                                    
+                                    // Override videoInfo with accurate data
+                                    if (!videoInfo) videoInfo = {};
+                                    videoInfo.title = ytTitle;
+                                    videoInfo.author = ytChannel;
+                                    videoInfo.description = ytDesc;
+                                    
+                                    // Update context with real title
+                                    context = 'I need a complete recipe.\nDish/Video name: "' + ytTitle + '"';
+                                    if (ytChannel) context += '\nChef/Creator: ' + ytChannel;
+
+                                    if (ytDesc.length > 50) {
+                                        pageContent = '\n\nFULL YouTube video description (contains the recipe details — ingredients and steps are listed here):\n' + ytDesc.substring(0, 5000);
+                                    }
+                                }
+                            }
+                        } catch(ytErr) {
+                            // YouTube API failed — fall back to oEmbed data
+                            if (videoInfo && videoInfo.description) {
+                                pageContent = '\n\nVideo description:\n' + videoInfo.description;
+                            }
+                        }
+                    }
+                } else if (platform.name === 'tiktok' || platform.name === 'instagram') {
+                    // OTHER VIDEO PLATFORMS: Use oEmbed data
                     if (videoInfo && videoInfo.description) {
                         pageContent = '\n\nVideo description (may contain the recipe):\n' + videoInfo.description;
                     }
-                    // The video title is already in context - AI will use it
                 } else {
                     // RECIPE WEBSITES: Server-side fetch works great
                     try {
