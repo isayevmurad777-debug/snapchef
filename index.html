@@ -7330,10 +7330,11 @@
                 try {
                     switchTab('recipe');
 
-                    var data = await callAI([{
+                    // Use DeepSeek for import (more accurate extraction)
+                    var data = await callSmartAI([{
                         role: 'user',
                         content: prompt
-                    }], { response_format: { type: "json_object" } });
+                    }], { response_format: { type: "json_object" }, max_tokens: 2000 });
 
                     var recipe = safeParseJSON(data.response);
 
@@ -8139,6 +8140,46 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             }
             var usg = data._usage || data.usage; if (usg) updateUsageDisplay(usg);
             return data;
+        }
+
+        // DeepSeek AI - for recipe extraction (more accurate)
+        async function callDeepSeek(messages, options) {
+            options = options || {};
+            try {
+                var response = await fetch('/.netlify/functions/deepseek', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: messages,
+                        max_tokens: options.max_tokens || 2000,
+                        response_format: options.response_format || undefined
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('DeepSeek unavailable');
+                }
+                
+                var data = await response.json();
+                if (data.error) throw new Error(data.error);
+                return data;
+            } catch(e) {
+                // Fallback to GPT if DeepSeek fails
+                return await callAI(messages, options);
+            }
+        }
+
+        // Smart AI - uses DeepSeek for extraction, GPT for generation
+        async function callSmartAI(messages, options) {
+            options = options || {};
+            if (options.useDeepSeek !== false) {
+                try {
+                    return await callDeepSeek(messages, options);
+                } catch(e) {
+                    return await callAI(messages, options);
+                }
+            }
+            return await callAI(messages, options);
         }
 
         function getDeviceId() {
