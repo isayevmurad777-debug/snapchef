@@ -7182,44 +7182,49 @@
                     context += '\nLooking for: ' + urlHint;
                 }
 
-                // ========= FETCH PAGE CONTENT VIA SERVER =========
+                // ========= FETCH PAGE CONTENT =========
                 var pageContent = '';
-                try {
-                    // Use our Netlify function - server-side fetch (no CORS, proper User-Agent)
-                    var fetchResp = await fetch('/.netlify/functions/fetch-url', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ url: url, platform: platform.name })
-                    });
-                    
-                    if (fetchResp.ok) {
-                        var fetchData = await fetchResp.json();
-                        if (fetchData.success && fetchData.content) {
-                            pageContent = '\n\nContent extracted from page:\n' + fetchData.content;
-                            // Update title if we got a better one
-                            if (fetchData.title && !videoInfo) {
-                                context += '\nPage title: "' + fetchData.title + '"';
-                            }
-                        }
-                    }
-                } catch(serverErr) {
-                    // Server fetch failed - try client-side fallback
-                    try {
-                        var proxyResp = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url), { signal: AbortSignal.timeout(8000) });
-                        if (proxyResp.ok) {
-                            var proxyData = await proxyResp.json();
-                            if (proxyData.contents) {
-                                // Extract meta description as fallback
-                                var metaD = proxyData.contents.match(/<meta[^>]*(?:name="description"|property="og:description")[^>]*content="([^"]*)"/);
-                                if (metaD) pageContent = '\n\nPage description: ' + metaD[1];
-                            }
-                        }
-                    } catch(e) {}
-                }
                 
-                // Add video description from oEmbed if page fetch was thin
-                if (videoInfo && videoInfo.description && pageContent.length < 200) {
-                    pageContent += '\n\nVideo description:\n' + videoInfo.description;
+                if (platform.name === 'youtube' || platform.name === 'tiktok' || platform.name === 'instagram') {
+                    // VIDEO PLATFORMS: Don't fetch HTML (YouTube blocks bots)
+                    // Use oEmbed title + description (already fetched in fetchVideoInfo)
+                    if (videoInfo && videoInfo.description) {
+                        pageContent = '\n\nVideo description (may contain the recipe):\n' + videoInfo.description;
+                    }
+                    // The video title is already in context - AI will use it
+                } else {
+                    // RECIPE WEBSITES: Server-side fetch works great
+                    try {
+                        var fetchResp = await fetch('/.netlify/functions/fetch-url', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ url: url, platform: platform.name })
+                        });
+                        
+                        if (fetchResp.ok) {
+                            var fetchData = await fetchResp.json();
+                            if (fetchData.success && fetchData.content && fetchData.content.length > 100) {
+                                pageContent = '\n\nRecipe content extracted from website:\n' + fetchData.content;
+                            }
+                        }
+                    } catch(serverErr) {
+                        // Fallback: client-side proxy
+                        try {
+                            var proxyResp = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url), { signal: AbortSignal.timeout(8000) });
+                            if (proxyResp.ok) {
+                                var proxyData = await proxyResp.json();
+                                if (proxyData.contents) {
+                                    var tempDiv = document.createElement('div');
+                                    tempDiv.innerHTML = proxyData.contents;
+                                    tempDiv.querySelectorAll('script,style,nav,footer,header').forEach(function(el) { el.remove(); });
+                                    var recipeEl = tempDiv.querySelector('[itemtype*="Recipe"], .recipe, .wprm-recipe, .tasty-recipe');
+                                    if (recipeEl) {
+                                        pageContent = '\n\nRecipe from page:\n' + recipeEl.textContent.replace(/\s+/g, ' ').trim().substring(0, 4000);
+                                    }
+                                }
+                            }
+                        } catch(e) {}
+                    }
                 }
 
                 var prompt = context;
@@ -7232,13 +7237,25 @@
                     prompt += '\n4. If the description has steps/instructions, follow THOSE steps';
                     prompt += '\n5. The recipe name should match what is shown in the video/page title';
                 } else if (videoInfo && videoInfo.title) {
-                    prompt += '\n\nCreate a detailed recipe for: "' + videoInfo.title + '"';
+                    // Extract the actual dish name from video title
+                    var dishName = videoInfo.title
+                        .replace(/[|\-–—\[\]].*/g, '')
+                        .replace(/recipe|how to make|how to cook|easy|best|homemade|perfect|ultimate|simple|quick|delicious|amazing|traditional|authentic|by .*|ft .*|with .*/gi, '')
+                        .replace(/^\s*the\s+/i, '')
+                        .trim();
+                    if (!dishName || dishName.length < 3) dishName = videoInfo.title.split(/[|\-–—]/)[0].trim();
+                    
+                    prompt += '\n\nThe video is about making: "' + dishName + '"';
+                    if (videoInfo.author) prompt += ' (by ' + videoInfo.author + ')';
+                    prompt += '\n\nYour task: Create the COMPLETE authentic recipe for "' + dishName + '"';
                     prompt += '\n\nRULES:';
-                    prompt += '\n- Recipe name MUST be: "' + videoInfo.title.replace(/[|\-–—].*/,'').replace(/recipe|how to make|easy|best|homemade/gi,'').trim() + '" or close to it';
-                    prompt += '\n- Use authentic, traditional ingredients for this dish';
-                    prompt += '\n- Include exact measurements (grams, cups, tbsp)';
-                    prompt += '\n- Include exact temperatures and cooking times';
-                    prompt += '\n- Write detailed step-by-step instructions';
+                    prompt += '\n- Recipe name MUST be exactly: "' + dishName + '"';
+                    prompt += '\n- This is a SPECIFIC dish - do NOT rename it or give a generic version';
+                    prompt += '\n- Use traditional, authentic ingredients for this exact dish';
+                    prompt += '\n- Include EXACT measurements (200g, 2 tbsp, 1 cup, etc.)';
+                    prompt += '\n- Include EXACT temperatures (180°C, 350°F) and cooking times';
+                    prompt += '\n- Write 6-10 detailed step-by-step instructions';
+                    prompt += '\n- Include prep time, cook time, servings, and calorie estimate';
                 } else {
                     prompt += '\n\nProvide a detailed, authentic recipe with exact measurements and steps.';
                 }
