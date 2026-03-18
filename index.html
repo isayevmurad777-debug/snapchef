@@ -4655,6 +4655,66 @@
             background: var(--primary);
         }
 
+        /* ===== CHEF PROFILE ===== */
+        .chef-profile-card {
+            background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            margin-bottom: 12px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .chef-profile-card:active { transform: scale(0.98); }
+        .chef-profile-card .cpc-header {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 8px;
+        }
+        .chef-profile-card .cpc-avatar {
+            width: 48px; height: 48px; border-radius: 14px;
+            background: rgba(255,255,255,0.2); display: flex; align-items: center;
+            justify-content: center; font-size: 24px;
+        }
+        .chef-profile-card .cpc-name { font-weight: 700; font-size: 16px; }
+        .chef-profile-card .cpc-sub { font-size: 12px; opacity: 0.85; }
+        .chef-profile-card .cpc-tags {
+            display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;
+        }
+        .chef-profile-card .cpc-tag {
+            background: rgba(255,255,255,0.2); border-radius: 20px;
+            padding: 4px 10px; font-size: 11px; font-weight: 500;
+        }
+        .chef-profile-empty {
+            background: var(--card-light); border: 2px dashed var(--border-light);
+            border-radius: var(--radius-lg); padding: 20px; text-align: center;
+            cursor: pointer; transition: all 0.2s;
+        }
+        body.dark-mode .chef-profile-empty {
+            background: var(--card-dark); border-color: var(--border-dark);
+        }
+        .chef-profile-empty:active { transform: scale(0.98); }
+        .cp-modal-grid {
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px;
+        }
+        .cp-modal-chip {
+            padding: 10px 6px; border-radius: var(--radius-sm); border: 2px solid var(--border-light);
+            background: var(--card-light); text-align: center; cursor: pointer;
+            font-size: 12px; font-weight: 500; transition: all 0.2s; user-select: none;
+        }
+        body.dark-mode .cp-modal-chip {
+            background: var(--card-dark); border-color: var(--border-dark); color: var(--text-dark);
+        }
+        .cp-modal-chip.selected {
+            border-color: var(--primary); background: rgba(108,92,231,0.1); color: var(--primary);
+        }
+        body.dark-mode .cp-modal-chip.selected {
+            background: rgba(108,92,231,0.2); color: var(--primary-light);
+        }
+        .cp-modal-chip .cp-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+        .cp-section-label {
+            font-size: 13px; font-weight: 600; color: var(--text-light); margin-bottom: 8px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        body.dark-mode .cp-section-label { color: var(--text-dark); }
     </style>
 </head>
 <body>
@@ -5149,6 +5209,9 @@
                     </div>
                 </div>
 
+                <!-- Chef Profile Card -->
+                <div id="chefProfileCard" style="margin-bottom: 12px;"></div>
+
                 <!-- Dietary Preferences & Allergy Filter -->
                 <div class="dietary-section">
                     <label>⚙️ <span data-i18n="dietaryPrefs">Dietary Preferences</span></label>
@@ -5579,6 +5642,21 @@
                 cancel: "Cancel",
                 notifications: "Notifications",
                 signOut: "Sign Out",
+                setupChefProfile: "Set Up Your Chef Profile",
+                setupChefProfileDesc: "AI will personalize recipes to your taste & skill",
+                chefProfileTitle: "Your Chef Profile",
+                chefProfileDesc: "AI will personalize every recipe for you",
+                cookingSkill: "Cooking Skill",
+                favCuisines: "Favorite Cuisines",
+                flavorPrefs: "Flavor Preferences",
+                equipment: "Kitchen Equipment",
+                prefCookTime: "Preferred Cooking Time",
+                budgetPref: "Budget",
+                householdSize: "Household Size",
+                dislikedIngredients: "Disliked Ingredients",
+                saveProfile: "Save Profile",
+                chefProfileSaved: "Chef Profile saved! AI will personalize your recipes now 👨‍🍳",
+                selectSkillLevel: "Please select your cooking skill level",
                 darkModeDescShort: "Switch between light and dark theme",
                 monday: "Monday", tuesday: "Tuesday", wednesday: "Wednesday",
                 thursday: "Thursday", friday: "Friday", saturday: "Saturday", sunday: "Sunday",
@@ -5806,6 +5884,21 @@
                 cancel: "Ləğv et",
                 notifications: "Bildirişlər",
                 signOut: "Çıxış",
+                setupChefProfile: "Aşpaz Profilini Qur",
+                setupChefProfileDesc: "AI reseptləri sizin dadınıza uyğunlaşdıracaq",
+                chefProfileTitle: "Aşpaz Profiliniz",
+                chefProfileDesc: "AI hər resepti sizə uyğunlaşdıracaq",
+                cookingSkill: "Bişirmə Bacarığı",
+                favCuisines: "Sevimli Mətbəxlər",
+                flavorPrefs: "Dad Üstünlükləri",
+                equipment: "Mətbəx Avadanlığı",
+                prefCookTime: "Bişirmə Vaxtı",
+                budgetPref: "Büdcə",
+                householdSize: "Ailə Ölçüsü",
+                dislikedIngredients: "Sevmədiyiniz İnqredientlər",
+                saveProfile: "Profili Saxla",
+                chefProfileSaved: "Aşpaz profili saxlanıldı! AI reseptləri sizə uyğunlaşdıracaq 👨‍🍳",
+                selectSkillLevel: "Bişirmə bacarığınızı seçin",
                 darkModeDescShort: "Açıq və qaranlıq tema arasında keçid",
                 monday: "Bazar ertəsi", tuesday: "Çərşənbə axşamı", wednesday: "Çərşənbə",
                 thursday: "Cümə axşamı", friday: "Cümə", saturday: "Şənbə", sunday: "Bazar",
@@ -6050,6 +6143,21 @@
                 cancel: "Отмена",
                 notifications: "Уведомления",
                 signOut: "Выйти",
+                setupChefProfile: "Настройте Профиль Повара",
+                setupChefProfileDesc: "ИИ персонализирует рецепты под ваш вкус",
+                chefProfileTitle: "Ваш Профиль Повара",
+                chefProfileDesc: "ИИ персонализирует каждый рецепт для вас",
+                cookingSkill: "Навык Готовки",
+                favCuisines: "Любимые Кухни",
+                flavorPrefs: "Вкусовые Предпочтения",
+                equipment: "Кухонное Оборудование",
+                prefCookTime: "Время Готовки",
+                budgetPref: "Бюджет",
+                householdSize: "Размер Семьи",
+                dislikedIngredients: "Нелюбимые Ингредиенты",
+                saveProfile: "Сохранить Профиль",
+                chefProfileSaved: "Профиль повара сохранён! ИИ персонализирует рецепты 👨‍🍳",
+                selectSkillLevel: "Выберите уровень навыка",
                 darkModeDescShort: "Переключение между светлой и темной темой",
                 monday: "Понедельник", tuesday: "Вторник", wednesday: "Среда",
                 thursday: "Четверг", friday: "Пятница", saturday: "Суббота", sunday: "Воскресенье",
@@ -8008,6 +8116,8 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                     if (NotifSystem && NotifSystem.saveTokenToFirestore) {
                         NotifSystem.saveTokenToFirestore();
                     }
+                    // Load chef profile from Firestore
+                    ChefProfile.load().then(function() { ChefProfile.renderCard(); });
                 }, 3000);
             }
         });
@@ -8226,6 +8336,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 prompt = 'Create a recipe using these ingredients: ' + sanitizeInput(ingredients, 500);
             }
             if (prefs.length) prompt += '. Dietary restrictions (MUST follow): ' + prefs.join(', ');
+            prompt += ChefProfile.getPromptContext();
             prompt += '. Return JSON: {"name":"Recipe Name","description":"Brief description","ingredients":["item1 with amount","item2"],"steps":["Detailed step 1","Step 2"],"prepTime":15,"cookTime":30,"servings":4,"calories":350,"imageKeyword":"simple english food name for image search"}';
 
             var loadingInterval = showProgressiveLoading('recipeResults', [
@@ -8295,6 +8406,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 }
             }
             if (prefs.length) prompt += '. Dietary restrictions: ' + prefs.join(', ');
+            prompt += ChefProfile.getPromptContext();
             prompt += '. Return JSON: {"name":"Recipe Name","description":"Brief description","ingredients":["item1 with amount","item2"],"steps":["Detailed step 1","Step 2"],"prepTime":15,"cookTime":30,"servings":4,"calories":350,"imageKeyword":"simple english food name for image search"}';
 
             var loadingInterval = showProgressiveLoading('recipeResults', [
@@ -8538,6 +8650,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
                 var prompt = 'Create a 7-day meal plan (' + this.people + ' people). Goal: ' + goalMap[this.goal] + '. Style: ' + styleMap[this.style] + '.';
                 if (diets) prompt += ' Dietary restrictions: ' + diets + '.';
+                prompt += ChefProfile.getPromptContext();
                 prompt += ' Return JSON: {"days":[{"breakfast":{"name":"Name","calories":300,"prepTime":10},"lunch":{"name":"Name","calories":500,"prepTime":20},"dinner":{"name":"Name","calories":600,"prepTime":30}}],"shoppingList":["item1","item2"],"totalCalories":1400,"tips":"One meal prep tip"}. Return exactly 7 days.';
 
                 try {
@@ -9481,6 +9594,159 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             var ind = document.getElementById('offlineIndicator');
             if (ind) ind.classList.toggle('show', !isOnline);
         }
+
+        // ========================================
+        // CHEF PROFILE (AI Personalization)
+        // ========================================
+        var ChefProfile = {
+            data: null,
+
+            init: function() {
+                this.data = JSON.parse(localStorage.getItem('snapchef_chef_profile') || 'null');
+                this.renderCard();
+            },
+
+            save: function() {
+                localStorage.setItem('snapchef_chef_profile', JSON.stringify(this.data));
+                // Sync to Firestore if logged in
+                if (currentUser && db) {
+                    try { db.collection('users').doc(currentUser.uid).set({ chefProfile: this.data }, { merge: true }); } catch(e) {}
+                }
+            },
+
+            load: async function() {
+                // Try Firestore first
+                if (currentUser && db) {
+                    try {
+                        var doc = await db.collection('users').doc(currentUser.uid).get();
+                        if (doc.exists && doc.data().chefProfile) {
+                            this.data = doc.data().chefProfile;
+                            localStorage.setItem('snapchef_chef_profile', JSON.stringify(this.data));
+                        }
+                    } catch(e) {}
+                }
+            },
+
+            getPromptContext: function() {
+                if (!this.data) return '';
+                var p = this.data;
+                var parts = [];
+                if (p.skillLevel) parts.push('Cooking skill: ' + p.skillLevel + ' (adjust complexity accordingly)');
+                if (p.cuisines && p.cuisines.length) parts.push('Preferred cuisines: ' + p.cuisines.join(', '));
+                if (p.householdSize) parts.push('Serving for ' + p.householdSize + ' people');
+                if (p.flavors && p.flavors.length) parts.push('Flavor preferences: ' + p.flavors.join(', '));
+                if (p.disliked) parts.push('AVOID these ingredients: ' + p.disliked);
+                if (p.equipment && p.equipment.length) parts.push('Available equipment: ' + p.equipment.join(', '));
+                if (p.cookingTime) parts.push('Preferred cooking time: ' + p.cookingTime);
+                if (p.budget) parts.push('Budget preference: ' + p.budget);
+                return parts.length ? '\n\nChef Profile (personalize the recipe accordingly): ' + parts.join('. ') + '.' : '';
+            },
+
+            renderCard: function() {
+                var container = document.getElementById('chefProfileCard');
+                if (!container) return;
+                if (!this.data) {
+                    container.innerHTML = '<div class="chef-profile-empty" onclick="ChefProfile.openModal()">' +
+                        '<div style="font-size:36px;margin-bottom:8px;">👨‍🍳</div>' +
+                        '<div style="font-weight:700;font-size:14px;color:var(--text-light);" class="cp-section-label" style="justify-content:center;">' + t('setupChefProfile') + '</div>' +
+                        '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;">' + t('setupChefProfileDesc') + '</div>' +
+                    '</div>';
+                    return;
+                }
+                var p = this.data;
+                var skillEmoji = { beginner: '🌱', intermediate: '👨‍🍳', advanced: '🔥', pro: '⭐' };
+                var tags = '';
+                if (p.cuisines) p.cuisines.forEach(function(c) { tags += '<span class="cpc-tag">' + c + '</span>'; });
+                if (p.flavors) p.flavors.forEach(function(f) { tags += '<span class="cpc-tag">' + f + '</span>'; });
+                container.innerHTML = '<div class="chef-profile-card" onclick="ChefProfile.openModal()">' +
+                    '<div class="cpc-header">' +
+                        '<div class="cpc-avatar">' + (skillEmoji[p.skillLevel] || '👨‍🍳') + '</div>' +
+                        '<div><div class="cpc-name">' + (p.skillLevel ? p.skillLevel.charAt(0).toUpperCase() + p.skillLevel.slice(1) : 'Chef') + ' Chef</div>' +
+                        '<div class="cpc-sub">🍽️ ' + (p.householdSize || 2) + ' people · ' + (p.cookingTime || '30 min') + '</div></div>' +
+                    '</div>' +
+                    (tags ? '<div class="cpc-tags">' + tags + '</div>' : '') +
+                '</div>';
+            },
+
+            openModal: function() {
+                document.getElementById('chefProfileModal').classList.add('active');
+                var p = this.data || {};
+                // Set skill level
+                document.querySelectorAll('#cpSkillChips .cp-modal-chip').forEach(function(el) {
+                    el.classList.toggle('selected', el.getAttribute('data-val') === (p.skillLevel || ''));
+                });
+                // Set cuisines
+                document.querySelectorAll('#cpCuisineChips .cp-modal-chip').forEach(function(el) {
+                    el.classList.toggle('selected', p.cuisines && p.cuisines.indexOf(el.getAttribute('data-val')) > -1);
+                });
+                // Set flavors
+                document.querySelectorAll('#cpFlavorChips .cp-modal-chip').forEach(function(el) {
+                    el.classList.toggle('selected', p.flavors && p.flavors.indexOf(el.getAttribute('data-val')) > -1);
+                });
+                // Set equipment
+                document.querySelectorAll('#cpEquipChips .cp-modal-chip').forEach(function(el) {
+                    el.classList.toggle('selected', p.equipment && p.equipment.indexOf(el.getAttribute('data-val')) > -1);
+                });
+                // Set time
+                document.querySelectorAll('#cpTimeChips .cp-modal-chip').forEach(function(el) {
+                    el.classList.toggle('selected', el.getAttribute('data-val') === (p.cookingTime || ''));
+                });
+                // Set budget
+                document.querySelectorAll('#cpBudgetChips .cp-modal-chip').forEach(function(el) {
+                    el.classList.toggle('selected', el.getAttribute('data-val') === (p.budget || ''));
+                });
+                // Set household
+                var hs = document.getElementById('cpHousehold');
+                if (hs) hs.value = p.householdSize || 2;
+                // Set disliked
+                var dl = document.getElementById('cpDisliked');
+                if (dl) dl.value = p.disliked || '';
+            },
+
+            selectOne: function(group, el) {
+                document.querySelectorAll('#' + group + ' .cp-modal-chip').forEach(function(c) { c.classList.remove('selected'); });
+                el.classList.add('selected');
+            },
+
+            toggleChip: function(el) {
+                el.classList.toggle('selected');
+            },
+
+            saveModal: function() {
+                var skill = null;
+                document.querySelectorAll('#cpSkillChips .cp-modal-chip.selected').forEach(function(el) { skill = el.getAttribute('data-val'); });
+                if (!skill) { toast(t('selectSkillLevel'), '⚠️'); return; }
+
+                var cuisines = [];
+                document.querySelectorAll('#cpCuisineChips .cp-modal-chip.selected').forEach(function(el) { cuisines.push(el.getAttribute('data-val')); });
+                var flavors = [];
+                document.querySelectorAll('#cpFlavorChips .cp-modal-chip.selected').forEach(function(el) { flavors.push(el.getAttribute('data-val')); });
+                var equipment = [];
+                document.querySelectorAll('#cpEquipChips .cp-modal-chip.selected').forEach(function(el) { equipment.push(el.getAttribute('data-val')); });
+                var cookingTime = null;
+                document.querySelectorAll('#cpTimeChips .cp-modal-chip.selected').forEach(function(el) { cookingTime = el.getAttribute('data-val'); });
+                var budget = null;
+                document.querySelectorAll('#cpBudgetChips .cp-modal-chip.selected').forEach(function(el) { budget = el.getAttribute('data-val'); });
+
+                this.data = {
+                    skillLevel: skill,
+                    cuisines: cuisines,
+                    flavors: flavors,
+                    equipment: equipment,
+                    cookingTime: cookingTime || 'under 30 min',
+                    budget: budget || 'moderate',
+                    householdSize: parseInt(document.getElementById('cpHousehold').value) || 2,
+                    disliked: (document.getElementById('cpDisliked').value || '').trim(),
+                    updatedAt: Date.now()
+                };
+
+                this.save();
+                document.getElementById('chefProfileModal').classList.remove('active');
+                this.renderCard();
+                toast(t('chefProfileSaved'), '✅');
+                showConfetti();
+            }
+        };
 
         // ========================================
         // HEALTH TARGET SYSTEM
@@ -11079,6 +11345,9 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             // Init Health Target
             HealthTarget.init();
 
+            // Init Chef Profile
+            ChefProfile.init();
+
             // Register Service Worker (required for phone notifications)
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('/sw.js').then(function(reg) {
@@ -11093,6 +11362,104 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
         });
     </script>
     <!-- Health Profile Setup Modal -->
+    <!-- Chef Profile Modal -->
+    <div class="api-guide-modal" id="chefProfileModal">
+        <div class="api-guide-content" style="max-width: 440px; max-height: 85vh; overflow-y: auto;">
+            <div style="text-align: center; margin-bottom: 15px;">
+                <div style="font-size: 50px;">👨‍🍳</div>
+                <h2 class="premium-title" style="margin-top: 10px;" data-i18n="chefProfileTitle">Your Chef Profile</h2>
+                <p style="color: var(--text-muted); font-size: 13px;" data-i18n="chefProfileDesc">AI will personalize every recipe for you</p>
+            </div>
+
+            <div class="profile-field">
+                <div class="cp-section-label">🎯 <span data-i18n="cookingSkill">Cooking Skill</span></div>
+                <div class="cp-modal-grid" id="cpSkillChips" style="grid-template-columns: 1fr 1fr;">
+                    <div class="cp-modal-chip" data-val="beginner" onclick="ChefProfile.selectOne('cpSkillChips',this)"><span class="cp-icon">🌱</span>Beginner</div>
+                    <div class="cp-modal-chip" data-val="intermediate" onclick="ChefProfile.selectOne('cpSkillChips',this)"><span class="cp-icon">👨‍🍳</span>Intermediate</div>
+                    <div class="cp-modal-chip" data-val="advanced" onclick="ChefProfile.selectOne('cpSkillChips',this)"><span class="cp-icon">🔥</span>Advanced</div>
+                    <div class="cp-modal-chip" data-val="pro" onclick="ChefProfile.selectOne('cpSkillChips',this)"><span class="cp-icon">⭐</span>Pro Chef</div>
+                </div>
+            </div>
+
+            <div class="profile-field">
+                <div class="cp-section-label">🌍 <span data-i18n="favCuisines">Favorite Cuisines</span></div>
+                <div class="cp-modal-grid" id="cpCuisineChips">
+                    <div class="cp-modal-chip" data-val="Azerbaijani" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🇦🇿</span>Azərbaycan</div>
+                    <div class="cp-modal-chip" data-val="Turkish" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🇹🇷</span>Turkish</div>
+                    <div class="cp-modal-chip" data-val="Italian" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🇮🇹</span>Italian</div>
+                    <div class="cp-modal-chip" data-val="Asian" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🥢</span>Asian</div>
+                    <div class="cp-modal-chip" data-val="Mexican" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🌮</span>Mexican</div>
+                    <div class="cp-modal-chip" data-val="Indian" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🍛</span>Indian</div>
+                    <div class="cp-modal-chip" data-val="French" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🇫🇷</span>French</div>
+                    <div class="cp-modal-chip" data-val="American" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🍔</span>American</div>
+                    <div class="cp-modal-chip" data-val="Mediterranean" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🫒</span>Mediterran</div>
+                </div>
+            </div>
+
+            <div class="profile-field">
+                <div class="cp-section-label">😋 <span data-i18n="flavorPrefs">Flavor Preferences</span></div>
+                <div class="cp-modal-grid" id="cpFlavorChips">
+                    <div class="cp-modal-chip" data-val="Spicy" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🌶️</span>Spicy</div>
+                    <div class="cp-modal-chip" data-val="Sweet" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🍯</span>Sweet</div>
+                    <div class="cp-modal-chip" data-val="Savory" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🧈</span>Savory</div>
+                    <div class="cp-modal-chip" data-val="Sour" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🍋</span>Sour</div>
+                    <div class="cp-modal-chip" data-val="Mild" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🍃</span>Mild</div>
+                    <div class="cp-modal-chip" data-val="Smoky" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🔥</span>Smoky</div>
+                </div>
+            </div>
+
+            <div class="profile-field">
+                <div class="cp-section-label">🍳 <span data-i18n="equipment">Kitchen Equipment</span></div>
+                <div class="cp-modal-grid" id="cpEquipChips">
+                    <div class="cp-modal-chip" data-val="Oven" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🔲</span>Oven</div>
+                    <div class="cp-modal-chip" data-val="Air Fryer" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">💨</span>Air Fryer</div>
+                    <div class="cp-modal-chip" data-val="Blender" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🫙</span>Blender</div>
+                    <div class="cp-modal-chip" data-val="Grill" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🔥</span>Grill</div>
+                    <div class="cp-modal-chip" data-val="Slow Cooker" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">🫕</span>Slow Cooker</div>
+                    <div class="cp-modal-chip" data-val="Microwave" onclick="ChefProfile.toggleChip(this)"><span class="cp-icon">📡</span>Microwave</div>
+                </div>
+            </div>
+
+            <div class="profile-field">
+                <div class="cp-section-label">⏱️ <span data-i18n="prefCookTime">Preferred Cooking Time</span></div>
+                <div class="cp-modal-grid" id="cpTimeChips" style="grid-template-columns: 1fr 1fr 1fr;">
+                    <div class="cp-modal-chip" data-val="under 15 min" onclick="ChefProfile.selectOne('cpTimeChips',this)"><span class="cp-icon">⚡</span>&lt; 15 min</div>
+                    <div class="cp-modal-chip" data-val="under 30 min" onclick="ChefProfile.selectOne('cpTimeChips',this)"><span class="cp-icon">🕐</span>&lt; 30 min</div>
+                    <div class="cp-modal-chip" data-val="under 60 min" onclick="ChefProfile.selectOne('cpTimeChips',this)"><span class="cp-icon">🕑</span>&lt; 60 min</div>
+                </div>
+            </div>
+
+            <div class="profile-field">
+                <div class="cp-section-label">💰 <span data-i18n="budgetPref">Budget</span></div>
+                <div class="cp-modal-grid" id="cpBudgetChips" style="grid-template-columns: 1fr 1fr 1fr;">
+                    <div class="cp-modal-chip" data-val="budget" onclick="ChefProfile.selectOne('cpBudgetChips',this)"><span class="cp-icon">💵</span>Budget</div>
+                    <div class="cp-modal-chip" data-val="moderate" onclick="ChefProfile.selectOne('cpBudgetChips',this)"><span class="cp-icon">💰</span>Moderate</div>
+                    <div class="cp-modal-chip" data-val="premium" onclick="ChefProfile.selectOne('cpBudgetChips',this)"><span class="cp-icon">💎</span>Premium</div>
+                </div>
+            </div>
+
+            <div class="profile-field">
+                <div class="cp-section-label">👨‍👩‍👧‍👦 <span data-i18n="householdSize">Household Size</span></div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="range" id="cpHousehold" min="1" max="10" value="2" step="1" style="flex:1;" oninput="document.getElementById('cpHouseholdNum').textContent=this.value">
+                    <span id="cpHouseholdNum" style="font-weight:700; font-size:18px; color:var(--primary); min-width:30px; text-align:center;">2</span>
+                    <span style="font-size:14px;">👤</span>
+                </div>
+            </div>
+
+            <div class="profile-field">
+                <div class="cp-section-label">🚫 <span data-i18n="dislikedIngredients">Disliked Ingredients</span></div>
+                <input type="text" id="cpDisliked" class="profile-input" placeholder="e.g. cilantro, olives, mushrooms..." style="width:100%;">
+            </div>
+
+            <button class="main-btn" onclick="ChefProfile.saveModal()" style="margin-top: 10px;">
+                <span>✅</span>
+                <span data-i18n="saveProfile">Save Profile</span>
+            </button>
+            <button class="premium-close" onclick="document.getElementById('chefProfileModal').classList.remove('active')">Cancel</button>
+        </div>
+    </div>
+
     <div class="api-guide-modal" id="healthProfileModal">
         <div class="api-guide-content" style="max-width: 420px;">
             <div style="text-align: center; margin-bottom: 15px;">
