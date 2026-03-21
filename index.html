@@ -97,6 +97,11 @@
         }
         .tab-content.active {
             will-change: contents;
+            animation: tabFadeIn 0.25s ease;
+        }
+        @keyframes tabFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
 
@@ -1299,6 +1304,7 @@
 
         /* Recipe Card */
         .recipe-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             background: var(--card-light);
             border-radius: var(--radius-xl);
             overflow: hidden;
@@ -3021,9 +3027,9 @@
         /* ===== ADS ===== */
         .ad-container {
             width: 100%;
-            min-height: 60px;
+            min-height: 50px;
             background: #f8fafc;
-            border: 1px dashed #e2e8f0;
+            border: 1px solid rgba(0,0,0,0.04);
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -5257,10 +5263,7 @@
             </div>
 
             <!-- Usage Counter (hidden for Play Store) -->
-            <div class="usage-counter" id="usageCounter" style="display:none !important;">
-                <span class="usage-text"><span id="usageCount">0</span>/5 <span data-i18n="recipesToday">recipes today</span></span>
-                <div class="usage-bar"><div class="usage-fill" id="usageFill"></div></div>
-            </div>
+<!-- Usage counter moved to recipe tab banner -->
 
             <!-- Header -->
             <header class="header">
@@ -5270,10 +5273,7 @@
                     <span class="premium-badge hidden" id="premiumBadge">PRO</span>
                 </div>
                 <div class="header-btns">
-                    <div class="credits-display" onclick="CreditSystem.showBuyModal()" style="display:none !important;">
-                        💎
-                        <span id="creditsDisplay">10</span>
-                    </div>
+
                     <div class="lang-selector">
                         <button class="icon-btn lang-btn" onclick="toggleLangDropdown()" id="langBtn">🌐</button>
                         <div class="lang-dropdown" id="langDropdown">
@@ -5282,7 +5282,6 @@
                             <div class="lang-option" data-lang="ru" onclick="setLanguage('ru')">🇷🇺 Русский</div>
                         </div>
                     </div>
-                    <button class="icon-btn" onclick="toggleVoice()" id="voiceBtn" title="Voice Input">🎙️</button>
                     <button class="icon-btn" onclick="toggleDarkMode()" id="darkBtn">🌙</button>
                 </div>
             </header>
@@ -5337,10 +5336,9 @@
                 </div>
 
                 <!-- Upload Section -->
-                <div class="upload-section" role="region" aria-label="Upload ingredients">
-                    <span class="upload-icon">📸</span>
-                    <h3 class="upload-title" data-i18n="scanIngredients">Scan Your Ingredients</h3>
-                    <p class="upload-subtitle" data-i18n="takePhoto">Take a photo or upload an image</p>
+                <div class="upload-section" role="region" aria-label="Upload ingredients" style="padding: 24px 16px;">
+                    <h3 class="upload-title" data-i18n="scanIngredients" style="font-size: 16px; margin-bottom: 4px;">Scan Your Ingredients</h3>
+                    <p class="upload-subtitle" data-i18n="takePhoto" style="font-size: 12px; margin-bottom: 16px;">Take a photo or upload an image</p>
                     <div class="upload-btns">
                         <button class="upload-btn primary" onclick="startCamera('recipe')" aria-label="Open camera to scan ingredients">
                             <span>📷</span>
@@ -5404,13 +5402,13 @@
                     <label for="ingredients">🥗 <span data-i18n="yourIngredients">Your Ingredients</span></label>
                     <textarea id="ingredients" rows="3" placeholder="e.g., eggs, tomato, cheese..." data-i18n-placeholder="ingredientsPlaceholder" oninput="updateCharCount()"></textarea>
                     <div class="char-count" id="charCount">0 / 500</div>
-                    <div class="quick-tags">
-                        <button class="tag" onclick="addTag('eggs', this)" type="button">🥚 Eggs</button>
-                        <button class="tag" onclick="addTag('chicken', this)" type="button">🍗 Chicken</button>
-                        <button class="tag" onclick="addTag('rice', this)" type="button">🍚 Rice</button>
-                        <button class="tag" onclick="addTag('tomato', this)" type="button">🍅 Tomato</button>
-                        <button class="tag" onclick="addTag('cheese', this)" type="button">🧀 Cheese</button>
-                        <button class="tag" onclick="addTag('pasta', this)" type="button">🍝 Pasta</button>
+                    <div class="quick-tags" style="gap: 6px;">
+                        <button class="tag" onclick="addTag('eggs', this)" type="button" style="font-size:12px; padding:6px 12px;">🥚 Eggs</button>
+                        <button class="tag" onclick="addTag('chicken', this)" type="button" style="font-size:12px; padding:6px 12px;">🍗 Chicken</button>
+                        <button class="tag" onclick="addTag('rice', this)" type="button" style="font-size:12px; padding:6px 12px;">🍚 Rice</button>
+                        <button class="tag" onclick="addTag('tomato', this)" type="button" style="font-size:12px; padding:6px 12px;">🍅 Tomato</button>
+                        <button class="tag" onclick="addTag('cheese', this)" type="button" style="font-size:12px; padding:6px 12px;">🧀 Cheese</button>
+                        <button class="tag" onclick="addTag('pasta', this)" type="button" style="font-size:12px; padding:6px 12px;">🍝 Pasta</button>
                     </div>
                 </div>
 
@@ -5706,7 +5704,7 @@
 
                 <!-- App Info -->
                 <div style="margin-top: 20px; text-align: center; color: var(--text-muted); font-size: 12px;">
-                    <div>SnapChef v7.0</div>
+                    <div>SnapChef v7.1</div>
                     <div style="margin-top: 5px;">Made with ❤️</div>
                     <div style="margin-top: 3px; font-size: 10px; color: var(--text-muted);">Health Tracking • Notifications • Better UX</div>
                 </div>
@@ -8857,7 +8855,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 '<div class="stat-item"><div class="stat-icon">🔥</div><div class="stat-value">' + (recipe.calories || 350) + '</div><div class="stat-label">Calories</div></div>' +
                 '</div>' +
                 '<div class="recipe-body">' +
-                '<h3 class="section-title">🥗 Ingredients</h3>' +
+                '<h3 class="section-title">Ingredients</h3>' +
                 '<div class="ingredients-grid">';
 
             (recipe.ingredients || []).forEach(function(ing, idx) {
@@ -8871,7 +8869,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 '<div style="font-weight:700;font-size:13px;color:#166534;margin-bottom:6px;">↔ Substitutes</div>' +
                 '<div id="substituteContent" style="font-size:13px;color:#15803d;line-height:1.5;"></div>' +
                 '</div>' +
-                '<h3 class="section-title">📝 Instructions</h3><div class="steps-list">';
+                '<h3 class="section-title">Instructions</h3><div class="steps-list">';
 
             (recipe.steps || []).forEach(function(step, i) {
                 html += '<div class="step-item"><div class="step-num">' + (i + 1) + '</div><div class="step-text">' + escapeHTML(step) + '</div></div>';
