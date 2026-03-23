@@ -3356,6 +3356,233 @@
             color: var(--text-muted);
             font-size: 13px;
         }
+
+        /* ===== VOICE ASSISTANT ===== */
+        .va-btn {
+            position: fixed;
+            bottom: 90px;
+            left: 16px;
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #ec4899, #f43f5e);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(236,72,153,0.4);
+            z-index: 998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .va-btn:hover { transform: scale(1.1); }
+        .va-btn.listening {
+            animation: vaGlow 1.5s infinite;
+            box-shadow: 0 0 30px rgba(236,72,153,0.6);
+        }
+        @keyframes vaGlow {
+            0%,100% { box-shadow: 0 4px 20px rgba(236,72,153,0.4); }
+            50% { box-shadow: 0 4px 40px rgba(236,72,153,0.8); }
+        }
+        .va-overlay {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -10px 50px rgba(0,0,0,0.15);
+            z-index: 10003;
+            display: none;
+            flex-direction: column;
+            max-height: 70vh;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+        body.dark-mode .va-overlay { background: #1e293b; }
+        .va-overlay.active { display: flex; }
+        .va-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px 12px;
+        }
+        .va-identity {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .va-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ec4899, #f43f5e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        .va-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-light);
+        }
+        body.dark-mode .va-name { color: var(--text-dark); }
+        .va-status {
+            font-size: 11px;
+            color: #22c55e;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .va-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #22c55e;
+            border-radius: 50%;
+        }
+        .va-close {
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 8px;
+        }
+        .va-chat {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 24px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 40vh;
+        }
+        .va-msg {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.5;
+            animation: vaFadeIn 0.3s ease;
+        }
+        @keyframes vaFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .va-msg.assistant {
+            background: #fce7f3;
+            color: #831843;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        body.dark-mode .va-msg.assistant {
+            background: #4a1942;
+            color: #fce7f3;
+        }
+        .va-msg.user {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .va-msg.thinking {
+            background: #f1f5f9;
+            color: var(--text-muted);
+            align-self: flex-start;
+        }
+        body.dark-mode .va-msg.thinking { background: #334155; }
+        .va-input-area {
+            display: flex;
+            gap: 8px;
+            padding: 12px 24px 24px;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+        body.dark-mode .va-input-area { border-color: rgba(255,255,255,0.06); }
+        .va-text-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            background: var(--card-light);
+            color: var(--text-light);
+        }
+        body.dark-mode .va-text-input { background: #0f172a; border-color: #334155; color: var(--text-dark); }
+        .va-text-input:focus { border-color: #ec4899; }
+        .va-mic-btn {
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ec4899, #f43f5e);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .va-mic-btn:active { transform: scale(0.9); }
+        .va-mic-btn.listening { animation: vaGlow 1s infinite; }
+        .va-send-btn {
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .va-quick-actions {
+            display: flex;
+            gap: 6px;
+            padding: 0 24px 8px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .va-quick-btn {
+            white-space: nowrap;
+            padding: 8px 14px;
+            border: 1px solid #fce7f3;
+            border-radius: 20px;
+            background: #fdf2f8;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #be185d;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        body.dark-mode .va-quick-btn { background: #4a1942; border-color: #831843; color: #f9a8d4; }
+        .va-quick-btn:hover { background: #ec4899; color: white; border-color: #ec4899; }
+        .va-wave {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+            height: 20px;
+        }
+        .va-wave-bar {
+            width: 3px;
+            background: #ec4899;
+            border-radius: 2px;
+            animation: vaWave 0.8s ease infinite;
+        }
+        .va-wave-bar:nth-child(1) { animation-delay: 0s; height: 8px; }
+        .va-wave-bar:nth-child(2) { animation-delay: 0.1s; height: 14px; }
+        .va-wave-bar:nth-child(3) { animation-delay: 0.2s; height: 10px; }
+        .va-wave-bar:nth-child(4) { animation-delay: 0.3s; height: 16px; }
+        .va-wave-bar:nth-child(5) { animation-delay: 0.15s; height: 12px; }
+        @keyframes vaWave {
+            0%,100% { transform: scaleY(0.5); }
+            50% { transform: scaleY(1.2); }
+        }
         /* ===== COOKING TIMER ===== */
         .cook-timer-overlay {
             position: fixed;
@@ -5338,6 +5565,35 @@
         </div>
     </div>
 
+    <!-- Voice Assistant Button -->
+    <button class="va-btn" id="vaBtn" onclick="VoiceAssistant.toggle()" title="Voice Assistant">🎙️</button>
+
+    <!-- Voice Assistant Overlay -->
+    <div class="va-overlay" id="vaOverlay">
+        <div class="va-header">
+            <div class="va-identity">
+                <div class="va-avatar">👩‍🍳</div>
+                <div>
+                    <div class="va-name">Chef Luna</div>
+                    <div class="va-status" id="vaStatus">Online</div>
+                </div>
+            </div>
+            <button class="va-close" onclick="VoiceAssistant.close()">✕</button>
+        </div>
+        <div class="va-quick-actions" id="vaQuickActions">
+            <button class="va-quick-btn" onclick="VoiceAssistant.quickAction('suggest')">🍽️ Suggest a recipe</button>
+            <button class="va-quick-btn" onclick="VoiceAssistant.quickAction('tips')">💡 Cooking tips</button>
+            <button class="va-quick-btn" onclick="VoiceAssistant.quickAction('plan')">📅 Plan my meals</button>
+            <button class="va-quick-btn" onclick="VoiceAssistant.quickAction('substitute')">↔️ Substitutes</button>
+        </div>
+        <div class="va-chat" id="vaChat"></div>
+        <div class="va-input-area">
+            <input class="va-text-input" id="vaInput" placeholder="Ask Chef Luna anything..." onkeypress="if(event.key==='Enter')VoiceAssistant.sendText()">
+            <button class="va-mic-btn" id="vaMicBtn" onclick="VoiceAssistant.toggleMic()">🎙️</button>
+            <button class="va-send-btn" onclick="VoiceAssistant.sendText()">➤</button>
+        </div>
+    </div>
+
     <!-- Feedback FAB -->
     <button class="feedback-fab" id="feedbackFab" onclick="FeedbackSystem.open()" title="Send Feedback">💬</button>
 
@@ -5859,7 +6115,7 @@
 
                 <!-- App Info -->
                 <div style="margin-top: 20px; text-align: center; color: var(--text-muted); font-size: 12px;">
-                    <div>SnapChef v8.0</div>
+                    <div>SnapChef v8.1</div>
                     <div style="margin-top: 5px;">Made with ❤️</div>
                     <div style="margin-top: 3px; font-size: 10px; color: var(--text-muted);">Health Tracking • Notifications • Better UX</div>
                 </div>
@@ -6094,6 +6350,8 @@
                 shoppingList: "Shopping List",
                 clearAll: "Clear All",
                 aiMealPrep: "AI Meal Prep",
+                askChefLuna: "Ask Chef Luna",
+                voiceAssistant: "Voice Assistant",
                 myRecipes: "My Recipes",
                 communityRecipes: "Community",
                 publishRecipe: "Publish Your Recipe",
@@ -6356,6 +6614,8 @@
                 shoppingList: "Alış-veriş Siyahısı",
                 clearAll: "Hamısını Sil",
                 aiMealPrep: "AI Yemək Hazırlığı",
+                askChefLuna: "Chef Luna-dan soruş",
+                voiceAssistant: "Səsli Köməkçi",
                 myRecipes: "Reseptlərim",
                 communityRecipes: "İcma",
                 publishRecipe: "Reseptini Paylaş",
@@ -6635,6 +6895,8 @@
                 shoppingList: "Список покупок",
                 clearAll: "Очистить все",
                 aiMealPrep: "ИИ план питания",
+                askChefLuna: "Спросить Шеф Луну",
+                voiceAssistant: "Голосовой помощник",
                 myRecipes: "Мои рецепты",
                 communityRecipes: "Сообщество",
                 publishRecipe: "Опубликовать рецепт",
@@ -6784,6 +7046,300 @@
                 }, { merge: true }).catch(function() {});
             }
         }
+
+        // ========================================
+        // VOICE ASSISTANT - Chef Luna
+        // ========================================
+        var VoiceAssistant = {
+            isOpen: false,
+            isListening: false,
+            isSpeaking: false,
+            chatHistory: [],
+            femaleVoice: null,
+            recognition: null,
+
+            init: function() {
+                // Find the best female voice
+                var self = this;
+                if ('speechSynthesis' in window) {
+                    var findVoice = function() {
+                        var voices = speechSynthesis.getVoices();
+                        // Priority: natural female voices
+                        var preferred = [
+                            'Google UK English Female',
+                            'Microsoft Zira',
+                            'Microsoft Hazel',
+                            'Samantha',
+                            'Karen',
+                            'Moira',
+                            'Victoria',
+                            'Google US English',
+                            'Microsoft Susan'
+                        ];
+                        
+                        for (var p = 0; p < preferred.length; p++) {
+                            for (var v = 0; v < voices.length; v++) {
+                                if (voices[v].name.indexOf(preferred[p]) > -1) {
+                                    self.femaleVoice = voices[v];
+                                    return;
+                                }
+                            }
+                        }
+                        
+                        // Fallback: any female-sounding voice
+                        for (var v2 = 0; v2 < voices.length; v2++) {
+                            var name = voices[v2].name.toLowerCase();
+                            if (name.indexOf('female') > -1 || name.indexOf('woman') > -1 || 
+                                name.indexOf('zira') > -1 || name.indexOf('samantha') > -1 ||
+                                name.indexOf('karen') > -1 || name.indexOf('victoria') > -1) {
+                                self.femaleVoice = voices[v2];
+                                return;
+                            }
+                        }
+                        
+                        // Just pick first available
+                        if (voices.length > 0) self.femaleVoice = voices[0];
+                    };
+                    
+                    findVoice();
+                    speechSynthesis.onvoiceschanged = findVoice;
+                }
+            },
+
+            toggle: function() {
+                if (this.isOpen) {
+                    this.close();
+                } else {
+                    this.open();
+                }
+            },
+
+            open: function() {
+                this.isOpen = true;
+                document.getElementById('vaOverlay').classList.add('active');
+                document.getElementById('vaBtn').style.display = 'none';
+                
+                if (this.chatHistory.length === 0) {
+                    this.greet();
+                }
+                
+                setTimeout(function() {
+                    document.getElementById('vaInput').focus();
+                }, 300);
+            },
+
+            close: function() {
+                this.isOpen = false;
+                this.stopSpeaking();
+                this.stopListening();
+                document.getElementById('vaOverlay').classList.remove('active');
+                document.getElementById('vaBtn').style.display = 'flex';
+            },
+
+            greet: function() {
+                var hour = new Date().getHours();
+                var greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+                var name = currentUser ? (currentUser.displayName || '').split(' ')[0] : '';
+                
+                var messages = [
+                    greeting + (name ? ', ' + name : '') + '! I\'m Chef Luna, your cooking assistant. 👩‍🍳',
+                    'Ask me anything about cooking — recipe ideas, ingredient substitutes, cooking tips, or help navigating the app!',
+                ];
+                
+                var self = this;
+                messages.forEach(function(msg, i) {
+                    setTimeout(function() {
+                        self.addMessage(msg, 'assistant');
+                        if (i === 0) self.speak(msg);
+                    }, i * 800);
+                });
+            },
+
+            addMessage: function(text, role) {
+                this.chatHistory.push({ text: text, role: role });
+                var chat = document.getElementById('vaChat');
+                var div = document.createElement('div');
+                div.className = 'va-msg ' + role;
+                div.textContent = text;
+                chat.appendChild(div);
+                chat.scrollTop = chat.scrollHeight;
+            },
+
+            speak: function(text) {
+                if (!('speechSynthesis' in window)) return;
+                
+                this.stopSpeaking();
+                this.isSpeaking = true;
+                
+                var utterance = new SpeechSynthesisUtterance(text);
+                if (this.femaleVoice) utterance.voice = this.femaleVoice;
+                utterance.rate = 0.95;
+                utterance.pitch = 1.15;
+                utterance.volume = 1;
+                
+                // Select language based on app language
+                if (currentLang === 'az') utterance.lang = 'az-AZ';
+                else if (currentLang === 'ru') utterance.lang = 'ru-RU';
+                else utterance.lang = 'en-US';
+                
+                var self = this;
+                utterance.onend = function() { self.isSpeaking = false; };
+                utterance.onerror = function() { self.isSpeaking = false; };
+                
+                speechSynthesis.speak(utterance);
+            },
+
+            stopSpeaking: function() {
+                if ('speechSynthesis' in window) {
+                    speechSynthesis.cancel();
+                }
+                this.isSpeaking = false;
+            },
+
+            toggleMic: function() {
+                if (this.isListening) {
+                    this.stopListening();
+                } else {
+                    this.startListening();
+                }
+            },
+
+            startListening: function() {
+                var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (!SR) {
+                    this.addMessage('Voice input is not supported on this device.', 'assistant');
+                    return;
+                }
+
+                this.stopSpeaking();
+                this.isListening = true;
+                document.getElementById('vaMicBtn').classList.add('listening');
+                document.getElementById('vaStatus').innerHTML = '<div class="va-wave"><div class="va-wave-bar"></div><div class="va-wave-bar"></div><div class="va-wave-bar"></div><div class="va-wave-bar"></div><div class="va-wave-bar"></div></div> Listening...';
+
+                var self = this;
+                this.recognition = new SR();
+                this.recognition.continuous = false;
+                this.recognition.interimResults = false;
+                this.recognition.lang = currentLang === 'az' ? 'az-AZ' : currentLang === 'ru' ? 'ru-RU' : 'en-US';
+
+                this.recognition.onresult = function(e) {
+                    var text = e.results[0][0].transcript;
+                    self.addMessage(text, 'user');
+                    self.processInput(text);
+                };
+
+                this.recognition.onend = function() {
+                    self.stopListening();
+                };
+
+                this.recognition.onerror = function() {
+                    self.stopListening();
+                };
+
+                this.recognition.start();
+            },
+
+            stopListening: function() {
+                this.isListening = false;
+                document.getElementById('vaMicBtn').classList.remove('listening');
+                document.getElementById('vaStatus').innerHTML = 'Online';
+                if (this.recognition) {
+                    try { this.recognition.stop(); } catch(e) {}
+                }
+            },
+
+            sendText: function() {
+                var input = document.getElementById('vaInput');
+                var text = input.value.trim();
+                if (!text) return;
+                
+                input.value = '';
+                this.addMessage(text, 'user');
+                this.processInput(text);
+            },
+
+            quickAction: function(action) {
+                var prompts = {
+                    suggest: 'Suggest a quick and easy recipe for dinner',
+                    tips: 'Give me 3 useful cooking tips',
+                    plan: 'Help me plan meals for today',
+                    substitute: 'What can I substitute for eggs in baking?'
+                };
+                
+                var text = prompts[action] || action;
+                this.addMessage(text, 'user');
+                this.processInput(text);
+            },
+
+            processInput: async function(text) {
+                var lower = text.toLowerCase();
+                
+                // Show thinking indicator
+                var thinkingDiv = document.createElement('div');
+                thinkingDiv.className = 'va-msg thinking';
+                thinkingDiv.innerHTML = '<div class="va-wave"><div class="va-wave-bar"></div><div class="va-wave-bar"></div><div class="va-wave-bar"></div></div>';
+                var chat = document.getElementById('vaChat');
+                chat.appendChild(thinkingDiv);
+                chat.scrollTop = chat.scrollHeight;
+                document.getElementById('vaStatus').textContent = 'Thinking...';
+
+                var response = '';
+
+                // Quick local responses for common commands
+                if (lower.indexOf('hello') > -1 || lower.indexOf('hi') > -1 || lower.indexOf('salam') > -1 || lower.indexOf('привет') > -1) {
+                    response = 'Hey there! What would you like to cook today? I can suggest recipes, help with substitutes, or give cooking tips!';
+                }
+                else if (lower.indexOf('scan') > -1 || lower.indexOf('camera') > -1 || lower.indexOf('kamera') > -1) {
+                    response = 'Sure! I\'ll open the camera for you. Point it at your ingredients!';
+                    setTimeout(function() { startCamera('recipe'); }, 1500);
+                }
+                else if (lower.indexOf('meal plan') > -1 || lower.indexOf('plan') > -1 || lower.indexOf('yemək planı') > -1) {
+                    response = 'Let me open the meal planner for you!';
+                    setTimeout(function() { switchTab('mealplan'); }, 1500);
+                }
+                else if (lower.indexOf('favorite') > -1 || lower.indexOf('saved') > -1 || lower.indexOf('saxla') > -1) {
+                    response = 'Here are your saved recipes!';
+                    setTimeout(function() { switchTab('favorites'); }, 1500);
+                }
+                else if (lower.indexOf('dark mode') > -1 || lower.indexOf('qaranlıq') > -1 || lower.indexOf('тёмн') > -1) {
+                    response = 'Switching theme for you!';
+                    setTimeout(function() { toggleDarkMode(); }, 1000);
+                }
+                else {
+                    // Use AI for complex questions
+                    try {
+                        var aiContext = 'You are Chef Luna, a friendly female AI cooking assistant inside the SnapChef app. ';
+                        aiContext += 'You speak in a warm, conversational, and helpful tone — like a friend who loves cooking. ';
+                        aiContext += 'Keep responses SHORT (2-4 sentences max). Be practical and specific. ';
+                        aiContext += 'User language: ' + currentLang + '. ';
+                        
+                        if (currentRecipeData) {
+                            aiContext += 'Current recipe being viewed: ' + currentRecipeData.name + '. ';
+                        }
+
+                        var data = await callAI([
+                            { role: 'system', content: aiContext },
+                            { role: 'user', content: text }
+                        ], { max_tokens: 300 });
+
+                        response = data.response || 'Hmm, I\'m not sure about that. Try asking me about recipes, ingredients, or cooking tips!';
+                    } catch(e) {
+                        response = 'Sorry, I couldn\'t process that right now. Try asking about recipes, cooking tips, or ingredient substitutes!';
+                    }
+                }
+
+                // Remove thinking indicator
+                if (thinkingDiv.parentNode) thinkingDiv.remove();
+                document.getElementById('vaStatus').innerHTML = 'Online';
+                
+                // Add response and speak it
+                this.addMessage(response, 'assistant');
+                this.speak(response);
+            }
+        };
+
+        // Init voice assistant on load
+        setTimeout(function() { VoiceAssistant.init(); }, 2000);
 
         // ========================================
         // COMMUNITY RECIPES
