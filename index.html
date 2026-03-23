@@ -3358,29 +3358,9 @@
         }
 
         /* ===== VOICE ASSISTANT ===== */
-        .va-btn {
-            position: fixed;
-            bottom: 90px;
-            left: 16px;
-            width: 52px;
-            height: 52px;
-            background: linear-gradient(135deg, #ec4899, #f43f5e);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(236,72,153,0.4);
-            z-index: 998;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-        .va-btn:hover { transform: scale(1.1); }
-        .va-btn.listening {
-            animation: vaGlow 1.5s infinite;
-            box-shadow: 0 0 30px rgba(236,72,153,0.6);
+        /* VA header button pulse when listening */
+        #vaHeaderBtn.listening {
+            animation: vaGlow 1s infinite;
         }
         @keyframes vaGlow {
             0%,100% { box-shadow: 0 4px 20px rgba(236,72,153,0.4); }
@@ -3392,17 +3372,21 @@
             left: 0;
             right: 0;
             background: white;
-            border-radius: 24px 24px 0 0;
-            box-shadow: 0 -10px 50px rgba(0,0,0,0.15);
+            border-radius: 28px 28px 0 0;
+            box-shadow: 0 -10px 50px rgba(0,0,0,0.12);
             z-index: 10003;
             display: none;
             flex-direction: column;
-            max-height: 70vh;
-            transition: all 0.3s;
+            max-height: 65vh;
             overflow: hidden;
+            transform: translateY(100%);
+            transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+        .va-overlay.active {
+            transform: translateY(0);
         }
         body.dark-mode .va-overlay { background: #1e293b; }
-        .va-overlay.active { display: flex; }
+
         .va-header {
             display: flex;
             align-items: center;
@@ -5565,8 +5549,7 @@
         </div>
     </div>
 
-    <!-- Voice Assistant Button -->
-    <button class="va-btn" id="vaBtn" onclick="VoiceAssistant.toggle()" title="Voice Assistant">🎙️</button>
+<!-- Voice Assistant Button moved to header -->
 
     <!-- Voice Assistant Overlay -->
     <div class="va-overlay" id="vaOverlay">
@@ -5677,6 +5660,7 @@
                             <div class="lang-option" data-lang="ru" onclick="setLanguage('ru')">🇷🇺 Русский</div>
                         </div>
                     </div>
+                    <button class="icon-btn" onclick="VoiceAssistant.toggle()" id="vaHeaderBtn" title="Chef Luna" style="background:linear-gradient(135deg,#ec4899,#f43f5e);color:white;border-radius:50%;width:34px;height:34px;font-size:16px;">👩‍🍳</button>
                     <button class="icon-btn" onclick="toggleDarkMode()" id="darkBtn">🌙</button>
                 </div>
             </header>
@@ -7066,15 +7050,21 @@
                         var voices = speechSynthesis.getVoices();
                         // Priority: natural female voices
                         var preferred = [
+                            // Natural sounding voices (priority order)
                             'Google UK English Female',
-                            'Microsoft Zira',
-                            'Microsoft Hazel',
-                            'Samantha',
-                            'Karen',
-                            'Moira',
-                            'Victoria',
-                            'Google US English',
-                            'Microsoft Susan'
+                            'Samantha',           // macOS - very natural
+                            'Karen',              // macOS Australian
+                            'Moira',              // macOS Irish
+                            'Tessa',              // macOS South African
+                            'Microsoft Zira',     // Windows
+                            'Microsoft Hazel',    // Windows UK
+                            'Microsoft Susan',    // Windows UK
+                            'Google US English',  // Android/Chrome
+                            'Victoria',           // macOS
+                            'Fiona',              // macOS
+                            'Serena',             // macOS
+                            'Milena',             // macOS Russian
+                            'Yuna'                // macOS Korean
                         ];
                         
                         for (var p = 0; p < preferred.length; p++) {
@@ -7086,13 +7076,25 @@
                             }
                         }
                         
-                        // Fallback: any female-sounding voice
+                        // Fallback: any female-sounding or high-quality voice
+                        var femaleKeywords = ['female','woman','zira','samantha','karen','victoria',
+                            'fiona','serena','tessa','moira','susan','hazel','milena','yuna',
+                            'anna','maria','elena','natasha','alice','amelie','lekha'];
                         for (var v2 = 0; v2 < voices.length; v2++) {
                             var name = voices[v2].name.toLowerCase();
-                            if (name.indexOf('female') > -1 || name.indexOf('woman') > -1 || 
-                                name.indexOf('zira') > -1 || name.indexOf('samantha') > -1 ||
-                                name.indexOf('karen') > -1 || name.indexOf('victoria') > -1) {
-                                self.femaleVoice = voices[v2];
+                            for (var fk = 0; fk < femaleKeywords.length; fk++) {
+                                if (name.indexOf(femaleKeywords[fk]) > -1) {
+                                    self.femaleVoice = voices[v2];
+                                    return;
+                                }
+                            }
+                        }
+                        
+                        // Language-specific fallback
+                        var targetLang = currentLang === 'az' ? 'az' : currentLang === 'ru' ? 'ru' : 'en';
+                        for (var v3 = 0; v3 < voices.length; v3++) {
+                            if (voices[v3].lang.toLowerCase().indexOf(targetLang) > -1) {
+                                self.femaleVoice = voices[v3];
                                 return;
                             }
                         }
@@ -7116,8 +7118,12 @@
 
             open: function() {
                 this.isOpen = true;
-                document.getElementById('vaOverlay').classList.add('active');
-                document.getElementById('vaBtn').style.display = 'none';
+                var overlay = document.getElementById('vaOverlay');
+                overlay.style.display = 'flex';
+                // Trigger reflow for animation
+                overlay.offsetHeight;
+                overlay.classList.add('active');
+                document.getElementById('vaHeaderBtn').style.opacity = '0.5';
                 
                 if (this.chatHistory.length === 0) {
                     this.greet();
@@ -7132,8 +7138,14 @@
                 this.isOpen = false;
                 this.stopSpeaking();
                 this.stopListening();
-                document.getElementById('vaOverlay').classList.remove('active');
-                document.getElementById('vaBtn').style.display = 'flex';
+                var overlay = document.getElementById('vaOverlay');
+                overlay.classList.remove('active');
+                document.getElementById('vaHeaderBtn').style.opacity = '1';
+                setTimeout(function() {
+                    if (!overlay.classList.contains('active')) {
+                        overlay.style.display = 'none';
+                    }
+                }, 350);
             },
 
             greet: function() {
@@ -7171,22 +7183,41 @@
                 this.stopSpeaking();
                 this.isSpeaking = true;
                 
-                var utterance = new SpeechSynthesisUtterance(text);
-                if (this.femaleVoice) utterance.voice = this.femaleVoice;
-                utterance.rate = 0.95;
-                utterance.pitch = 1.15;
-                utterance.volume = 1;
-                
-                // Select language based on app language
-                if (currentLang === 'az') utterance.lang = 'az-AZ';
-                else if (currentLang === 'ru') utterance.lang = 'ru-RU';
-                else utterance.lang = 'en-US';
-                
+                // Split into sentences for more natural pauses
+                var sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [text];
                 var self = this;
-                utterance.onend = function() { self.isSpeaking = false; };
-                utterance.onerror = function() { self.isSpeaking = false; };
+                var lang = currentLang === 'az' ? 'az-AZ' : currentLang === 'ru' ? 'ru-RU' : 'en-US';
                 
-                speechSynthesis.speak(utterance);
+                var speakNext = function(index) {
+                    if (index >= sentences.length) {
+                        self.isSpeaking = false;
+                        return;
+                    }
+                    
+                    var sentence = sentences[index].trim();
+                    if (!sentence) { speakNext(index + 1); return; }
+                    
+                    var utterance = new SpeechSynthesisUtterance(sentence);
+                    if (self.femaleVoice) utterance.voice = self.femaleVoice;
+                    
+                    // Natural speech parameters
+                    utterance.rate = 0.92;    // Slightly slower for warmth
+                    utterance.pitch = 1.1;    // Slightly higher for feminine tone
+                    utterance.volume = 0.95;  // Slightly softer
+                    utterance.lang = lang;
+                    
+                    utterance.onend = function() {
+                        // Natural pause between sentences (200-400ms)
+                        setTimeout(function() { speakNext(index + 1); }, 250);
+                    };
+                    utterance.onerror = function() {
+                        self.isSpeaking = false;
+                    };
+                    
+                    speechSynthesis.speak(utterance);
+                };
+                
+                speakNext(0);
             },
 
             stopSpeaking: function() {
