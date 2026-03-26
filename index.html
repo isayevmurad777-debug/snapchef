@@ -3567,6 +3567,135 @@
             0%,100% { transform: scaleY(0.5); }
             50% { transform: scaleY(1.2); }
         }
+
+        /* ===== WORLD CUISINES ===== */
+        .cuisine-bar {
+            margin: 12px 0;
+            overflow: hidden;
+        }
+        .cuisine-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        body.dark-mode .cuisine-label { color: var(--text-dark); }
+        .cuisine-scroll {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .cuisine-scroll::-webkit-scrollbar { display: none; }
+        .cuisine-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            min-width: 64px;
+            padding: 8px 4px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            background: none;
+            font-family: inherit;
+        }
+        .cuisine-item:hover, .cuisine-item:active {
+            background: rgba(79,70,229,0.06);
+            border-color: rgba(79,70,229,0.15);
+        }
+        .cuisine-item.selected {
+            background: rgba(79,70,229,0.1);
+            border-color: var(--primary);
+        }
+        body.dark-mode .cuisine-item:hover { background: rgba(129,140,248,0.1); }
+        body.dark-mode .cuisine-item.selected { background: rgba(129,140,248,0.15); }
+        .cuisine-flag {
+            font-size: 28px;
+            line-height: 1;
+        }
+        .cuisine-name {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .cuisine-item.selected .cuisine-name { color: var(--primary); font-weight: 700; }
+
+        /* Cuisine explore panel */
+        .cuisine-explore {
+            display: none;
+            background: var(--card-light);
+            border: 1px solid rgba(0,0,0,0.06);
+            border-radius: 16px;
+            padding: 16px;
+            margin: 8px 0 16px;
+            animation: tabFadeIn 0.3s ease;
+        }
+        body.dark-mode .cuisine-explore { background: var(--card-dark); border-color: var(--border-dark); }
+        .cuisine-explore.active { display: block; }
+        .cuisine-explore-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .cuisine-explore-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-light);
+        }
+        body.dark-mode .cuisine-explore-title { color: var(--text-dark); }
+        .cuisine-explore-close {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+        .cuisine-dishes {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        .cuisine-dish {
+            padding: 12px;
+            background: rgba(79,70,229,0.04);
+            border: 1px solid rgba(0,0,0,0.04);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        body.dark-mode .cuisine-dish { background: rgba(129,140,248,0.08); border-color: var(--border-dark); }
+        .cuisine-dish:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .cuisine-dish:active { transform: scale(0.97); }
+        .cuisine-dish-emoji { font-size: 24px; margin-bottom: 4px; }
+        .cuisine-dish-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+        body.dark-mode .cuisine-dish-name { color: var(--text-dark); }
+        .cuisine-explore-btn {
+            width: 100%;
+            margin-top: 12px;
+            padding: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
         /* ===== COOKING TIMER ===== */
         .cook-timer-overlay {
             position: fixed;
@@ -5696,6 +5825,81 @@
                     <div class="history-list" id="historyList"></div>
                 </div>
 
+                <!-- World Cuisines Bar -->
+                <div class="cuisine-bar" id="cuisineBar">
+                    <div class="cuisine-label">🌍 <span data-i18n="exploreCuisines">Explore World Cuisines</span></div>
+                    <div class="cuisine-scroll" id="cuisineScroll">
+                        <button class="cuisine-item" onclick="WorldCuisines.select('italian')" data-cuisine="italian">
+                            <span class="cuisine-flag">🇮🇹</span>
+                            <span class="cuisine-name">Italian</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('turkish')" data-cuisine="turkish">
+                            <span class="cuisine-flag">🇹🇷</span>
+                            <span class="cuisine-name">Turkish</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('azerbaijani')" data-cuisine="azerbaijani">
+                            <span class="cuisine-flag">🇦🇿</span>
+                            <span class="cuisine-name">Azerbaijani</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('chinese')" data-cuisine="chinese">
+                            <span class="cuisine-flag">🇨🇳</span>
+                            <span class="cuisine-name">Chinese</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('japanese')" data-cuisine="japanese">
+                            <span class="cuisine-flag">🇯🇵</span>
+                            <span class="cuisine-name">Japanese</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('indian')" data-cuisine="indian">
+                            <span class="cuisine-flag">🇮🇳</span>
+                            <span class="cuisine-name">Indian</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('mexican')" data-cuisine="mexican">
+                            <span class="cuisine-flag">🇲🇽</span>
+                            <span class="cuisine-name">Mexican</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('french')" data-cuisine="french">
+                            <span class="cuisine-flag">🇫🇷</span>
+                            <span class="cuisine-name">French</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('thai')" data-cuisine="thai">
+                            <span class="cuisine-flag">🇹🇭</span>
+                            <span class="cuisine-name">Thai</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('korean')" data-cuisine="korean">
+                            <span class="cuisine-flag">🇰🇷</span>
+                            <span class="cuisine-name">Korean</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('spanish')" data-cuisine="spanish">
+                            <span class="cuisine-flag">🇪🇸</span>
+                            <span class="cuisine-name">Spanish</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('georgian')" data-cuisine="georgian">
+                            <span class="cuisine-flag">🇬🇪</span>
+                            <span class="cuisine-name">Georgian</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('russian')" data-cuisine="russian">
+                            <span class="cuisine-flag">🇷🇺</span>
+                            <span class="cuisine-name">Russian</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('greek')" data-cuisine="greek">
+                            <span class="cuisine-flag">🇬🇷</span>
+                            <span class="cuisine-name">Greek</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('arabic')" data-cuisine="arabic">
+                            <span class="cuisine-flag">🇸🇦</span>
+                            <span class="cuisine-name">Arabic</span>
+                        </button>
+                    </div>
+                    <div class="cuisine-explore" id="cuisineExplore">
+                        <div class="cuisine-explore-header">
+                            <div class="cuisine-explore-title" id="cuisineExploreTitle">Italian Cuisine</div>
+                            <button class="cuisine-explore-close" onclick="WorldCuisines.close()">✕</button>
+                        </div>
+                        <div class="cuisine-dishes" id="cuisineDishes"></div>
+                        <button class="cuisine-explore-btn" onclick="WorldCuisines.generateRandom()" id="cuisineRandomBtn">✨ Surprise Me!</button>
+                    </div>
+                </div>
+
                 <!-- Empty State Welcome -->
                 <div class="welcome-empty" id="welcomeEmpty">
                     <div class="welcome-tips">
@@ -6099,7 +6303,7 @@
 
                 <!-- App Info -->
                 <div style="margin-top: 20px; text-align: center; color: var(--text-muted); font-size: 12px;">
-                    <div>SnapChef v8.1</div>
+                    <div>SnapChef v9.0</div>
                     <div style="margin-top: 5px;">Made with ❤️</div>
                     <div style="margin-top: 3px; font-size: 10px; color: var(--text-muted);">Health Tracking • Notifications • Better UX</div>
                 </div>
@@ -6334,6 +6538,8 @@
                 shoppingList: "Shopping List",
                 clearAll: "Clear All",
                 aiMealPrep: "AI Meal Prep",
+                exploreCuisines: "Explore World Cuisines",
+                surpriseMe: "Surprise Me!",
                 askChefLuna: "Ask Chef Luna",
                 voiceAssistant: "Voice Assistant",
                 myRecipes: "My Recipes",
@@ -6598,6 +6804,8 @@
                 shoppingList: "Alış-veriş Siyahısı",
                 clearAll: "Hamısını Sil",
                 aiMealPrep: "AI Yemək Hazırlığı",
+                exploreCuisines: "Dünya Mətbəxlərini Kəşf Et",
+                surpriseMe: "Təəccübləndir!",
                 askChefLuna: "Chef Luna-dan soruş",
                 voiceAssistant: "Səsli Köməkçi",
                 myRecipes: "Reseptlərim",
@@ -6879,6 +7087,8 @@
                 shoppingList: "Список покупок",
                 clearAll: "Очистить все",
                 aiMealPrep: "ИИ план питания",
+                exploreCuisines: "Кухни мира",
+                surpriseMe: "Удиви меня!",
                 askChefLuna: "Спросить Шеф Луну",
                 voiceAssistant: "Голосовой помощник",
                 myRecipes: "Мои рецепты",
@@ -7030,6 +7240,242 @@
                 }, { merge: true }).catch(function() {});
             }
         }
+
+        // ========================================
+        // WORLD CUISINES
+        // ========================================
+        var WorldCuisines = {
+            current: null,
+            data: {
+                italian: {
+                    name: 'Italian Cuisine', flag: '🇮🇹',
+                    dishes: [
+                        { emoji: '🍝', name: 'Spaghetti Carbonara' },
+                        { emoji: '🍕', name: 'Margherita Pizza' },
+                        { emoji: '🥘', name: 'Risotto ai Funghi' },
+                        { emoji: '🍖', name: 'Osso Buco' },
+                        { emoji: '🥗', name: 'Caprese Salad' },
+                        { emoji: '🍰', name: 'Tiramisu' }
+                    ]
+                },
+                turkish: {
+                    name: 'Turkish Cuisine', flag: '🇹🇷',
+                    dishes: [
+                        { emoji: '🥙', name: 'Döner Kebab' },
+                        { emoji: '🍖', name: 'Adana Kebab' },
+                        { emoji: '🥘', name: 'İskender' },
+                        { emoji: '🫓', name: 'Lahmacun' },
+                        { emoji: '🍲', name: 'Mercimek Çorbası' },
+                        { emoji: '🍮', name: 'Baklava' }
+                    ]
+                },
+                azerbaijani: {
+                    name: 'Azerbaijani Cuisine', flag: '🇦🇿',
+                    dishes: [
+                        { emoji: '🍚', name: 'Plov (Pilaf)' },
+                        { emoji: '🥟', name: 'Dolma' },
+                        { emoji: '🍖', name: 'Kebab' },
+                        { emoji: '🫓', name: 'Qutab' },
+                        { emoji: '🍲', name: 'Piti' },
+                        { emoji: '🍮', name: 'Şəkərbura' }
+                    ]
+                },
+                chinese: {
+                    name: 'Chinese Cuisine', flag: '🇨🇳',
+                    dishes: [
+                        { emoji: '🥟', name: 'Dumplings (Jiaozi)' },
+                        { emoji: '🍜', name: 'Kung Pao Chicken' },
+                        { emoji: '🥡', name: 'Sweet & Sour Pork' },
+                        { emoji: '🍚', name: 'Fried Rice' },
+                        { emoji: '🍲', name: 'Mapo Tofu' },
+                        { emoji: '🥮', name: 'Spring Rolls' }
+                    ]
+                },
+                japanese: {
+                    name: 'Japanese Cuisine', flag: '🇯🇵',
+                    dishes: [
+                        { emoji: '🍣', name: 'Sushi' },
+                        { emoji: '🍜', name: 'Ramen' },
+                        { emoji: '🍱', name: 'Bento Box' },
+                        { emoji: '🍤', name: 'Tempura' },
+                        { emoji: '🥘', name: 'Teriyaki Chicken' },
+                        { emoji: '🍡', name: 'Mochi' }
+                    ]
+                },
+                indian: {
+                    name: 'Indian Cuisine', flag: '🇮🇳',
+                    dishes: [
+                        { emoji: '🍛', name: 'Butter Chicken' },
+                        { emoji: '🫓', name: 'Naan Bread' },
+                        { emoji: '🍲', name: 'Dal Makhani' },
+                        { emoji: '🥘', name: 'Biryani' },
+                        { emoji: '🥗', name: 'Palak Paneer' },
+                        { emoji: '🍮', name: 'Gulab Jamun' }
+                    ]
+                },
+                mexican: {
+                    name: 'Mexican Cuisine', flag: '🇲🇽',
+                    dishes: [
+                        { emoji: '🌮', name: 'Tacos al Pastor' },
+                        { emoji: '🫔', name: 'Tamales' },
+                        { emoji: '🌯', name: 'Burrito' },
+                        { emoji: '🥑', name: 'Guacamole' },
+                        { emoji: '🍲', name: 'Pozole' },
+                        { emoji: '🧀', name: 'Quesadilla' }
+                    ]
+                },
+                french: {
+                    name: 'French Cuisine', flag: '🇫🇷',
+                    dishes: [
+                        { emoji: '🥐', name: 'Croissant' },
+                        { emoji: '🍲', name: 'Ratatouille' },
+                        { emoji: '🧅', name: 'French Onion Soup' },
+                        { emoji: '🥩', name: 'Coq au Vin' },
+                        { emoji: '🍮', name: 'Crème Brûlée' },
+                        { emoji: '🥖', name: 'Quiche Lorraine' }
+                    ]
+                },
+                thai: {
+                    name: 'Thai Cuisine', flag: '🇹🇭',
+                    dishes: [
+                        { emoji: '🍜', name: 'Pad Thai' },
+                        { emoji: '🍛', name: 'Green Curry' },
+                        { emoji: '🥘', name: 'Tom Yum Soup' },
+                        { emoji: '🍚', name: 'Mango Sticky Rice' },
+                        { emoji: '🥗', name: 'Som Tam (Papaya Salad)' },
+                        { emoji: '🍖', name: 'Satay' }
+                    ]
+                },
+                korean: {
+                    name: 'Korean Cuisine', flag: '🇰🇷',
+                    dishes: [
+                        { emoji: '🥘', name: 'Bibimbap' },
+                        { emoji: '🥟', name: 'Korean BBQ' },
+                        { emoji: '🍲', name: 'Kimchi Jjigae' },
+                        { emoji: '🍗', name: 'Korean Fried Chicken' },
+                        { emoji: '🥞', name: 'Japchae' },
+                        { emoji: '🍜', name: 'Tteokbokki' }
+                    ]
+                },
+                spanish: {
+                    name: 'Spanish Cuisine', flag: '🇪🇸',
+                    dishes: [
+                        { emoji: '🥘', name: 'Paella' },
+                        { emoji: '🍤', name: 'Gambas al Ajillo' },
+                        { emoji: '🍲', name: 'Gazpacho' },
+                        { emoji: '🥩', name: 'Churros' },
+                        { emoji: '🫒', name: 'Patatas Bravas' },
+                        { emoji: '🧀', name: 'Tortilla Española' }
+                    ]
+                },
+                georgian: {
+                    name: 'Georgian Cuisine', flag: '🇬🇪',
+                    dishes: [
+                        { emoji: '🥟', name: 'Khinkali' },
+                        { emoji: '🫓', name: 'Khachapuri' },
+                        { emoji: '🍖', name: 'Mtsvadi (Shashlik)' },
+                        { emoji: '🥗', name: 'Pkhali' },
+                        { emoji: '🍲', name: 'Chakapuli' },
+                        { emoji: '🍆', name: 'Badrijani' }
+                    ]
+                },
+                russian: {
+                    name: 'Russian Cuisine', flag: '🇷🇺',
+                    dishes: [
+                        { emoji: '🥟', name: 'Pelmeni' },
+                        { emoji: '🍲', name: 'Borscht' },
+                        { emoji: '🥞', name: 'Blini' },
+                        { emoji: '🥗', name: 'Olivier Salad' },
+                        { emoji: '🍖', name: 'Beef Stroganoff' },
+                        { emoji: '🥧', name: 'Pirozhki' }
+                    ]
+                },
+                greek: {
+                    name: 'Greek Cuisine', flag: '🇬🇷',
+                    dishes: [
+                        { emoji: '🥙', name: 'Gyros' },
+                        { emoji: '🥗', name: 'Greek Salad' },
+                        { emoji: '🍆', name: 'Moussaka' },
+                        { emoji: '🫓', name: 'Spanakopita' },
+                        { emoji: '🍖', name: 'Souvlaki' },
+                        { emoji: '🍮', name: 'Baklava' }
+                    ]
+                },
+                arabic: {
+                    name: 'Arabic Cuisine', flag: '🇸🇦',
+                    dishes: [
+                        { emoji: '🧆', name: 'Falafel' },
+                        { emoji: '🥘', name: 'Hummus' },
+                        { emoji: '🍖', name: 'Shawarma' },
+                        { emoji: '🍚', name: 'Mansaf' },
+                        { emoji: '🥗', name: 'Tabbouleh' },
+                        { emoji: '🍮', name: 'Kunafa' }
+                    ]
+                }
+            },
+
+            select: function(cuisine) {
+                // Toggle selection
+                if (this.current === cuisine) {
+                    this.close();
+                    return;
+                }
+                
+                this.current = cuisine;
+                var data = this.data[cuisine];
+                if (!data) return;
+
+                // Highlight selected flag
+                document.querySelectorAll('.cuisine-item').forEach(function(el) {
+                    el.classList.toggle('selected', el.getAttribute('data-cuisine') === cuisine);
+                });
+
+                // Show explore panel
+                document.getElementById('cuisineExploreTitle').textContent = data.flag + ' ' + data.name;
+                document.getElementById('cuisineRandomBtn').textContent = '✨ Random ' + data.name.split(' ')[0] + ' Recipe';
+
+                var html = '';
+                data.dishes.forEach(function(dish) {
+                    html += '<div class="cuisine-dish" onclick="WorldCuisines.cook(\'' + dish.name.replace(/'/g, "\\'") + '\')">' +
+                        '<div class="cuisine-dish-emoji">' + dish.emoji + '</div>' +
+                        '<div class="cuisine-dish-name">' + dish.name + '</div>' +
+                        '</div>';
+                });
+
+                document.getElementById('cuisineDishes').innerHTML = html;
+                document.getElementById('cuisineExplore').classList.add('active');
+                
+                // Smooth scroll to explore panel
+                setTimeout(function() {
+                    document.getElementById('cuisineExplore').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            },
+
+            close: function() {
+                this.current = null;
+                document.querySelectorAll('.cuisine-item').forEach(function(el) { el.classList.remove('selected'); });
+                document.getElementById('cuisineExplore').classList.remove('active');
+            },
+
+            cook: function(dishName) {
+                this.close();
+                // Set the dish name in the specific dish input and generate
+                var specificInput = document.getElementById('specificDish');
+                if (specificInput) {
+                    specificInput.value = dishName;
+                }
+                // Scroll to top and trigger cooking
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                cookSpecificDish(dishName);
+            },
+
+            generateRandom: function() {
+                if (!this.current) return;
+                var data = this.data[this.current];
+                var randomDish = data.dishes[Math.floor(Math.random() * data.dishes.length)];
+                this.cook(randomDish.name);
+            }
+        };
 
         // ========================================
         // VOICE ASSISTANT - Chef Luna
