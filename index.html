@@ -5790,7 +5790,6 @@
                         </div>
                     </div>
                     <button class="icon-btn" onclick="VoiceAssistant.toggle()" id="vaHeaderBtn" title="Chef Luna" style="background:linear-gradient(135deg,#ec4899,#f43f5e);color:white;border-radius:50%;width:34px;height:34px;font-size:16px;">👩‍🍳</button>
-                    <button class="icon-btn" onclick="toggleDarkMode()" id="darkBtn">🌙</button>
                 </div>
             </header>
 
@@ -6303,7 +6302,7 @@
 
                 <!-- App Info -->
                 <div style="margin-top: 20px; text-align: center; color: var(--text-muted); font-size: 12px;">
-                    <div>SnapChef v9.0</div>
+                    <div>SnapChef v9.1</div>
                     <div style="margin-top: 5px;">Made with ❤️</div>
                     <div style="margin-top: 3px; font-size: 10px; color: var(--text-muted);">Health Tracking • Notifications • Better UX</div>
                 </div>
@@ -6538,6 +6537,15 @@
                 shoppingList: "Shopping List",
                 clearAll: "Clear All",
                 aiMealPrep: "AI Meal Prep",
+                weeklyProgress: "Weekly Progress",
+                aiInsight: "AI Health Insight",
+                noMealsLoggedInsight: "Log your meals to get personalized health insights! Tap '+ Add Meal' to start.",
+                lowCalInsight: "You've eaten less than half your target. Have a balanced meal soon!",
+                highCalInsight: "You've exceeded your calorie target. Consider lighter meals for the rest of the day.",
+                goodCalInsight: "Great job! You're right on track with your calorie goals! 🎉",
+                lowProteinInsight: "Protein is low. Try chicken, fish, eggs, or legumes in your next meal.",
+                drinkWaterInsight: "Stay hydrated! Drink more water today.",
+                keepGoingInsight: "Keep going! You're building healthy habits. Consistency is key! 💪",
                 exploreCuisines: "Explore World Cuisines",
                 surpriseMe: "Surprise Me!",
                 askChefLuna: "Ask Chef Luna",
@@ -6804,6 +6812,15 @@
                 shoppingList: "Alış-veriş Siyahısı",
                 clearAll: "Hamısını Sil",
                 aiMealPrep: "AI Yemək Hazırlığı",
+                weeklyProgress: "Həftəlik İrəliləyiş",
+                aiInsight: "AI Sağlamlıq Məsləhəti",
+                noMealsLoggedInsight: "Fərdi sağlamlıq məsləhətləri almaq üçün yeməklərinizi qeyd edin!",
+                lowCalInsight: "Hədəfinizin yarısından az yemisiniz. Balanslaşdırılmış yemək yeyin!",
+                highCalInsight: "Kalori hədəfini aşmısınız. Günün qalan hissəsində yüngül yeyin.",
+                goodCalInsight: "Əla! Kalori hədəfinizə uyğun gedirsiz! 🎉",
+                lowProteinInsight: "Protein azdır. Növbəti yeməyə toyuq, balıq, yumurta əlavə edin.",
+                drinkWaterInsight: "Su içməyi unutmayın! Bu gün daha çox su için.",
+                keepGoingInsight: "Davam edin! Sağlam vərdişlər qurursuz. Davamlılıq vacibdir! 💪",
                 exploreCuisines: "Dünya Mətbəxlərini Kəşf Et",
                 surpriseMe: "Təəccübləndir!",
                 askChefLuna: "Chef Luna-dan soruş",
@@ -7087,6 +7104,15 @@
                 shoppingList: "Список покупок",
                 clearAll: "Очистить все",
                 aiMealPrep: "ИИ план питания",
+                weeklyProgress: "Прогресс за неделю",
+                aiInsight: "ИИ совет по здоровью",
+                noMealsLoggedInsight: "Записывайте приёмы пищи для персонализированных советов!",
+                lowCalInsight: "Вы съели меньше половины нормы. Не забудьте поесть!",
+                highCalInsight: "Вы превысили норму калорий. Выбирайте лёгкие блюда до конца дня.",
+                goodCalInsight: "Отлично! Вы на правильном пути по калориям! 🎉",
+                lowProteinInsight: "Мало белка. Добавьте курицу, рыбу, яйца или бобовые.",
+                drinkWaterInsight: "Не забывайте пить воду! Выпейте ещё стакан.",
+                keepGoingInsight: "Продолжайте! Вы формируете здоровые привычки. Постоянство — ключ! 💪",
                 exploreCuisines: "Кухни мира",
                 surpriseMe: "Удиви меня!",
                 askChefLuna: "Спросить Шеф Луну",
@@ -11809,6 +11835,102 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 return tips.slice(0, 3);
             },
 
+            // Weekly bar chart
+            buildWeeklyChart: function() {
+                var days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+                var dayLabels = {
+                    az: ['B.e','Ç.a','Ç','C.a','C','Ş','B'],
+                    ru: ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],
+                    en: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
+                };
+                var labels = dayLabels[currentLang] || dayLabels.en;
+                var target = this.profile.calories || 2000;
+                var todayIdx = new Date().getDay();
+                todayIdx = todayIdx === 0 ? 6 : todayIdx - 1; // Mon=0
+
+                // Get weekly data from localStorage
+                var weekData = JSON.parse(localStorage.getItem('snapchef_week_health') || '[]');
+                if (weekData.length !== 7) weekData = [0,0,0,0,0,0,0];
+                weekData[todayIdx] = this.todayLog.calories;
+                localStorage.setItem('snapchef_week_health', JSON.stringify(weekData));
+
+                var maxVal = Math.max(target, Math.max.apply(null, weekData) || target);
+                var barWidth = 28;
+                var gap = 8;
+                var chartW = (barWidth + gap) * 7;
+                var chartH = 100;
+
+                var svg = '<svg viewBox="0 0 ' + chartW + ' ' + (chartH + 24) + '" style="width:100%;height:auto;">';
+                
+                // Target line
+                var targetY = chartH - (target / maxVal * chartH);
+                svg += '<line x1="0" y1="' + targetY + '" x2="' + chartW + '" y2="' + targetY + '" stroke="rgba(99,102,241,0.2)" stroke-width="1" stroke-dasharray="4,3"/>';
+                svg += '<text x="' + (chartW - 2) + '" y="' + (targetY - 3) + '" font-size="8" fill="rgba(99,102,241,0.5)" text-anchor="end">' + target + '</text>';
+
+                for (var i = 0; i < 7; i++) {
+                    var x = i * (barWidth + gap) + gap/2;
+                    var val = weekData[i] || 0;
+                    var barH = val > 0 ? Math.max(4, (val / maxVal) * chartH) : 4;
+                    var y = chartH - barH;
+                    
+                    var isToday = i === todayIdx;
+                    var overLimit = val > target;
+                    var color = isToday ? '#4f46e5' : overLimit ? '#ef4444' : val > 0 ? '#818cf8' : '#e2e8f0';
+                    var radius = 4;
+                    
+                    // Rounded top bar
+                    svg += '<rect x="' + x + '" y="' + y + '" width="' + barWidth + '" height="' + barH + '" rx="' + radius + '" fill="' + color + '" opacity="' + (isToday ? '1' : '0.7') + '"/>';
+                    
+                    // Value on top
+                    if (val > 0) {
+                        svg += '<text x="' + (x + barWidth/2) + '" y="' + (y - 4) + '" font-size="8" font-weight="700" fill="' + color + '" text-anchor="middle">' + val + '</text>';
+                    }
+                    
+                    // Day label
+                    svg += '<text x="' + (x + barWidth/2) + '" y="' + (chartH + 14) + '" font-size="9" font-weight="' + (isToday ? '800' : '500') + '" fill="' + (isToday ? '#4f46e5' : '#94a3b8') + '" text-anchor="middle">' + labels[i] + '</text>';
+                    
+                    // Today dot
+                    if (isToday) {
+                        svg += '<circle cx="' + (x + barWidth/2) + '" cy="' + (chartH + 20) + '" r="2" fill="#4f46e5"/>';
+                    }
+                }
+                
+                svg += '</svg>';
+                return svg;
+            },
+
+            // AI Health Insight based on today's data
+            getAIInsight: function(log, calTarget, macros) {
+                var insights = [];
+                var calPct = log.calories / calTarget * 100;
+                
+                if (log.meals.length === 0) {
+                    return t('noMealsLoggedInsight') || "Log your meals to get personalized health insights! Tap '+ Add Meal' above to start tracking.";
+                }
+                
+                if (calPct < 50) {
+                    insights.push(t('lowCalInsight') || "You've eaten less than half your daily target. Make sure to have a balanced meal soon!");
+                } else if (calPct > 110) {
+                    insights.push(t('highCalInsight') || "You've exceeded your calorie target today. Consider lighter meals for the rest of the day.");
+                } else if (calPct >= 80 && calPct <= 100) {
+                    insights.push(t('goodCalInsight') || "Great job! You're right on track with your calorie goals today! 🎉");
+                }
+                
+                if (log.protein < macros.protein * 0.5 && log.meals.length >= 2) {
+                    insights.push(t('lowProteinInsight') || "Your protein intake is low. Try adding chicken, fish, eggs, or legumes to your next meal.");
+                }
+                
+                if (log.water < 4) {
+                    insights.push(t('drinkWaterInsight') || "Remember to stay hydrated! You've had only " + log.water + " glasses of water so far.");
+                }
+                
+                if (insights.length === 0) {
+                    insights.push(t('keepGoingInsight') || "Keep going! You're building healthy habits. Consistency is key! 💪");
+                }
+                
+                return insights[0];
+            },
+
             buildRingSVG: function(percent, color, size) {
                 size = size || 80;
                 var r = (size / 2) - 6;
@@ -11931,6 +12053,23 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                     html += '<div style="text-align:center;padding:16px;color:#64748b;font-size:13px;">' + t('noMealsYet') + '</div>';
                 }
                 html += '</div>';
+
+                // Weekly Progress Chart (SVG bar chart)
+                html += '<div class="health-water-section" style="margin-bottom:14px;">' +
+                    '<div class="water-header">' +
+                    '<div class="water-title">📊 ' + (t('weeklyProgress') || 'Weekly Progress') + '</div>' +
+                    '</div>' +
+                    '<div style="padding:8px 0;">' + this.buildWeeklyChart() + '</div>' +
+                    '</div>';
+
+                // AI Health Insight
+                html += '<div style="margin-bottom:14px;padding:16px;background:linear-gradient(135deg,rgba(79,70,229,0.08),rgba(139,92,246,0.08));border-radius:14px;border:1px solid rgba(79,70,229,0.1);">' +
+                    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
+                    '<span style="font-size:18px;">🤖</span>' +
+                    '<span style="font-weight:700;font-size:13px;color:var(--primary);">' + (t('aiInsight') || 'AI Health Insight') + '</span>' +
+                    '</div>' +
+                    '<div style="font-size:13px;color:var(--text-muted);line-height:1.5;">' + this.getAIInsight(log, cal, macros) + '</div>' +
+                    '</div>';
 
                 // Tips
                 html += '<div class="health-tips">' +
