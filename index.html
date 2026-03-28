@@ -159,7 +159,7 @@
             width: 100px;
             height: 100px;
             background: white;
-            border-radius: var(--radius-xl);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -408,7 +408,7 @@
         .subscription-banner {
             background: var(--primary);
             padding: 16px 20px;
-            border-radius: var(--radius-xl);
+            border-radius: 16px;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
@@ -916,7 +916,7 @@
         /* Upload Section */
         .upload-section {
             background: var(--card-light);
-            border-radius: var(--radius-xl);
+            border-radius: 16px;
             padding: 32px 24px;
             text-align: center;
             border: none;
@@ -1306,7 +1306,7 @@
         .recipe-card {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             background: var(--card-light);
-            border-radius: var(--radius-xl);
+            border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 8px 40px rgba(0,0,0,0.08);
             border: none;
@@ -1787,7 +1787,7 @@
 
         .premium-content {
             background: var(--card-light);
-            border-radius: var(--radius-xl);
+            border-radius: 16px;
             padding: 30px;
             max-width: 400px;
             width: 100%;
@@ -3696,6 +3696,43 @@
             cursor: pointer;
             font-family: inherit;
         }
+
+
+        /* Background Styles */
+        body.bg-warm { background: #fffbeb !important; }
+        body.bg-warm .container { background: #fffbeb; }
+        body.bg-cool { background: #eff6ff !important; }
+        body.bg-cool .container { background: #eff6ff; }
+        body.bg-nature { background: #f0fdf4 !important; }
+        body.bg-nature .container { background: #f0fdf4; }
+        body.dark-mode.bg-warm, body.dark-mode.bg-cool, body.dark-mode.bg-nature {
+            background: var(--bg-dark) !important;
+        }
+        /* ===== THEME CUSTOMIZATION ===== */
+        .theme-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .theme-dot:hover { transform: scale(1.15); }
+        .theme-dot.active {
+            border-color: white;
+            box-shadow: 0 0 0 3px var(--primary), 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .theme-dot.active::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+            font-weight: 900;
+        }
         /* ===== COOKING TIMER ===== */
         .cook-timer-overlay {
             position: fixed;
@@ -4441,7 +4478,7 @@
             }
             .api-guide-content {
                 max-width: 420px;
-                border-radius: var(--radius-xl);
+                border-radius: 16px;
                 padding: 28px;
             }
         }
@@ -4724,7 +4761,7 @@
             cursor: pointer;
             top: 0; left: 0; right: 0; bottom: 0;
             background: #cbd5e1;
-            border-radius: var(--radius-xl);
+            border-radius: 16px;
             transition: 0.3s;
         }
         .notif-slider::before {
@@ -4836,7 +4873,7 @@
         /* ===== HEALTH TARGET SYSTEM ===== */
         .health-dashboard {
             background: #F5F5FF;
-            border-radius: var(--radius-xl);
+            border-radius: 16px;
             padding: 22px;
             margin-bottom: 20px;
             border: 1px solid var(--border-light);
@@ -5720,7 +5757,7 @@
 
     <!-- Login Screen -->
     <div id="loginScreen" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #FAFAFA; z-index: 8000; flex-direction: column; align-items: center; justify-content: center; padding: 24px;">
-        <div style="background: white; border-radius: var(--radius-xl); padding: 32px 24px; max-width: 380px; width: 100%; box-shadow: 0 12px 40px rgba(0,0,0,0.1);">
+        <div style="background: white; border-radius: 16px; padding: 32px 24px; max-width: 380px; width: 100%; box-shadow: 0 8px 24px rgba(0,0,0,0.06);">
             <div style="text-align: center; margin-bottom: 24px;">
                 <div style="font-size: 48px; margin-bottom: 8px;">🍳</div>
                 <h1 style="font-size: 28px; font-weight: 800; color: #1e293b; margin-bottom: 4px;">SnapChef</h1>
@@ -6250,6 +6287,33 @@
                     </div>
                 </div>
 
+                <!-- Theme Color -->
+                <div class="settings-item">
+                    <div style="font-weight: 600; color: var(--text-light); margin-bottom: 10px;">🎨 <span data-i18n="themeColor">Theme Color</span></div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;" id="themeColorPicker">
+                        <button class="theme-dot" onclick="setThemeColor('#4f46e5')" style="background:#4f46e5;" data-color="#4f46e5" title="Indigo"></button>
+                        <button class="theme-dot" onclick="setThemeColor('#7c3aed')" style="background:#7c3aed;" data-color="#7c3aed" title="Purple"></button>
+                        <button class="theme-dot" onclick="setThemeColor('#2563eb')" style="background:#2563eb;" data-color="#2563eb" title="Blue"></button>
+                        <button class="theme-dot" onclick="setThemeColor('#0891b2')" style="background:#0891b2;" data-color="#0891b2" title="Cyan"></button>
+                        <button class="theme-dot" onclick="setThemeColor('#059669')" style="background:#059669;" data-color="#059669" title="Green"></button>
+                        <button class="theme-dot" onclick="setThemeColor('#d97706')" style="background:#d97706;" data-color="#d97706" title="Amber"></button>
+                        <button class="theme-dot" onclick="setThemeColor('#dc2626')" style="background:#dc2626;" data-color="#dc2626" title="Red"></button>
+                        <button class="theme-dot" onclick="setThemeColor('#db2777')" style="background:#db2777;" data-color="#db2777" title="Pink"></button>
+                        <button class="theme-dot" onclick="setThemeColor('#1e293b')" style="background:#1e293b;" data-color="#1e293b" title="Dark"></button>
+                    </div>
+                </div>
+
+                <!-- Background Style -->
+                <div class="settings-item">
+                    <div style="font-weight: 600; color: var(--text-light); margin-bottom: 10px;">🖼️ <span data-i18n="bgStyle">Background</span></div>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="bg-option selected" onclick="setBgStyle('default')" data-bg="default" style="padding:8px 14px;border:2px solid var(--primary);border-radius:10px;background:white;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">Default</button>
+                        <button class="bg-option" onclick="setBgStyle('warm')" data-bg="warm" style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;background:#fffbeb;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">☀️ Warm</button>
+                        <button class="bg-option" onclick="setBgStyle('cool')" data-bg="cool" style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;background:#eff6ff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">❄️ Cool</button>
+                        <button class="bg-option" onclick="setBgStyle('nature')" data-bg="nature" style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;background:#f0fdf4;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">🌿 Nature</button>
+                    </div>
+                </div>
+
                 <!-- Notifications -->
                 <div class="settings-item" id="notifSettingsPanel">
                     <div style="font-weight: 600; color: var(--text-light); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
@@ -6302,7 +6366,7 @@
 
                 <!-- App Info -->
                 <div style="margin-top: 20px; text-align: center; color: var(--text-muted); font-size: 12px;">
-                    <div>SnapChef v9.1</div>
+                    <div>SnapChef v9.2</div>
                     <div style="margin-top: 5px;">Made with ❤️</div>
                     <div style="margin-top: 3px; font-size: 10px; color: var(--text-muted);">Health Tracking • Notifications • Better UX</div>
                 </div>
@@ -6546,6 +6610,8 @@
                 lowProteinInsight: "Protein is low. Try chicken, fish, eggs, or legumes in your next meal.",
                 drinkWaterInsight: "Stay hydrated! Drink more water today.",
                 keepGoingInsight: "Keep going! You're building healthy habits. Consistency is key! 💪",
+                themeColor: "Theme Color",
+                bgStyle: "Background",
                 exploreCuisines: "Explore World Cuisines",
                 surpriseMe: "Surprise Me!",
                 askChefLuna: "Ask Chef Luna",
@@ -6812,6 +6878,29 @@
                 shoppingList: "Alış-veriş Siyahısı",
                 clearAll: "Hamısını Sil",
                 aiMealPrep: "AI Yemək Hazırlığı",
+                allowNotifications: "Bildirişlərə icazə ver",
+                enableNotifications: "Bildirişləri aktiv et",
+                enableNotifDesc: "Yemək və su xatırlatmaları alın",
+                notifActive: "Bildirişlər aktivdir",
+                notifBlocked: "Bildirişlər bloklanıb",
+                notifBlockedDesc: "Brauzer parametrlərindən aktiv edin",
+                testNotification: "Test Bildirişi",
+                testNotifTitle: "Test Bildirişi",
+                testNotifMsg: "Bildirişlər işləyir!",
+                healthTips: "Sağlamlıq məsləhətləri",
+                healthTipsDesc: "Gündəlik qidalanma məsləhətləri",
+                dailySummary: "Gündəlik xülasə",
+                dailySummaryDesc: "Günün kalori nəticələri",
+                stayHydrated: "Su için",
+                timeToHydrate: "Su içmək vaxtıdır",
+                drinkSomeWater: "Bir stəkan su içməyi unutmayın",
+                waterBreak: "Su fasiləsi",
+                moreGlasses: "stəkan qalıb",
+                breakfastTip: "Səhər yeməyi vaxtı! Gününüzə düzgün başlayın",
+                lunchTip: "Nahar vaxtı! Yeməyi unutmayın",
+                dinnerTip: "Şam yeməyi vaxtı! Ləzzətli bir şey hazırlayın",
+                viewHealth: "Sağlamlığa bax",
+                toGo: "qalıb",
                 weeklyProgress: "Həftəlik İrəliləyiş",
                 aiInsight: "AI Sağlamlıq Məsləhəti",
                 noMealsLoggedInsight: "Fərdi sağlamlıq məsləhətləri almaq üçün yeməklərinizi qeyd edin!",
@@ -6821,6 +6910,8 @@
                 lowProteinInsight: "Protein azdır. Növbəti yeməyə toyuq, balıq, yumurta əlavə edin.",
                 drinkWaterInsight: "Su içməyi unutmayın! Bu gün daha çox su için.",
                 keepGoingInsight: "Davam edin! Sağlam vərdişlər qurursuz. Davamlılıq vacibdir! 💪",
+                themeColor: "Tema Rəngi",
+                bgStyle: "Fon",
                 exploreCuisines: "Dünya Mətbəxlərini Kəşf Et",
                 surpriseMe: "Təəccübləndir!",
                 askChefLuna: "Chef Luna-dan soruş",
@@ -7104,6 +7195,26 @@
                 shoppingList: "Список покупок",
                 clearAll: "Очистить все",
                 aiMealPrep: "ИИ план питания",
+                allowNotifications: "Разрешить уведомления",
+                enableNotifications: "Включить уведомления",
+                enableNotifDesc: "Получайте напоминания о еде и воде",
+                notifActive: "Уведомления включены",
+                notifBlocked: "Уведомления заблокированы",
+                notifBlockedDesc: "Включите в настройках браузера",
+                healthTips: "Советы по здоровью",
+                healthTipsDesc: "Ежедневные советы по питанию",
+                dailySummary: "Ежедневная сводка",
+                dailySummaryDesc: "Итоги дня по калориям",
+                stayHydrated: "Пейте воду",
+                timeToHydrate: "Время выпить воды",
+                drinkSomeWater: "Не забудьте выпить стакан воды",
+                waterBreak: "Перерыв на воду",
+                moreGlasses: "стаканов осталось",
+                breakfastTip: "Время завтрака! Начните день правильно",
+                lunchTip: "Время обеда! Не забудьте поесть",
+                dinnerTip: "Время ужина! Приготовьте что-нибудь вкусное",
+                viewHealth: "Посмотреть здоровье",
+                toGo: "осталось",
                 weeklyProgress: "Прогресс за неделю",
                 aiInsight: "ИИ совет по здоровью",
                 noMealsLoggedInsight: "Записывайте приёмы пищи для персонализированных советов!",
@@ -7113,6 +7224,8 @@
                 lowProteinInsight: "Мало белка. Добавьте курицу, рыбу, яйца или бобовые.",
                 drinkWaterInsight: "Не забывайте пить воду! Выпейте ещё стакан.",
                 keepGoingInsight: "Продолжайте! Вы формируете здоровые привычки. Постоянство — ключ! 💪",
+                themeColor: "Цвет темы",
+                bgStyle: "Фон",
                 exploreCuisines: "Кухни мира",
                 surpriseMe: "Удиви меня!",
                 askChefLuna: "Спросить Шеф Луну",
@@ -7218,6 +7331,39 @@
                 errTryAgain: "Попробовать снова"
             }
         };
+
+        // Theme Color System
+        function setThemeColor(color) {
+            document.documentElement.style.setProperty('--primary', color);
+            // Generate lighter variant
+            document.documentElement.style.setProperty('--primary-light', color + '99');
+            localStorage.setItem('snapchef_theme_color', color);
+            
+            // Update active dot
+            document.querySelectorAll('.theme-dot').forEach(function(d) {
+                d.classList.toggle('active', d.getAttribute('data-color') === color);
+            });
+        }
+
+        function setBgStyle(style) {
+            var body = document.body;
+            body.classList.remove('bg-warm', 'bg-cool', 'bg-nature');
+            if (style !== 'default') body.classList.add('bg-' + style);
+            localStorage.setItem('snapchef_bg_style', style);
+            
+            document.querySelectorAll('.bg-option').forEach(function(b) {
+                b.classList.toggle('selected', b.getAttribute('data-bg') === style);
+                b.style.borderColor = b.getAttribute('data-bg') === style ? 'var(--primary)' : '#e2e8f0';
+            });
+        }
+
+        // Load saved theme on startup
+        (function() {
+            var savedColor = localStorage.getItem('snapchef_theme_color');
+            if (savedColor) setThemeColor(savedColor);
+            var savedBg = localStorage.getItem('snapchef_bg_style');
+            if (savedBg) setBgStyle(savedBg);
+        })();
 
         function renderPremiumSettings() {
             var el = document.getElementById('premiumSettingsContent');
