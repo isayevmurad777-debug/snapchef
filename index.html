@@ -8574,24 +8574,35 @@
             var kw = keyword.trim();
             var words = kw.split(/\s+/);
 
-            // Strategy: Try TheMealDB with full keyword, then individual words
-            tryTheMealDB(kw, recipeName, function() {
-                // If full keyword fails, try first word
-                if (words.length > 1) {
-                    tryTheMealDB(words[0], recipeName, function() {
-                        // Try second word
-                        if (words.length > 2) {
-                            tryTheMealDB(words[1], recipeName, function() {
-                                useDirectImageFallback(kw, recipeName);
-                            });
-                        } else {
+            // Waterfall: Pexels → TheMealDB → Wikipedia → Placeholder
+            // Step 1: Try Pexels API (best quality)
+            tryPexels(kw, recipeName, function() {
+                // Step 2: Try TheMealDB
+                tryTheMealDB(kw, recipeName, function() {
+                    if (words.length > 1) {
+                        tryTheMealDB(words[0], recipeName, function() {
+                            // Step 3: Wikipedia
                             useDirectImageFallback(kw, recipeName);
-                        }
-                    });
-                } else {
-                    useDirectImageFallback(kw, recipeName);
-                }
+                        });
+                    } else {
+                        useDirectImageFallback(kw, recipeName);
+                    }
+                });
             });
+        }
+
+        function tryPexels(searchTerm, recipeName, onFail) {
+            if (foodImageCache[recipeName]) return;
+            fetch('/.netlify/functions/food-image?q=' + encodeURIComponent(searchTerm) + '&n=1')
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.images && data.images.length > 0) {
+                        setFoodImage(recipeName, data.images[0].url);
+                    } else if (onFail) {
+                        onFail();
+                    }
+                })
+                .catch(function() { if (onFail) onFail(); });
         }
 
         function tryTheMealDB(searchTerm, recipeName, onFail) {
@@ -8653,10 +8664,8 @@
         }
 
         function useLoremFlickr(keyword, recipeName) {
-            if (foodImageCache[recipeName]) return;
-            var kw = keyword.trim().split(' ').slice(0, 2).join(',');
-            var url = 'https://loremflickr.com/800/600/' + encodeURIComponent(kw) + ',food';
-            setFoodImage(recipeName, url);
+            // LoremFlickr removed - use gradient placeholder instead
+            // Placeholder is already shown, no action needed
         }
 
         function setFoodImage(recipeName, url) {
