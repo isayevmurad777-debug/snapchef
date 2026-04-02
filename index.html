@@ -5866,103 +5866,13 @@
                     <div class="history-list" id="historyList"></div>
                 </div>
 
-                <!-- World Cuisines Bar -->
-                <div class="cuisine-bar" id="cuisineBar">
-                    <div class="cuisine-label">🌍 <span data-i18n="exploreCuisines">Explore World Cuisines</span></div>
-                    <div class="cuisine-scroll" id="cuisineScroll">
-                        <button class="cuisine-item" onclick="WorldCuisines.select('italian')" data-cuisine="italian">
-                            <span class="cuisine-flag">🇮🇹</span>
-                            <span class="cuisine-name">Italian</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('turkish')" data-cuisine="turkish">
-                            <span class="cuisine-flag">🇹🇷</span>
-                            <span class="cuisine-name">Turkish</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('azerbaijani')" data-cuisine="azerbaijani">
-                            <span class="cuisine-flag">🇦🇿</span>
-                            <span class="cuisine-name">Azerbaijani</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('chinese')" data-cuisine="chinese">
-                            <span class="cuisine-flag">🇨🇳</span>
-                            <span class="cuisine-name">Chinese</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('japanese')" data-cuisine="japanese">
-                            <span class="cuisine-flag">🇯🇵</span>
-                            <span class="cuisine-name">Japanese</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('indian')" data-cuisine="indian">
-                            <span class="cuisine-flag">🇮🇳</span>
-                            <span class="cuisine-name">Indian</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('mexican')" data-cuisine="mexican">
-                            <span class="cuisine-flag">🇲🇽</span>
-                            <span class="cuisine-name">Mexican</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('french')" data-cuisine="french">
-                            <span class="cuisine-flag">🇫🇷</span>
-                            <span class="cuisine-name">French</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('thai')" data-cuisine="thai">
-                            <span class="cuisine-flag">🇹🇭</span>
-                            <span class="cuisine-name">Thai</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('korean')" data-cuisine="korean">
-                            <span class="cuisine-flag">🇰🇷</span>
-                            <span class="cuisine-name">Korean</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('spanish')" data-cuisine="spanish">
-                            <span class="cuisine-flag">🇪🇸</span>
-                            <span class="cuisine-name">Spanish</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('georgian')" data-cuisine="georgian">
-                            <span class="cuisine-flag">🇬🇪</span>
-                            <span class="cuisine-name">Georgian</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('russian')" data-cuisine="russian">
-                            <span class="cuisine-flag">🇷🇺</span>
-                            <span class="cuisine-name">Russian</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('greek')" data-cuisine="greek">
-                            <span class="cuisine-flag">🇬🇷</span>
-                            <span class="cuisine-name">Greek</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('arabic')" data-cuisine="arabic">
-                            <span class="cuisine-flag">🇸🇦</span>
-                            <span class="cuisine-name">Arabic</span>
-                        </button>
-                    </div>
-                    <div class="cuisine-explore" id="cuisineExplore">
-                        <div class="cuisine-explore-header">
-                            <div class="cuisine-explore-title" id="cuisineExploreTitle">Italian Cuisine</div>
-                            <button class="cuisine-explore-close" onclick="WorldCuisines.close()">✕</button>
-                        </div>
-                        <div class="cuisine-dishes" id="cuisineDishes"></div>
-                        <button class="cuisine-explore-btn" onclick="WorldCuisines.generateRandom()" id="cuisineRandomBtn">✨ Surprise Me!</button>
-                    </div>
-                </div>
-
-                <!-- Empty State Welcome -->
-                <div class="welcome-empty" id="welcomeEmpty">
-                    <div class="welcome-tips">
-                        <div class="tip-card">
-                            <span class="tip-icon">📸</span>
-                            <span class="tip-text">Scan ingredients with camera</span>
-                        </div>
-                        <div class="tip-card">
-                            <span class="tip-icon">✍️</span>
-                            <span class="tip-text">Type ingredients manually</span>
-                        </div>
-                        <div class="tip-card">
-                            <span class="tip-icon">🔗</span>
-                            <span class="tip-text">Import from YouTube / TikTok</span>
-                        </div>
-                    </div>
+                <!-- Simple welcome message -->
+                <div class="welcome-empty" id="welcomeEmpty" style="text-align:center;padding:8px 0;">
+                    <div style="font-size:13px;color:var(--text-muted);" data-i18n="recipeWelcome">Type ingredients or scan with camera to get started</div>
                 </div>
 
                 <!-- Upload Section -->
-                <div class="upload-section" role="region" aria-label="Upload ingredients" style="padding: 24px 16px;">
-                    <h3 class="upload-title" data-i18n="scanIngredients" style="font-size: 16px; margin-bottom: 4px;">Scan Your Ingredients</h3>
-                    <p class="upload-subtitle" data-i18n="takePhoto" style="font-size: 12px; margin-bottom: 16px;">Take a photo or upload an image</p>
+                <div class="upload-section" role="region" aria-label="Upload ingredients" style="padding: 16px;">
                     <div class="upload-btns">
                         <button class="upload-btn primary" onclick="startCamera('recipe')" aria-label="Open camera to scan ingredients">
                             <span>📷</span>
@@ -6224,6 +6134,7 @@
                 <!-- Community Tabs -->
                 <div class="community-tabs">
                     <button class="community-tab active" onclick="CommunityRecipes.switchTab('saved')" id="commTabSaved" data-i18n="myRecipes">My Recipes</button>
+                    <button class="community-tab" onclick="CommunityRecipes.switchTab('cuisines')" id="commTabCuisines">🌍</button>
                     <button class="community-tab" onclick="CommunityRecipes.switchTab('community')" id="commTabCommunity" data-i18n="communityRecipes">Community</button>
                     <button class="community-tab" onclick="CommunityRecipes.switchTab('shopping')" id="commTabShopping">🛒</button>
                 </div>
@@ -6234,6 +6145,37 @@
                         <input type="text" id="favSearchInput" class="search-input" placeholder="Search recipes..." oninput="searchFavorites(this.value)">
                     </div>
                     <div id="favoritesList"></div>
+                </div>
+
+                <!-- WORLD CUISINES Panel -->
+                <div id="cuisinesPanel" style="display:none;">
+                    <div class="cuisine-bar" id="cuisineBar2">
+                        <div class="cuisine-scroll" id="cuisineScroll2">
+                            <button class="cuisine-item" onclick="WorldCuisines.select('italian')" data-cuisine="italian"><span class="cuisine-flag">🇮🇹</span><span class="cuisine-name">Italian</span></button>
+                            <button class="cuisine-item" onclick="WorldCuisines.select('turkish')" data-cuisine="turkish"><span class="cuisine-flag">🇹🇷</span><span class="cuisine-name">Turkish</span></button>
+                            <button class="cuisine-item" onclick="WorldCuisines.select('azerbaijani')" data-cuisine="azerbaijani"><span class="cuisine-flag">🇦🇿</span><span class="cuisine-name">Azerbaijani</span></button>
+                            <button class="cuisine-item" onclick="WorldCuisines.select('chinese')" data-cuisine="chinese"><span class="cuisine-flag">🇨🇳</span><span class="cuisine-name">Chinese</span></button>
+                            <button class="cuisine-item" onclick="WorldCuisines.select('japanese')" data-cuisine="japanese"><span class="cuisine-flag">🇯🇵</span><span class="cuisine-name">Japanese</span></button>
+                            <button class="cuisine-item" onclick="WorldCuisines.select('indian')" data-cuisine="indian"><span class="cuisine-flag">🇮🇳</span><span class="cuisine-name">Indian</span></button>
+                            <button class="cuisine-item" onclick="WorldCuisines.select('mexican')" data-cuisine="mexican"><span class="cuisine-flag">🇲🇽</span><span class="cuisine-name">Mexican</span></button>
+                            <button class="cuisine-item" onclick="WorldCuisines.select('french')" data-cuisine="french"><span class="cuisine-flag">🇫🇷</span><span class="cuisine-name">French</span></button>
+                            <button class="cuisine-item" onclick="WorldCuisines.select('thai')" data-cuisine="thai"><span class="cuisine-flag">🇹🇭</span><span class="cuisine-name">Thai</span></button>
+                            <button class="cuisine-item" onclick="WorldCuisines.select('korean')" data-cuisine="korean"><span class="cuisine-flag">🇰🇷</span><span class="cuisine-name">Korean</span></button>
+                            <button class="cuisine-item" onclick="WorldCuisines.select('spanish')" data-cuisine="spanish"><span class="cuisine-flag">🇪🇸</span><span class="cuisine-name">Spanish</span></button>
+                            <button class="cuisine-item" onclick="WorldCuisines.select('georgian')" data-cuisine="georgian"><span class="cuisine-flag">🇬🇪</span><span class="cuisine-name">Georgian</span></button>
+                            <button class="cuisine-item" onclick="WorldCuisines.select('russian')" data-cuisine="russian"><span class="cuisine-flag">🇷🇺</span><span class="cuisine-name">Russian</span></button>
+                            <button class="cuisine-item" onclick="WorldCuisines.select('greek')" data-cuisine="greek"><span class="cuisine-flag">🇬🇷</span><span class="cuisine-name">Greek</span></button>
+                            <button class="cuisine-item" onclick="WorldCuisines.select('arabic')" data-cuisine="arabic"><span class="cuisine-flag">🇸🇦</span><span class="cuisine-name">Arabic</span></button>
+                        </div>
+                        <div class="cuisine-explore" id="cuisineExplore">
+                            <div class="cuisine-explore-header">
+                                <div class="cuisine-explore-title" id="cuisineExploreTitle">Italian Cuisine</div>
+                                <button class="cuisine-explore-close" onclick="WorldCuisines.close()">✕</button>
+                            </div>
+                            <div class="cuisine-dishes" id="cuisineDishes"></div>
+                            <button class="cuisine-explore-btn" onclick="WorldCuisines.generateRandom()" id="cuisineRandomBtn">✨ Surprise Me!</button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- COMMUNITY Panel -->
@@ -6371,7 +6313,7 @@
 
                 <!-- App Info -->
                 <div style="margin-top: 20px; text-align: center; color: var(--text-muted); font-size: 12px;">
-                    <div>SnapChef v9.2</div>
+                    <div>SnapChef v9.3</div>
                     <div style="margin-top: 5px;">Made with ❤️</div>
                     <div style="margin-top: 3px; font-size: 10px; color: var(--text-muted);">Health Tracking • Notifications • Better UX</div>
                 </div>
@@ -6621,6 +6563,7 @@
                 surpriseMe: "Surprise Me!",
                 askChefLuna: "Ask Chef Luna",
                 voiceAssistant: "Voice Assistant",
+                recipeWelcome: "Type ingredients or scan with camera to get started",
                 myRecipes: "My Recipes",
                 communityRecipes: "Community",
                 publishRecipe: "Publish Your Recipe",
@@ -6921,6 +6864,7 @@
                 surpriseMe: "Təəccübləndir!",
                 askChefLuna: "Chef Luna-dan soruş",
                 voiceAssistant: "Səsli Köməkçi",
+                recipeWelcome: "İnqrediyent yazın və ya kamera ilə skan edin",
                 myRecipes: "Reseptlərim",
                 communityRecipes: "İcma",
                 publishRecipe: "Reseptini Paylaş",
@@ -7235,6 +7179,7 @@
                 surpriseMe: "Удиви меня!",
                 askChefLuna: "Спросить Шеф Луну",
                 voiceAssistant: "Голосовой помощник",
+                recipeWelcome: "Введите ингредиенты или сканируйте камерой",
                 myRecipes: "Мои рецепты",
                 communityRecipes: "Сообщество",
                 publishRecipe: "Опубликовать рецепт",
@@ -8033,12 +7978,14 @@
             switchTab: function(tab) {
                 this.currentTab = tab;
                 document.getElementById('savedPanel').style.display = tab === 'saved' ? 'block' : 'none';
+                document.getElementById('cuisinesPanel').style.display = tab === 'cuisines' ? 'block' : 'none';
                 document.getElementById('communityPanel').style.display = tab === 'community' ? 'block' : 'none';
                 document.getElementById('shoppingPanel').style.display = tab === 'shopping' ? 'block' : 'none';
                 
                 document.querySelectorAll('.community-tab').forEach(function(t) { t.classList.remove('active'); });
-                var tabId = tab === 'saved' ? 'commTabSaved' : tab === 'community' ? 'commTabCommunity' : 'commTabShopping';
-                document.getElementById(tabId).classList.add('active');
+                var tabMap = { saved: 'commTabSaved', cuisines: 'commTabCuisines', community: 'commTabCommunity', shopping: 'commTabShopping' };
+                var tabEl = document.getElementById(tabMap[tab]);
+                if (tabEl) tabEl.classList.add('active');
                 
                 if (tab === 'community') this.loadFeed();
                 if (tab === 'saved') { renderFavorites(); }
@@ -12231,12 +12178,8 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                     '<div style="font-size:13px;color:var(--text-muted);line-height:1.5;">' + this.getAIInsight(log, cal, macros) + '</div>' +
                     '</div>';
 
-                // Tips
-                html += '<div class="health-tips">' +
-                    '<div style="font-weight:600;font-size:13px;margin-bottom:8px;color:var(--text-light);">💡 ' + t('tips') + '</div>';
-                tips.forEach(function(tip) {
-                    html += '<div class="health-tip"><span class="tip-icon">' + tip.icon + '</span><span>' + tip.text + '</span></div>';
-                });
+                // Tips removed for cleaner UI - AI insight above replaces them
+                if (false) { // tips section disabled
                 html += '</div>';
 
                 html += '</div>'; // close dashboard
