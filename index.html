@@ -11145,19 +11145,11 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
         // ========================================
         function getFullDietaryPrefs() {
             var prefs = [];
-            if (document.getElementById('vegetarian').checked) prefs.push('vegetarian');
-            if (document.getElementById('vegan').checked) prefs.push('vegan');
-            if (document.getElementById('lowcal').checked) prefs.push('low calorie');
-            if (document.getElementById('quick').checked) prefs.push('quick and easy (under 30 min)');
-            if (document.getElementById('halal').checked) prefs.push('halal (no pork, no alcohol)');
-            if (document.getElementById('keto').checked) prefs.push('keto (low carb, high fat)');
-            // Allergies
-            if (document.getElementById('noGluten').checked) prefs.push('gluten-free (no wheat, barley, rye)');
-            if (document.getElementById('noLactose').checked) prefs.push('lactose-free (no milk, cheese, cream)');
-            if (document.getElementById('noNuts').checked) prefs.push('nut-free (no peanuts, almonds, walnuts)');
-            if (document.getElementById('noEggs').checked) prefs.push('egg-free');
-            if (document.getElementById('noShellfish').checked) prefs.push('shellfish-free (no shrimp, crab, lobster)');
-            if (document.getElementById('noSoy').checked) prefs.push('soy-free');
+            var checks = {vegetarian:'Vegetarian',vegan:'Vegan',lowcal:'Low Calorie',quick:'Quick',halal:'Halal',keto:'Keto',noGluten:'Gluten-free',noLactose:'Lactose-free',noNuts:'Nut-free',noEggs:'Egg-free',noShellfish:'Shellfish-free',noSoy:'Soy-free'};
+            for (var id in checks) {
+                var el = document.getElementById(id);
+                if (el && el.checked) prefs.push(checks[id]);
+            }
             return prefs;
         }
 
