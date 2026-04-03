@@ -3300,6 +3300,20 @@
             margin-bottom: 4px;
         }
         body.dark-mode .comm-recipe-name { color: var(--text-dark); }
+
+        /* Cuisine Explorer Dark Mode */
+        body.dark-mode #cuisineGrid > div,
+        body.dark-mode #cuisineAbout,
+        body.dark-mode #cuisineIngredients,
+        body.dark-mode #cuisineTechniques,
+        body.dark-mode #cuisineDishCards > div {
+            background: var(--card-dark) !important;
+            border-color: var(--border-dark) !important;
+        }
+        body.dark-mode #cuisineGrid > div > div:nth-child(2),
+        body.dark-mode #cuisineDetailName {
+            color: var(--text-dark) !important;
+        }
         .comm-recipe-desc {
             font-size: 13px;
             color: var(--text-muted);
@@ -5866,81 +5880,6 @@
                     <div class="history-list" id="historyList"></div>
                 </div>
 
-                <!-- World Cuisines Bar -->
-                <div class="cuisine-bar" id="cuisineBar">
-                    <div class="cuisine-label">🌍 <span data-i18n="exploreCuisines">Explore World Cuisines</span></div>
-                    <div class="cuisine-scroll" id="cuisineScroll">
-                        <button class="cuisine-item" onclick="WorldCuisines.select('italian')" data-cuisine="italian">
-                            <span class="cuisine-flag">🇮🇹</span>
-                            <span class="cuisine-name">Italian</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('turkish')" data-cuisine="turkish">
-                            <span class="cuisine-flag">🇹🇷</span>
-                            <span class="cuisine-name">Turkish</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('azerbaijani')" data-cuisine="azerbaijani">
-                            <span class="cuisine-flag">🇦🇿</span>
-                            <span class="cuisine-name">Azerbaijani</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('chinese')" data-cuisine="chinese">
-                            <span class="cuisine-flag">🇨🇳</span>
-                            <span class="cuisine-name">Chinese</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('japanese')" data-cuisine="japanese">
-                            <span class="cuisine-flag">🇯🇵</span>
-                            <span class="cuisine-name">Japanese</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('indian')" data-cuisine="indian">
-                            <span class="cuisine-flag">🇮🇳</span>
-                            <span class="cuisine-name">Indian</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('mexican')" data-cuisine="mexican">
-                            <span class="cuisine-flag">🇲🇽</span>
-                            <span class="cuisine-name">Mexican</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('french')" data-cuisine="french">
-                            <span class="cuisine-flag">🇫🇷</span>
-                            <span class="cuisine-name">French</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('thai')" data-cuisine="thai">
-                            <span class="cuisine-flag">🇹🇭</span>
-                            <span class="cuisine-name">Thai</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('korean')" data-cuisine="korean">
-                            <span class="cuisine-flag">🇰🇷</span>
-                            <span class="cuisine-name">Korean</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('spanish')" data-cuisine="spanish">
-                            <span class="cuisine-flag">🇪🇸</span>
-                            <span class="cuisine-name">Spanish</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('georgian')" data-cuisine="georgian">
-                            <span class="cuisine-flag">🇬🇪</span>
-                            <span class="cuisine-name">Georgian</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('russian')" data-cuisine="russian">
-                            <span class="cuisine-flag">🇷🇺</span>
-                            <span class="cuisine-name">Russian</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('greek')" data-cuisine="greek">
-                            <span class="cuisine-flag">🇬🇷</span>
-                            <span class="cuisine-name">Greek</span>
-                        </button>
-                        <button class="cuisine-item" onclick="WorldCuisines.select('arabic')" data-cuisine="arabic">
-                            <span class="cuisine-flag">🇸🇦</span>
-                            <span class="cuisine-name">Arabic</span>
-                        </button>
-                    </div>
-                    <div class="cuisine-explore" id="cuisineExplore">
-                        <div class="cuisine-explore-header">
-                            <div class="cuisine-explore-title" id="cuisineExploreTitle">Italian Cuisine</div>
-                            <button class="cuisine-explore-close" onclick="WorldCuisines.close()">✕</button>
-                        </div>
-                        <div class="cuisine-dishes" id="cuisineDishes"></div>
-                        <button class="cuisine-explore-btn" onclick="WorldCuisines.generateRandom()" id="cuisineRandomBtn">✨ Surprise Me!</button>
-                    </div>
-                </div>
-
                 <!-- Empty State Welcome -->
                 <div class="welcome-empty" id="welcomeEmpty">
                     <div class="welcome-tips">
@@ -6225,6 +6164,7 @@
                 <div class="community-tabs">
                     <button class="community-tab active" onclick="CommunityRecipes.switchTab('saved')" id="commTabSaved" data-i18n="myRecipes">My Recipes</button>
                     <button class="community-tab" onclick="CommunityRecipes.switchTab('community')" id="commTabCommunity" data-i18n="communityRecipes">Community</button>
+                    <button class="community-tab" onclick="CommunityRecipes.switchTab('cuisines')" id="commTabCuisines">🌍</button>
                     <button class="community-tab" onclick="CommunityRecipes.switchTab('shopping')" id="commTabShopping">🛒</button>
                 </div>
 
@@ -6243,6 +6183,59 @@
                     </button>
                     <div class="community-feed" id="communityFeed">
                         <div class="comm-loading">Loading community recipes...</div>
+                    </div>
+                </div>
+
+                <!-- WORLD CUISINES Panel -->
+                <div id="cuisinesPanel" style="display:none;">
+                    <div style="text-align:center;margin-bottom:16px;">
+                        <div style="font-size:32px;">🌍</div>
+                        <div style="font-weight:800;font-size:20px;color:var(--text-light);margin-top:6px;" data-i18n="exploreCuisines">Explore World Cuisines</div>
+                        <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">Discover dishes, techniques & flavors from around the world</div>
+                    </div>
+
+                    <!-- Cuisine Grid -->
+                    <div id="cuisineGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+                    </div>
+
+                    <!-- Cuisine Detail Panel (shown when a cuisine is selected) -->
+                    <div id="cuisineDetail" style="display:none;">
+                        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+                            <button onclick="CuisineExplorer.back()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-light);">←</button>
+                            <span id="cuisineDetailFlag" style="font-size:32px;"></span>
+                            <div>
+                                <div id="cuisineDetailName" style="font-weight:800;font-size:18px;color:var(--text-light);"></div>
+                                <div id="cuisineDetailSub" style="font-size:12px;color:var(--text-muted);"></div>
+                            </div>
+                        </div>
+
+                        <!-- AI About Section -->
+                        <div id="cuisineAbout" style="background:var(--card-light);border-radius:14px;padding:16px;margin-bottom:14px;border:1px solid var(--border-light);">
+                            <div style="font-weight:700;font-size:14px;color:var(--text-light);margin-bottom:8px;">📖 About this cuisine</div>
+                            <div id="cuisineAboutText" style="font-size:13px;color:var(--text-muted);line-height:1.6;">Loading...</div>
+                        </div>
+
+                        <!-- Key Ingredients -->
+                        <div id="cuisineIngredients" style="background:var(--card-light);border-radius:14px;padding:16px;margin-bottom:14px;border:1px solid var(--border-light);">
+                            <div style="font-weight:700;font-size:14px;color:var(--text-light);margin-bottom:8px;">🧄 Key Ingredients</div>
+                            <div id="cuisineIngredientsText" style="font-size:13px;color:var(--text-muted);line-height:1.6;"></div>
+                        </div>
+
+                        <!-- Cooking Techniques -->
+                        <div id="cuisineTechniques" style="background:var(--card-light);border-radius:14px;padding:16px;margin-bottom:14px;border:1px solid var(--border-light);">
+                            <div style="font-weight:700;font-size:14px;color:var(--text-light);margin-bottom:8px;">🔥 Cooking Techniques</div>
+                            <div id="cuisineTechniquesText" style="font-size:13px;color:var(--text-muted);line-height:1.6;"></div>
+                        </div>
+
+                        <!-- Popular Dishes -->
+                        <div style="font-weight:700;font-size:14px;color:var(--text-light);margin-bottom:10px;">🍽️ Popular Dishes</div>
+                        <div id="cuisineDishCards" style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;"></div>
+
+                        <!-- Random Dish Button -->
+                        <button class="main-btn" onclick="CuisineExplorer.cookRandom()" style="margin-bottom:10px;background:linear-gradient(135deg,var(--primary),#8b5cf6);">
+                            <span>✨</span>
+                            <span>Cook a Random <span id="cuisineRandomLabel">Italian</span> Dish</span>
+                        </button>
                     </div>
                 </div>
 
@@ -8034,15 +8027,18 @@
                 this.currentTab = tab;
                 document.getElementById('savedPanel').style.display = tab === 'saved' ? 'block' : 'none';
                 document.getElementById('communityPanel').style.display = tab === 'community' ? 'block' : 'none';
+                document.getElementById('cuisinesPanel').style.display = tab === 'cuisines' ? 'block' : 'none';
                 document.getElementById('shoppingPanel').style.display = tab === 'shopping' ? 'block' : 'none';
                 
                 document.querySelectorAll('.community-tab').forEach(function(t) { t.classList.remove('active'); });
-                var tabId = tab === 'saved' ? 'commTabSaved' : tab === 'community' ? 'commTabCommunity' : 'commTabShopping';
-                document.getElementById(tabId).classList.add('active');
+                var tabMap = { saved:'commTabSaved', community:'commTabCommunity', cuisines:'commTabCuisines', shopping:'commTabShopping' };
+                var btn = document.getElementById(tabMap[tab]);
+                if (btn) btn.classList.add('active');
                 
                 if (tab === 'community') this.loadFeed();
                 if (tab === 'saved') { renderFavorites(); }
                 if (tab === 'shopping') { ShoppingList.render(); }
+                if (tab === 'cuisines') { CuisineExplorer.init(); }
             },
 
             loadFeed: async function() {
@@ -13450,6 +13446,166 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             testNotification: function() {
                 this.sendNotification('🧪', t('testNotifTitle'), t('testNotifMsg'), 'switchTab("health")');
+            }
+        };
+
+        // ========================================
+        // CUISINE EXPLORER (DeepSeek-powered)
+        // ========================================
+        var CuisineExplorer = {
+            initialized: false,
+            cache: {},
+            currentCuisine: null,
+
+            init: function() {
+                if (this.initialized) return;
+                this.initialized = true;
+                this.renderGrid();
+            },
+
+            renderGrid: function() {
+                var grid = document.getElementById('cuisineGrid');
+                if (!grid) return;
+                var html = '';
+                var keys = Object.keys(WorldCuisines.data);
+                keys.forEach(function(key) {
+                    var c = WorldCuisines.data[key];
+                    html += '<div onclick="CuisineExplorer.select(\'' + key + '\')" style="' +
+                        'background:var(--card-light);border-radius:14px;padding:16px 10px;text-align:center;' +
+                        'cursor:pointer;border:1px solid var(--border-light);transition:all 0.2s;' +
+                        '" onmouseenter="this.style.transform=\'scale(1.04)\'" onmouseleave="this.style.transform=\'scale(1)\'">' +
+                        '<div style="font-size:28px;">' + c.flag + '</div>' +
+                        '<div style="font-size:12px;font-weight:600;color:var(--text-light);margin-top:6px;">' + c.name.replace(' Cuisine','') + '</div>' +
+                        '<div style="font-size:10px;color:var(--text-muted);margin-top:2px;">' + c.dishes.length + ' dishes</div>' +
+                        '</div>';
+                });
+                grid.innerHTML = html;
+            },
+
+            select: function(key) {
+                this.currentCuisine = key;
+                var c = WorldCuisines.data[key];
+                if (!c) return;
+
+                document.getElementById('cuisineGrid').style.display = 'none';
+                document.querySelector('#cuisinesPanel > div:first-child').style.display = 'none';
+                document.getElementById('cuisineDetail').style.display = 'block';
+
+                document.getElementById('cuisineDetailFlag').textContent = c.flag;
+                document.getElementById('cuisineDetailName').textContent = c.name;
+                document.getElementById('cuisineDetailSub').textContent = c.dishes.length + ' popular dishes';
+                document.getElementById('cuisineRandomLabel').textContent = c.name.replace(' Cuisine','');
+
+                // Render dish cards
+                var dishHtml = '';
+                c.dishes.forEach(function(d) {
+                    dishHtml += '<div onclick="CuisineExplorer.cookDish(\'' + escapeHTML(d.name) + '\')" style="' +
+                        'display:flex;align-items:center;gap:14px;padding:14px;background:var(--card-light);' +
+                        'border-radius:12px;border:1px solid var(--border-light);cursor:pointer;transition:all 0.15s;' +
+                        '" onmouseenter="this.style.transform=\'translateX(4px)\'" onmouseleave="this.style.transform=\'none\'">' +
+                        '<div style="font-size:28px;flex-shrink:0;">' + d.emoji + '</div>' +
+                        '<div style="flex:1;">' +
+                        '<div style="font-weight:600;font-size:14px;color:var(--text-light);">' + escapeHTML(d.name) + '</div>' +
+                        '<div style="font-size:11px;color:var(--primary);margin-top:2px;">Tap to cook →</div>' +
+                        '</div>' +
+                        '</div>';
+                });
+                document.getElementById('cuisineDishCards').innerHTML = dishHtml;
+
+                // Load AI info (cached)
+                if (this.cache[key]) {
+                    this.renderAIInfo(this.cache[key]);
+                } else {
+                    document.getElementById('cuisineAboutText').innerHTML = '<div style="display:flex;align-items:center;gap:8px;"><div class="splash-loader" style="width:18px;height:18px;border-width:2px;margin:0;"></div> AI is researching ' + c.name + '...</div>';
+                    document.getElementById('cuisineIngredientsText').textContent = 'Loading...';
+                    document.getElementById('cuisineTechniquesText').textContent = 'Loading...';
+                    this.fetchAIInfo(key, c.name);
+                }
+            },
+
+            fetchAIInfo: async function(key, name) {
+                try {
+                    var lang = currentLang === 'az' ? 'Azerbaijani' : currentLang === 'ru' ? 'Russian' : 'English';
+                    var resp = await callDeepSeek([{
+                        role: 'user',
+                        content: 'Give me a brief guide about ' + name + ' in ' + lang + ' language. Return ONLY valid JSON with this format:\n' +
+                            '{"about":"2-3 sentences about this cuisine history and character",' +
+                            '"ingredients":"comma separated list of 8-10 key ingredients",' +
+                            '"techniques":"comma separated list of 4-5 main cooking techniques"}'
+                    }], { temperature: 0.7 });
+
+                    if (resp && resp.content) {
+                        var data = safeJsonParse(resp.content, null);
+                        if (data && data.about) {
+                            this.cache[key] = data;
+                            this.renderAIInfo(data);
+                            return;
+                        }
+                    }
+                    this.renderFallbackInfo(key);
+                } catch(e) {
+                    console.log('Cuisine AI error:', e);
+                    this.renderFallbackInfo(key);
+                }
+            },
+
+            renderAIInfo: function(data) {
+                document.getElementById('cuisineAboutText').textContent = data.about || 'Information not available';
+
+                if (data.ingredients) {
+                    var ingr = data.ingredients.split(',');
+                    var iHtml = ingr.map(function(i) {
+                        return '<span style="display:inline-block;background:rgba(108,92,231,0.1);color:var(--primary);padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;margin:3px 2px;">' + i.trim() + '</span>';
+                    }).join('');
+                    document.getElementById('cuisineIngredientsText').innerHTML = iHtml;
+                }
+
+                if (data.techniques) {
+                    var tech = data.techniques.split(',');
+                    var tHtml = tech.map(function(t) {
+                        return '<span style="display:inline-block;background:rgba(0,184,148,0.1);color:var(--secondary);padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;margin:3px 2px;">🔥 ' + t.trim() + '</span>';
+                    }).join('');
+                    document.getElementById('cuisineTechniquesText').innerHTML = tHtml;
+                }
+            },
+
+            renderFallbackInfo: function(key) {
+                var c = WorldCuisines.data[key];
+                document.getElementById('cuisineAboutText').textContent = c.name + ' features a rich variety of flavors and traditional cooking methods passed down through generations.';
+                document.getElementById('cuisineIngredientsText').textContent = 'Traditional local ingredients';
+                document.getElementById('cuisineTechniquesText').textContent = 'Various traditional methods';
+            },
+
+            back: function() {
+                document.getElementById('cuisineDetail').style.display = 'none';
+                document.getElementById('cuisineGrid').style.display = 'grid';
+                document.querySelector('#cuisinesPanel > div:first-child').style.display = 'block';
+                this.currentCuisine = null;
+            },
+
+            cookDish: function(dishName) {
+                // Switch to recipe tab and fill in specific dish
+                switchTab('recipe');
+                var input = document.getElementById('specificDish');
+                if (input) {
+                    input.value = dishName;
+                    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Pulse animation
+                    input.style.borderColor = 'var(--primary)';
+                    input.style.boxShadow = '0 0 0 3px rgba(108,92,231,0.3)';
+                    setTimeout(function() {
+                        input.style.borderColor = '';
+                        input.style.boxShadow = '';
+                    }, 2000);
+                }
+            },
+
+            cookRandom: function() {
+                if (!this.currentCuisine) return;
+                var c = WorldCuisines.data[this.currentCuisine];
+                if (!c) return;
+                var randomDish = c.dishes[Math.floor(Math.random() * c.dishes.length)];
+                this.cookDish(randomDish.name);
             }
         };
 
