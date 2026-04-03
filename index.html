@@ -5866,7 +5866,99 @@
                     <div class="history-list" id="historyList"></div>
                 </div>
 
+                <!-- World Cuisines Bar -->
+                <div class="cuisine-bar" id="cuisineBar">
+                    <div class="cuisine-label">🌍 <span data-i18n="exploreCuisines">Explore World Cuisines</span></div>
+                    <div class="cuisine-scroll" id="cuisineScroll">
+                        <button class="cuisine-item" onclick="WorldCuisines.select('italian')" data-cuisine="italian">
+                            <span class="cuisine-flag">🇮🇹</span>
+                            <span class="cuisine-name">Italian</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('turkish')" data-cuisine="turkish">
+                            <span class="cuisine-flag">🇹🇷</span>
+                            <span class="cuisine-name">Turkish</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('azerbaijani')" data-cuisine="azerbaijani">
+                            <span class="cuisine-flag">🇦🇿</span>
+                            <span class="cuisine-name">Azerbaijani</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('chinese')" data-cuisine="chinese">
+                            <span class="cuisine-flag">🇨🇳</span>
+                            <span class="cuisine-name">Chinese</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('japanese')" data-cuisine="japanese">
+                            <span class="cuisine-flag">🇯🇵</span>
+                            <span class="cuisine-name">Japanese</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('indian')" data-cuisine="indian">
+                            <span class="cuisine-flag">🇮🇳</span>
+                            <span class="cuisine-name">Indian</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('mexican')" data-cuisine="mexican">
+                            <span class="cuisine-flag">🇲🇽</span>
+                            <span class="cuisine-name">Mexican</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('french')" data-cuisine="french">
+                            <span class="cuisine-flag">🇫🇷</span>
+                            <span class="cuisine-name">French</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('thai')" data-cuisine="thai">
+                            <span class="cuisine-flag">🇹🇭</span>
+                            <span class="cuisine-name">Thai</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('korean')" data-cuisine="korean">
+                            <span class="cuisine-flag">🇰🇷</span>
+                            <span class="cuisine-name">Korean</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('spanish')" data-cuisine="spanish">
+                            <span class="cuisine-flag">🇪🇸</span>
+                            <span class="cuisine-name">Spanish</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('georgian')" data-cuisine="georgian">
+                            <span class="cuisine-flag">🇬🇪</span>
+                            <span class="cuisine-name">Georgian</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('russian')" data-cuisine="russian">
+                            <span class="cuisine-flag">🇷🇺</span>
+                            <span class="cuisine-name">Russian</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('greek')" data-cuisine="greek">
+                            <span class="cuisine-flag">🇬🇷</span>
+                            <span class="cuisine-name">Greek</span>
+                        </button>
+                        <button class="cuisine-item" onclick="WorldCuisines.select('arabic')" data-cuisine="arabic">
+                            <span class="cuisine-flag">🇸🇦</span>
+                            <span class="cuisine-name">Arabic</span>
+                        </button>
+                    </div>
+                    <div class="cuisine-explore" id="cuisineExplore">
+                        <div class="cuisine-explore-header">
+                            <div class="cuisine-explore-title" id="cuisineExploreTitle">Italian Cuisine</div>
+                            <button class="cuisine-explore-close" onclick="WorldCuisines.close()">✕</button>
+                        </div>
+                        <div class="cuisine-dishes" id="cuisineDishes"></div>
+                        <button class="cuisine-explore-btn" onclick="WorldCuisines.generateRandom()" id="cuisineRandomBtn">✨ Surprise Me!</button>
+                    </div>
+                </div>
+
                 <!-- Empty State Welcome -->
+                <div class="welcome-empty" id="welcomeEmpty">
+                    <div class="welcome-tips">
+                        <div class="tip-card">
+                            <span class="tip-icon">📸</span>
+                            <span class="tip-text">Scan ingredients with camera</span>
+                        </div>
+                        <div class="tip-card">
+                            <span class="tip-icon">✍️</span>
+                            <span class="tip-text">Type ingredients manually</span>
+                        </div>
+                        <div class="tip-card">
+                            <span class="tip-icon">🔗</span>
+                            <span class="tip-text">Import from YouTube / TikTok</span>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Upload Section -->
                 <div class="upload-section" role="region" aria-label="Upload ingredients" style="padding: 24px 16px;">
                     <h3 class="upload-title" data-i18n="scanIngredients" style="font-size: 16px; margin-bottom: 4px;">Scan Your Ingredients</h3>
@@ -5946,6 +6038,41 @@
 
                 <!-- Chef Profile Card -->
                 <div id="chefProfileCard" style="margin-bottom: 12px;"></div>
+
+                <!-- Dietary Preferences & Allergy Filter -->
+                <div class="dietary-section">
+                    <label>⚙️ <span data-i18n="dietaryPrefs">Dietary Preferences</span></label>
+                    <div class="dietary-options">
+                        <label class="dietary-option"><input type="checkbox" id="vegetarian"><span>🥬 Vegetarian</span></label>
+                        <label class="dietary-option"><input type="checkbox" id="vegan"><span>🌱 Vegan</span></label>
+                        <label class="dietary-option"><input type="checkbox" id="lowcal"><span>🔥 Low Calorie</span></label>
+                        <label class="dietary-option"><input type="checkbox" id="quick"><span>⚡ Quick & Easy</span></label>
+                        <label class="dietary-option"><input type="checkbox" id="halal"><span>☪️ Halal</span></label>
+                        <label class="dietary-option"><input type="checkbox" id="keto"><span>🥩 Keto</span></label>
+                    </div>
+                </div>
+
+                <!-- Allergy Alerts -->
+                <div class="dietary-section" style="margin-top: -10px;">
+                    <label>⚠️ Allergy Alerts</label>
+                    <div class="dietary-options">
+                        <label class="dietary-option allergy-option"><input type="checkbox" id="noGluten"><span>🚫 Gluten-free</span></label>
+                        <label class="dietary-option allergy-option"><input type="checkbox" id="noLactose"><span>🥛 Lactose-free</span></label>
+                        <label class="dietary-option allergy-option"><input type="checkbox" id="noNuts"><span>🥜 Nut-free</span></label>
+                        <label class="dietary-option allergy-option"><input type="checkbox" id="noEggs"><span>🥚 Egg-free</span></label>
+                        <label class="dietary-option allergy-option"><input type="checkbox" id="noShellfish"><span>🦐 Shellfish-free</span></label>
+                        <label class="dietary-option allergy-option"><input type="checkbox" id="noSoy"><span>🫘 Soy-free</span></label>
+                    </div>
+                </div>
+
+                <!-- Smart Fridge Mode -->
+                <div class="fridge-mode-section">
+                    <label class="fridge-toggle">
+                        <input type="checkbox" id="fridgeMode">
+                        <span class="fridge-toggle-label">🧊 Smart Fridge Mode</span>
+                        <span class="fridge-toggle-desc">Only use ingredients I have</span>
+                    </label>
+                </div>
 
                 <!-- Cook Specific Dish (Enhanced) -->
                 <div class="cook-specific-section">
@@ -11145,12 +11272,19 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
         // ========================================
         function getFullDietaryPrefs() {
             var prefs = [];
-            var ids = ['vegetarian','vegan','lowcal','quick','halal','keto','noGluten','noLactose','noNuts','noEggs','noShellfish','noSoy'];
-            var labels = ['Vegetarian','Vegan','Low Calorie','Quick','Halal','Keto','Gluten-free','Lactose-free','Nut-free','Egg-free','Shellfish-free','Soy-free'];
-            for (var i = 0; i < ids.length; i++) {
-                var el = document.getElementById(ids[i]);
-                if (el && el.checked) prefs.push(labels[i]);
-            }
+            if (document.getElementById('vegetarian').checked) prefs.push('vegetarian');
+            if (document.getElementById('vegan').checked) prefs.push('vegan');
+            if (document.getElementById('lowcal').checked) prefs.push('low calorie');
+            if (document.getElementById('quick').checked) prefs.push('quick and easy (under 30 min)');
+            if (document.getElementById('halal').checked) prefs.push('halal (no pork, no alcohol)');
+            if (document.getElementById('keto').checked) prefs.push('keto (low carb, high fat)');
+            // Allergies
+            if (document.getElementById('noGluten').checked) prefs.push('gluten-free (no wheat, barley, rye)');
+            if (document.getElementById('noLactose').checked) prefs.push('lactose-free (no milk, cheese, cream)');
+            if (document.getElementById('noNuts').checked) prefs.push('nut-free (no peanuts, almonds, walnuts)');
+            if (document.getElementById('noEggs').checked) prefs.push('egg-free');
+            if (document.getElementById('noShellfish').checked) prefs.push('shellfish-free (no shrimp, crab, lobster)');
+            if (document.getElementById('noSoy').checked) prefs.push('soy-free');
             return prefs;
         }
 
