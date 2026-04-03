@@ -11145,10 +11145,11 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
         // ========================================
         function getFullDietaryPrefs() {
             var prefs = [];
-            var checks = {vegetarian:'Vegetarian',vegan:'Vegan',lowcal:'Low Calorie',quick:'Quick',halal:'Halal',keto:'Keto',noGluten:'Gluten-free',noLactose:'Lactose-free',noNuts:'Nut-free',noEggs:'Egg-free',noShellfish:'Shellfish-free',noSoy:'Soy-free'};
-            for (var id in checks) {
-                var el = document.getElementById(id);
-                if (el && el.checked) prefs.push(checks[id]);
+            var ids = ['vegetarian','vegan','lowcal','quick','halal','keto','noGluten','noLactose','noNuts','noEggs','noShellfish','noSoy'];
+            var labels = ['Vegetarian','Vegan','Low Calorie','Quick','Halal','Keto','Gluten-free','Lactose-free','Nut-free','Egg-free','Shellfish-free','Soy-free'];
+            for (var i = 0; i < ids.length; i++) {
+                var el = document.getElementById(ids[i]);
+                if (el && el.checked) prefs.push(labels[i]);
             }
             return prefs;
         }
