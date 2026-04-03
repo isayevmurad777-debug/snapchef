@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -3316,17 +3316,17 @@
     <div class="onboarding" id="onboarding">
         <div class="onboarding-slides">
             <div class="onboarding-slide active" data-slide="0">
-                <div class="onboarding-icon">📸</div>
+                <div class="onboarding-icon">ðŸ“¸</div>
                 <h2 class="onboarding-title" data-i18n="onboard1Title">Scan Ingredients</h2>
                 <p class="onboarding-desc" data-i18n="onboard1Desc">Take a photo of your ingredients and let AI detect them automatically</p>
             </div>
             <div class="onboarding-slide" data-slide="1">
-                <div class="onboarding-icon">👨‍🍳</div>
+                <div class="onboarding-icon">ðŸ‘¨â€ðŸ³</div>
                 <h2 class="onboarding-title" data-i18n="onboard2Title">Generate Recipes</h2>
                 <p class="onboarding-desc" data-i18n="onboard2Desc">Get personalized recipes based on what you have in your kitchen</p>
             </div>
             <div class="onboarding-slide" data-slide="2">
-                <div class="onboarding-icon">📊</div>
+                <div class="onboarding-icon">ðŸ“Š</div>
                 <h2 class="onboarding-title" data-i18n="onboard3Title">Analyze Nutrition</h2>
                 <p class="onboarding-desc" data-i18n="onboard3Desc">Get detailed nutrition info and healthier alternatives for any meal</p>
             </div>
@@ -3345,15 +3345,15 @@
     <!-- Premium Modal -->
     <div class="premium-modal" id="premiumModal">
         <div class="premium-content">
-            <div class="premium-icon">👑</div>
+            <div class="premium-icon">ðŸ‘‘</div>
             <h2 class="premium-title" data-i18n="goPremium">Go Premium</h2>
             <p class="premium-desc" data-i18n="premiumDesc">Unlock unlimited recipes and exclusive features</p>
             <div class="premium-features">
-                <div class="premium-feature"><span class="premium-check">✓</span><span data-i18n="premiumF1">Unlimited recipe generations</span></div>
-                <div class="premium-feature"><span class="premium-check">✓</span><span data-i18n="premiumF2">No ads experience</span></div>
-                <div class="premium-feature"><span class="premium-check">✓</span><span data-i18n="premiumF3">Priority AI processing</span></div>
-                <div class="premium-feature"><span class="premium-check">✓</span><span data-i18n="premiumF4">Offline saved recipes</span></div>
-                <div class="premium-feature"><span class="premium-check">✓</span><span data-i18n="premiumF5">Meal Planning</span></div>
+                <div class="premium-feature"><span class="premium-check">âœ“</span><span data-i18n="premiumF1">Unlimited recipe generations</span></div>
+                <div class="premium-feature"><span class="premium-check">âœ“</span><span data-i18n="premiumF2">No ads experience</span></div>
+                <div class="premium-feature"><span class="premium-check">âœ“</span><span data-i18n="premiumF3">Priority AI processing</span></div>
+                <div class="premium-feature"><span class="premium-check">âœ“</span><span data-i18n="premiumF4">Offline saved recipes</span></div>
+                <div class="premium-feature"><span class="premium-check">âœ“</span><span data-i18n="premiumF5">Meal Planning</span></div>
             </div>
             <div class="premium-plans">
                 <div class="premium-plan selected" data-plan="monthly" onclick="selectPlan('monthly')">
@@ -3376,7 +3376,7 @@
     <!-- Buy Credits Modal -->
     <div class="premium-modal" id="buyCreditsModal">
         <div class="premium-content">
-            <div class="premium-icon">💎</div>
+            <div class="premium-icon">ðŸ’Ž</div>
             <h2 class="premium-title" data-i18n="buyCredits">Buy Credits</h2>
             <p class="premium-desc">Choose a package that suits your needs</p>
             <div class="premium-plans" style="flex-direction: column;">
@@ -3417,12 +3417,12 @@
     <!-- Import Recipe Modal -->
     <div class="premium-modal" id="importModal">
         <div class="premium-content">
-            <div class="premium-icon">🔗</div>
+            <div class="premium-icon">ðŸ”—</div>
             <h2 class="premium-title" data-i18n="importRecipe">Import Recipe</h2>
             <p class="premium-desc">Paste a recipe URL from Instagram, YouTube, TikTok or any recipe website</p>
             <input type="url" id="importURL" class="api-input" placeholder="https://instagram.com/p/..." style="margin-top: 15px;">
             <button class="main-btn" onclick="importRecipeFromURL()" style="margin-top: 15px;">
-                <span>📥</span>
+                <span>ðŸ“¥</span>
                 <span data-i18n="importFromURL">Import Recipe</span>
             </button>
             <button class="premium-close" onclick="RecipeImporter.closeImportModal()">Cancel</button>
@@ -3435,7 +3435,7 @@
             <h3 class="premium-title">Select Recipe</h3>
             <div id="recipeSelectorList" class="recipe-selector-list"></div>
             <button class="main-btn" onclick="switchTab('recipe')" style="margin-top: 15px; background: var(--secondary);">
-                <span>➕</span>
+                <span>âž•</span>
                 <span>Create New Recipe</span>
             </button>
             <button class="premium-close" onclick="document.getElementById('mealSelectorModal').classList.remove('active')">Close</button>
@@ -3446,12 +3446,12 @@
     <div class="premium-modal" id="shoppingModal">
         <div class="premium-content" style="max-height: 80vh;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h3 class="premium-title" style="margin: 0;">🛒 Shopping List</h3>
-                <button class="icon-btn" onclick="ShoppingList.clearAll()">🗑️</button>
+                <h3 class="premium-title" style="margin: 0;">ðŸ›’ Shopping List</h3>
+                <button class="icon-btn" onclick="ShoppingList.clearAll()">ðŸ—‘ï¸</button>
             </div>
             <div id="shoppingListContainer"></div>
             <button class="main-btn" onclick="ShoppingList.share()" style="margin-top: 15px;">
-                <span>📤</span>
+                <span>ðŸ“¤</span>
                 <span>Share List</span>
             </button>
             <button class="premium-close" onclick="document.getElementById('shoppingModal').classList.remove('active')">Close</button>
@@ -3471,7 +3471,7 @@
     <div id="loginScreen" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); z-index: 8000; flex-direction: column; align-items: center; justify-content: center; padding: 24px;">
         <div style="background: white; border-radius: 24px; padding: 32px 24px; max-width: 380px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
             <div style="text-align: center; margin-bottom: 24px;">
-                <div style="font-size: 48px; margin-bottom: 8px;">🍳</div>
+                <div style="font-size: 48px; margin-bottom: 8px;">ðŸ³</div>
                 <h1 style="font-size: 28px; font-weight: 800; color: #1e293b; margin-bottom: 4px;">SnapChef</h1>
                 <p style="color: #64748b; font-size: 14px;">AI-Powered Recipe Generator</p>
             </div>
@@ -3497,7 +3497,7 @@
             </button>
             
             <p style="text-align: center; margin-top: 16px; font-size: 12px; color: #94a3b8;">
-                🎁 First 10 recipes are free!
+                ðŸŽ First 10 recipes are free!
             </p>
         </div>
     </div>
@@ -3507,10 +3507,10 @@
         <div class="container">
             <!-- Subscription Banner -->
             <div class="subscription-banner" id="subBanner" onclick="openPremiumModal()">
-                <span class="sub-icon">👑</span>
+                <span class="sub-icon">ðŸ‘‘</span>
                 <div class="sub-text">
                     <div class="sub-title" data-i18n="upgradePremium">Upgrade to Premium</div>
-                    <div class="sub-desc">Unlimited recipes • Ad-free • Meal planning</div>
+                    <div class="sub-desc">Unlimited recipes â€¢ Ad-free â€¢ Meal planning</div>
                 </div>
                 <button class="sub-btn" data-i18n="upgrade">Upgrade</button>
             </div>
@@ -3536,9 +3536,9 @@
                     <div class="lang-selector">
                         <button class="icon-btn lang-btn" onclick="toggleLangDropdown()" id="langBtn"><i data-lucide="globe"></i></button>
                         <div class="lang-dropdown" id="langDropdown">
-                            <div class="lang-option active" data-lang="en" onclick="setLanguage('en')">🇬🇧 English</div>
-                            <div class="lang-option" data-lang="az" onclick="setLanguage('az')">🇦🇿 Azərbaycan</div>
-                            <div class="lang-option" data-lang="ru" onclick="setLanguage('ru')">🇷🇺 Русский</div>
+                            <div class="lang-option active" data-lang="en" onclick="setLanguage('en')">ðŸ‡¬ðŸ‡§ English</div>
+                            <div class="lang-option" data-lang="az" onclick="setLanguage('az')">ðŸ‡¦ðŸ‡¿ AzÉ™rbaycan</div>
+                            <div class="lang-option" data-lang="ru" onclick="setLanguage('ru')">ðŸ‡·ðŸ‡º Ð ÑƒÑÑÐºÐ¸Ð¹</div>
                         </div>
                     </div>
                     <button class="icon-btn" onclick="toggleVoice()" id="voiceBtn" title="Voice Input"><i data-lucide="mic"></i></button>
@@ -3549,12 +3549,12 @@
             <!-- Voice Indicator -->
             <div class="voice-indicator" id="voiceIndicator">
                 <div class="voice-indicator-dot"></div>
-                <span class="voice-indicator-text" data-i18n="listening">🎙️ Listening... say your ingredients</span>
+                <span class="voice-indicator-text" data-i18n="listening">ðŸŽ™ï¸ Listening... say your ingredients</span>
             </div>
 
             <!-- Offline Indicator -->
             <div class="offline-indicator" id="offlineIndicator">
-                <span>📡</span>
+                <span>ðŸ“¡</span>
                 <span data-i18n="offline">You are offline. Some features may not work.</span>
             </div>
 
@@ -3564,7 +3564,7 @@
                 <!-- Usage Counter -->
                 <div id="usageCounterBanner" class="api-hint-banner" style="display:block; background: linear-gradient(135deg, #dbeafe, #ede9fe); cursor: default;">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="font-size: 22px;">✨</div>
+                        <div style="font-size: 22px;">âœ¨</div>
                         <div style="flex:1;">
                             <div style="font-weight: 700; font-size: 13px; color: #1e40af;" id="usageCounter">Loading...</div>
                             <div style="font-size: 11px; color: #6366f1; margin-top: 2px;">Upgrade to Premium for unlimited</div>
@@ -3573,26 +3573,26 @@
                 </div>
 
                 <div class="history-section" id="historySection" style="display: none;">
-                    <h3 class="history-title">📚 <span data-i18n="recentRecipes">Recent Recipes</span></h3>
+                    <h3 class="history-title">ðŸ“š <span data-i18n="recentRecipes">Recent Recipes</span></h3>
                     <div class="history-list" id="historyList"></div>
                 </div>
 
                 <!-- Upload Section -->
                 <div class="upload-section" role="region" aria-label="Upload ingredients">
-                    <span class="upload-icon">📸</span>
+                    <span class="upload-icon">ðŸ“¸</span>
                     <h3 class="upload-title" data-i18n="scanIngredients">Scan Your Ingredients</h3>
                     <p class="upload-subtitle" data-i18n="takePhoto">Take a photo or upload an image</p>
                     <div class="upload-btns">
                         <button class="upload-btn primary" onclick="startCamera('recipe')" aria-label="Open camera to scan ingredients">
-                            <span>📷</span>
+                            <span>ðŸ“·</span>
                             <span data-i18n="camera">Camera</span>
                         </button>
                         <button class="upload-btn secondary" onclick="triggerUpload('recipe')" aria-label="Upload image of ingredients">
-                            <span>🖼️</span>
+                            <span>ðŸ–¼ï¸</span>
                             <span data-i18n="upload">Upload</span>
                         </button>
                         <button class="upload-btn tertiary" onclick="RecipeImporter.openImportModal()" aria-label="Import recipe from URL">
-                            <span>🔗</span>
+                            <span>ðŸ”—</span>
                             <span data-i18n="importRecipe">Import URL</span>
                         </button>
                     </div>
@@ -3602,41 +3602,41 @@
                 <!-- Camera Preview -->
                 <div class="camera-preview" id="recipeCameraPreview">
                     <video id="recipeVideo" autoplay playsinline></video>
-                    <button class="close-camera-btn" onclick="closeCamera('recipe')">✕</button>
-                    <button class="switch-camera-btn" onclick="switchCamera('recipe')">🔄</button>
+                    <button class="close-camera-btn" onclick="closeCamera('recipe')">âœ•</button>
+                    <button class="switch-camera-btn" onclick="switchCamera('recipe')">ðŸ”„</button>
                     <button class="capture-btn" onclick="capturePhoto('recipe')"></button>
                 </div>
 
                 <!-- Image Preview -->
                 <div class="image-preview" id="recipeImagePreview">
                     <img id="recipeImage" alt="Uploaded ingredients">
-                    <button class="remove-img" onclick="removeImage('recipe')">✕</button>
+                    <button class="remove-img" onclick="removeImage('recipe')">âœ•</button>
                 </div>
 
                 <!-- Detected Ingredients -->
                 <div class="detected-box" id="recipeDetected">
-                    <div class="detected-title">✅ <span data-i18n="detectedIngredients">Detected Ingredients</span></div>
+                    <div class="detected-title">âœ… <span data-i18n="detectedIngredients">Detected Ingredients</span></div>
                     <div class="detected-tags" id="recipeDetectedTags"></div>
                 </div>
 
                 <!-- Input Section -->
                 <div class="input-section">
-                    <label for="ingredients">🥗 <span data-i18n="yourIngredients">Your Ingredients</span></label>
+                    <label for="ingredients">ðŸ¥— <span data-i18n="yourIngredients">Your Ingredients</span></label>
                     <textarea id="ingredients" rows="3" placeholder="e.g., eggs, tomato, cheese..." data-i18n-placeholder="ingredientsPlaceholder" oninput="updateCharCount()"></textarea>
                     <div class="char-count" id="charCount">0 / 500</div>
                     <div class="quick-tags">
-                        <button class="tag" onclick="addTag('eggs', this)" type="button">🥚 Eggs</button>
-                        <button class="tag" onclick="addTag('chicken', this)" type="button">🍗 Chicken</button>
-                        <button class="tag" onclick="addTag('rice', this)" type="button">🍚 Rice</button>
-                        <button class="tag" onclick="addTag('tomato', this)" type="button">🍅 Tomato</button>
-                        <button class="tag" onclick="addTag('cheese', this)" type="button">🧀 Cheese</button>
-                        <button class="tag" onclick="addTag('pasta', this)" type="button">🍝 Pasta</button>
+                        <button class="tag" onclick="addTag('eggs', this)" type="button">ðŸ¥š Eggs</button>
+                        <button class="tag" onclick="addTag('chicken', this)" type="button">ðŸ— Chicken</button>
+                        <button class="tag" onclick="addTag('rice', this)" type="button">ðŸš Rice</button>
+                        <button class="tag" onclick="addTag('tomato', this)" type="button">ðŸ… Tomato</button>
+                        <button class="tag" onclick="addTag('cheese', this)" type="button">ðŸ§€ Cheese</button>
+                        <button class="tag" onclick="addTag('pasta', this)" type="button">ðŸ Pasta</button>
                     </div>
                 </div>
 
                 <!-- Dietary Preferences -->
                 <div class="dietary-section">
-                    <label>⚙️ <span data-i18n="dietaryPrefs">Dietary Preferences</span></label>
+                    <label>âš™ï¸ <span data-i18n="dietaryPrefs">Dietary Preferences</span></label>
                     <div class="dietary-options">
                         <label class="dietary-option"><input type="checkbox" id="vegetarian"><span data-i18n="vegetarian">Vegetarian</span></label>
                         <label class="dietary-option"><input type="checkbox" id="vegan"><span data-i18n="vegan">Vegan</span></label>
@@ -3647,16 +3647,16 @@
 
                 <!-- Cook Specific Dish (Enhanced) -->
                 <div class="cook-specific-section">
-                    <div class="cook-specific-label">🎯 <span data-i18n="wantToCook">Want to cook something specific?</span></div>
+                    <div class="cook-specific-label">ðŸŽ¯ <span data-i18n="wantToCook">Want to cook something specific?</span></div>
                     <div class="cook-specific-row">
                         <input type="text" id="specificDish" class="cook-specific-input" placeholder="Plov, Dolma, Pizza..." onkeypress="if(event.key==='Enter')cookSpecificDish()" aria-label="Specific dish name">
-                        <button onclick="cookSpecificDish()" class="cook-specific-btn" aria-label="Cook this dish">👨‍🍳 <span data-i18n="cook">Cook!</span></button>
+                        <button onclick="cookSpecificDish()" class="cook-specific-btn" aria-label="Cook this dish">ðŸ‘¨â€ðŸ³ <span data-i18n="cook">Cook!</span></button>
                     </div>
                 </div>
 
                 <!-- Generate Button -->
                 <button class="main-btn" onclick="generateRecipe()" id="generateBtn">
-                    <span>✨</span>
+                    <span>âœ¨</span>
                     <span data-i18n="generateRecipe">Generate Recipe</span>
                 </button>
 
@@ -3667,16 +3667,16 @@
             <!-- Analyze Tab -->
             <div class="tab-content" id="analyzeTab">
                 <div class="upload-section">
-                    <span class="upload-icon">🔍</span>
+                    <span class="upload-icon">ðŸ”</span>
                     <h3 class="upload-title" data-i18n="analyzeFood">Analyze Your Food</h3>
                     <p class="upload-subtitle" data-i18n="getCalories">Get calories and healthier alternatives</p>
                     <div class="upload-btns">
                         <button class="upload-btn primary" onclick="startCamera('analyze')">
-                            <span>📷</span>
+                            <span>ðŸ“·</span>
                             <span data-i18n="camera">Camera</span>
                         </button>
                         <button class="upload-btn secondary" onclick="triggerUpload('analyze')">
-                            <span>🖼️</span>
+                            <span>ðŸ–¼ï¸</span>
                             <span data-i18n="upload">Upload</span>
                         </button>
                     </div>
@@ -3685,23 +3685,23 @@
 
                 <div class="camera-preview" id="analyzeCameraPreview">
                     <video id="analyzeVideo" autoplay playsinline></video>
-                    <button class="close-camera-btn" onclick="closeCamera('analyze')">✕</button>
-                    <button class="switch-camera-btn" onclick="switchCamera('analyze')">🔄</button>
+                    <button class="close-camera-btn" onclick="closeCamera('analyze')">âœ•</button>
+                    <button class="switch-camera-btn" onclick="switchCamera('analyze')">ðŸ”„</button>
                     <button class="capture-btn" onclick="capturePhoto('analyze')"></button>
                 </div>
 
                 <div class="image-preview" id="analyzeImagePreview">
                     <img id="analyzeImage" alt="Food to analyze">
-                    <button class="remove-img" onclick="removeImage('analyze')">✕</button>
+                    <button class="remove-img" onclick="removeImage('analyze')">âœ•</button>
                 </div>
 
                 <div class="detected-box" id="analyzeDetected">
-                    <div class="detected-title">✅ <span data-i18n="detectedFood">Detected Food</span></div>
+                    <div class="detected-title">âœ… <span data-i18n="detectedFood">Detected Food</span></div>
                     <div class="detected-tags" id="analyzeDetectedTags"></div>
                 </div>
 
                 <button class="main-btn analyze" id="analyzeBtn" onclick="analyzeFood()">
-                    <span>🔬</span>
+                    <span>ðŸ”¬</span>
                     <span data-i18n="analyzeBtn">Analyze Food</span>
                 </button>
 
@@ -3717,8 +3717,8 @@
             <!-- Meal Plan Tab -->
             <div class="tab-content" id="mealplanTab">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <h3 class="section-title" style="margin: 0;">📅 <span data-i18n="mealPlan">Meal Plan</span></h3>
-                    <button class="icon-btn" onclick="ShoppingList.generateFromMealPlan()" title="Generate Shopping List">🛒</button>
+                    <h3 class="section-title" style="margin: 0;">ðŸ“… <span data-i18n="mealPlan">Meal Plan</span></h3>
+                    <button class="icon-btn" onclick="ShoppingList.generateFromMealPlan()" title="Generate Shopping List">ðŸ›’</button>
                 </div>
                 <div id="mealPlanContainer" class="meal-plan-container"></div>
             </div>
@@ -3735,31 +3735,31 @@
     <div class="api-guide-modal" id="healthProfileModal">
         <div class="api-guide-content" style="max-width: 420px;">
             <div style="text-align: center; margin-bottom: 15px;">
-                <div style="font-size: 50px;">🎯</div>
+                <div style="font-size: 50px;">ðŸŽ¯</div>
                 <h2 class="premium-title" style="margin-top: 10px;">Your Health Goal</h2>
                 <p style="color: var(--text-muted); font-size: 13px;">Set your daily nutrition target</p>
             </div>
 
             <div class="profile-field">
-                <label>🎯 What's your goal?</label>
+                <label>ðŸŽ¯ What's your goal?</label>
                 <div class="goal-options" id="goalOptions">
                     <div class="goal-option" data-goal="loss" onclick="HealthTarget.selectGoal('loss')">
-                        <div class="goal-option-icon">⬇️</div>
+                        <div class="goal-option-icon">â¬‡ï¸</div>
                         <div class="goal-option-name">Lose Weight</div>
                         <div class="goal-option-desc">Cut calories</div>
                     </div>
                     <div class="goal-option" data-goal="maintain" onclick="HealthTarget.selectGoal('maintain')">
-                        <div class="goal-option-icon">⚖️</div>
+                        <div class="goal-option-icon">âš–ï¸</div>
                         <div class="goal-option-name">Maintain</div>
                         <div class="goal-option-desc">Keep current</div>
                     </div>
                     <div class="goal-option" data-goal="gain" onclick="HealthTarget.selectGoal('gain')">
-                        <div class="goal-option-icon">💪</div>
+                        <div class="goal-option-icon">ðŸ’ª</div>
                         <div class="goal-option-name">Bulk Up</div>
                         <div class="goal-option-desc">Build muscle</div>
                     </div>
                     <div class="goal-option" data-goal="healthy" onclick="HealthTarget.selectGoal('healthy')">
-                        <div class="goal-option-icon">🥗</div>
+                        <div class="goal-option-icon">ðŸ¥—</div>
                         <div class="goal-option-name">Eat Healthy</div>
                         <div class="goal-option-desc">Balanced diet</div>
                     </div>
@@ -3767,7 +3767,7 @@
             </div>
 
             <div class="profile-field">
-                <label>🔥 Daily calorie target</label>
+                <label>ðŸ”¥ Daily calorie target</label>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <input type="range" id="calorieSlider" min="1200" max="3500" value="2000" step="50" style="flex:1;" oninput="document.getElementById('calorieDisplay').textContent=this.value">
                     <span id="calorieDisplay" style="font-weight:700; font-size:18px; color:var(--primary); min-width:55px; text-align:center;">2000</span>
@@ -3776,28 +3776,28 @@
             </div>
 
             <div class="profile-field">
-                <label>🍽️ Diet preference (optional)</label>
+                <label>ðŸ½ï¸ Diet preference (optional)</label>
                 <div class="diet-chips" id="dietChips">
-                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="balanced">⚖️ Balanced</div>
-                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="lowcarb">🥩 Low Carb</div>
-                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="highprotein">💪 High Protein</div>
-                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="vegetarian">🌿 Vegetarian</div>
-                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="mediterranean">🫒 Mediterranean</div>
-                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="vegan">🥬 Vegan</div>
+                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="balanced">âš–ï¸ Balanced</div>
+                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="lowcarb">ðŸ¥© Low Carb</div>
+                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="highprotein">ðŸ’ª High Protein</div>
+                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="vegetarian">ðŸŒ¿ Vegetarian</div>
+                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="mediterranean">ðŸ«’ Mediterranean</div>
+                    <div class="diet-chip" onclick="HealthTarget.toggleDiet(this)" data-diet="vegan">ðŸ¥¬ Vegan</div>
                 </div>
             </div>
 
             <div class="profile-field">
-                <label>💧 Daily water goal (glasses)</label>
+                <label>ðŸ’§ Daily water goal (glasses)</label>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <input type="range" id="waterSlider" min="4" max="15" value="8" step="1" style="flex:1;" oninput="document.getElementById('waterDisplay').textContent=this.value">
                     <span id="waterDisplay" style="font-weight:700; font-size:18px; color:#3b82f6; min-width:30px; text-align:center;">8</span>
-                    <span style="font-size:16px;">💧</span>
+                    <span style="font-size:16px;">ðŸ’§</span>
                 </div>
             </div>
 
             <button class="main-btn" onclick="HealthTarget.saveProfile()" style="margin-top: 10px; background: linear-gradient(135deg, #14b8a6, #0d9488);">
-                <span>✅</span>
+                <span>âœ…</span>
                 <span>Save</span>
             </button>
             <button class="premium-close" onclick="document.getElementById('healthProfileModal').classList.remove('active')">Cancel</button>
@@ -3806,7 +3806,7 @@
 
             <!-- Settings Tab -->
             <div class="tab-content" id="settingsTab">
-                <h3 class="section-title">⚙️ <span data-i18n="settings">Settings</span></h3>
+                <h3 class="section-title">âš™ï¸ <span data-i18n="settings">Settings</span></h3>
 
                 <!-- Account Section -->
                 <section class="api-section" style="text-align: center;">
@@ -3817,8 +3817,8 @@
                             <div style="font-size: 12px; color: #64748b;">Free Plan</div>
                         </div>
                     </div>
-                    <button class="test-btn" onclick="showPremiumModal()" style="width: 100%; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #000; font-weight: 700; margin-bottom: 8px;">👑 Upgrade to Premium</button>
-                    <button class="clear-key-btn" onclick="signOut()" style="width: 100%; padding: 8px;">🚪 Sign Out</button>
+                    <button class="test-btn" onclick="showPremiumModal()" style="width: 100%; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #000; font-weight: 700; margin-bottom: 8px;">ðŸ‘‘ Upgrade to Premium</button>
+                    <button class="clear-key-btn" onclick="signOut()" style="width: 100%; padding: 8px;">ðŸšª Sign Out</button>
                 </section>
                 <input type="hidden" id="apiKey" value="BACKEND">
 
@@ -3829,14 +3829,14 @@
                             <div style="font-weight: 600; color: var(--text-light);" data-i18n="darkMode">Dark Mode</div>
                             <div style="font-size: 12px; color: #64748b;" data-i18n="darkModeDesc">Switch between light and dark theme</div>
                         </div>
-                        <button class="icon-btn" onclick="toggleDarkMode()" id="darkBtn2">🌙</button>
+                        <button class="icon-btn" onclick="toggleDarkMode()" id="darkBtn2">ðŸŒ™</button>
                     </div>
                 </div>
 
                 <!-- Notifications -->
                 <div class="settings-item" id="notifSettingsPanel">
                     <div style="font-weight: 600; color: var(--text-light); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                        🔔 Notifications
+                        ðŸ”” Notifications
                     </div>
                     <div id="notifPermissionArea"></div>
                     <div id="notifToggles"></div>
@@ -3846,15 +3846,15 @@
                 <div class="settings-item">
                     <div style="font-weight: 600; color: var(--text-light); margin-bottom: 10px;" data-i18n="language">Language</div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <button class="tag lang-tag selected" data-lang="en" onclick="setLanguage('en')">🇬🇧 English</button>
-                        <button class="tag lang-tag" data-lang="az" onclick="setLanguage('az')">🇦🇿 Azərbaycan</button>
-                        <button class="tag lang-tag" data-lang="ru" onclick="setLanguage('ru')">🇷🇺 Русский</button>
+                        <button class="tag lang-tag selected" data-lang="en" onclick="setLanguage('en')">ðŸ‡¬ðŸ‡§ English</button>
+                        <button class="tag lang-tag" data-lang="az" onclick="setLanguage('az')">ðŸ‡¦ðŸ‡¿ AzÉ™rbaycan</button>
+                        <button class="tag lang-tag" data-lang="ru" onclick="setLanguage('ru')">ðŸ‡·ðŸ‡º Ð ÑƒÑÑÐºÐ¸Ð¹</button>
                     </div>
                 </div>
 
                 <!-- Stats -->
                 <div class="settings-item">
-                    <div style="font-weight: 600; color: var(--text-light); margin-bottom: 10px;">📊 <span data-i18n="stats">Statistics</span></div>
+                    <div style="font-weight: 600; color: var(--text-light); margin-bottom: 10px;">ðŸ“Š <span data-i18n="stats">Statistics</span></div>
                     <div id="statsContainer" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;"></div>
                 </div>
 
@@ -3862,15 +3862,15 @@
                 <div class="settings-item">
                     <div style="font-weight: 600; color: var(--text-light); margin-bottom: 10px;" data-i18n="clearData">Clear Data</div>
                     <button class="clear-key-btn" onclick="clearAllData()" style="width: 100%;">
-                        🗑️ <span data-i18n="clearAllData">Clear All Data</span>
+                        ðŸ—‘ï¸ <span data-i18n="clearAllData">Clear All Data</span>
                     </button>
                 </div>
 
                 <!-- App Info -->
                 <div style="margin-top: 20px; text-align: center; color: #64748b; font-size: 12px;">
                     <div>SnapChef v4.0</div>
-                    <div style="margin-top: 5px;">Made with ❤️</div>
-                    <div style="margin-top: 3px; font-size: 10px; color: #94a3b8;">Health Tracking • Notifications • Better UX</div>
+                    <div style="margin-top: 5px;">Made with â¤ï¸</div>
+                    <div style="margin-top: 3px; font-size: 10px; color: #94a3b8;">Health Tracking â€¢ Notifications â€¢ Better UX</div>
                 </div>
             </div>
         </div>
@@ -3878,13 +3878,13 @@
 
     <!-- In-App Notification Popup -->
     <div class="in-app-notif" id="inAppNotif">
-        <div class="in-app-notif-icon" id="inAppNotifIcon">💧</div>
+        <div class="in-app-notif-icon" id="inAppNotifIcon">ðŸ’§</div>
         <div class="in-app-notif-body">
             <div class="in-app-notif-title" id="inAppNotifTitle">Reminder</div>
             <div class="in-app-notif-msg" id="inAppNotifMsg">Message</div>
             <button class="in-app-notif-action" id="inAppNotifAction" style="display:none;" onclick="">OK</button>
         </div>
-        <button class="in-app-notif-close" onclick="NotifSystem.dismissInApp()">✕</button>
+        <button class="in-app-notif-close" onclick="NotifSystem.dismissInApp()">âœ•</button>
     </div>
 
     <!-- Bottom Navigation -->
@@ -4001,158 +4001,158 @@
                 cook: "Cook!"
             },
             az: {
-                onboard1Title: "İnqredientləri Skan Et",
-                onboard1Desc: "İnqredientlərinizin şəklini çəkin və AI onları avtomatik aşkar etsin",
+                onboard1Title: "Ä°nqredientlÉ™ri Skan Et",
+                onboard1Desc: "Ä°nqredientlÉ™rinizin ÅŸÉ™klini Ã§É™kin vÉ™ AI onlarÄ± avtomatik aÅŸkar etsin",
                 onboard2Title: "Resept Yarat",
-                onboard2Desc: "Mətbəxinizdəki məhsullara əsasən fərdi reseptlər alın",
-                onboard3Title: "Qida Təhlili",
-                onboard3Desc: "İstənilən yeməkə üçün ətraflı qida məlumatı və sağlam alternativlər əldə edin",
-                skip: "Keç",
-                next: "Növbəti",
-                getStarted: "Başla",
+                onboard2Desc: "MÉ™tbÉ™xinizdÉ™ki mÉ™hsullara É™sasÉ™n fÉ™rdi reseptlÉ™r alÄ±n",
+                onboard3Title: "Qida TÉ™hlili",
+                onboard3Desc: "Ä°stÉ™nilÉ™n yemÉ™kÉ™ Ã¼Ã§Ã¼n É™traflÄ± qida mÉ™lumatÄ± vÉ™ saÄŸlam alternativlÉ™r É™ldÉ™ edin",
+                skip: "KeÃ§",
+                next: "NÃ¶vbÉ™ti",
+                getStarted: "BaÅŸla",
                 goPremium: "Premium Al",
-                premiumDesc: "Limitsiz reseptlər və eksklüziv funksiyalar",
+                premiumDesc: "Limitsiz reseptlÉ™r vÉ™ eksklÃ¼ziv funksiyalar",
                 premiumF1: "Limitsiz resept yaratma",
-                premiumF2: "Reklamsız istifadə",
+                premiumF2: "ReklamsÄ±z istifadÉ™",
                 premiumF3: "Prioritet AI emal",
-                premiumF4: "Oflayn saxlanmış reseptlər",
-                premiumF5: "Yemək Planlaması",
-                monthly: "Aylıq",
-                yearly: "İllik",
+                premiumF4: "Oflayn saxlanmÄ±ÅŸ reseptlÉ™r",
+                premiumF5: "YemÉ™k PlanlamasÄ±",
+                monthly: "AylÄ±q",
+                yearly: "Ä°llik",
                 perMonth: "/ay",
                 perYear: "/il",
-                save50: "50% Qənaət",
-                subscribe: "Abunə Ol",
+                save50: "50% QÉ™naÉ™t",
+                subscribe: "AbunÉ™ Ol",
                 maybeLater: "Sonra Baxaram",
-                upgradePremium: "Premium-a Yüksəlt",
-                unlimitedRecipes: "Limitsiz reseptlər və reklamsız",
-                upgrade: "Yüksəlt",
-                recipesToday: "resept bu gün",
-                recentRecipes: "Son Reseptlər",
-                scanIngredients: "İnqredientləri Skan Et",
-                takePhoto: "Şəkil çək və ya yüklə",
+                upgradePremium: "Premium-a YÃ¼ksÉ™lt",
+                unlimitedRecipes: "Limitsiz reseptlÉ™r vÉ™ reklamsÄ±z",
+                upgrade: "YÃ¼ksÉ™lt",
+                recipesToday: "resept bu gÃ¼n",
+                recentRecipes: "Son ReseptlÉ™r",
+                scanIngredients: "Ä°nqredientlÉ™ri Skan Et",
+                takePhoto: "ÅžÉ™kil Ã§É™k vÉ™ ya yÃ¼klÉ™",
                 camera: "Kamera",
-                upload: "Yüklə",
-                detectedIngredients: "Aşkar Edilən İnqredientlər",
-                yourIngredients: "İnqredientləriniz",
-                ingredientsPlaceholder: "məs., yumurta, pomidor, pendir...",
-                dietaryPrefs: "Pəhriz Seçimləri",
+                upload: "YÃ¼klÉ™",
+                detectedIngredients: "AÅŸkar EdilÉ™n Ä°nqredientlÉ™r",
+                yourIngredients: "Ä°nqredientlÉ™riniz",
+                ingredientsPlaceholder: "mÉ™s., yumurta, pomidor, pendir...",
+                dietaryPrefs: "PÉ™hriz SeÃ§imlÉ™ri",
                 vegetarian: "Vegetarian",
                 vegan: "Vegan",
                 lowCal: "Az Kalorili",
-                quickEasy: "Tez və Asan",
+                quickEasy: "Tez vÉ™ Asan",
                 generateRecipe: "Resept Yarat",
-                analyzeFood: "Yeməyi Təhlil Et",
-                getCalories: "Kalori və sağlam alternativlər əldə et",
-                analyzeBtn: "Təhlil Et",
+                analyzeFood: "YemÉ™yi TÉ™hlil Et",
+                getCalories: "Kalori vÉ™ saÄŸlam alternativlÉ™r É™ldÉ™ et",
+                analyzeBtn: "TÉ™hlil Et",
                 recipe: "Resept",
-                analyze: "Təhlil",
-                saved: "Saxlanmış",
-                settings: "Parametrlər",
-                mealPlan: "Yemək Planı",
-                listening: "Dinləyirəm... inqredientləri söyləyin",
-                offline: "Oflayn rejimdəsiniz. Bəzi funksiyalar işləməyə bilər.",
-                tooManyRequests: "Çox sorğu. Gözləyin",
-                getFrom: "Buradan əldə edin",
-                noRecipes: "Hələ saxlanmış resept yoxdur",
-                noHistory: "Son reseptlər yoxdur",
-                dailyLimitReached: "Gündəlik limit bitdi! Limitsiz reseptlər üçün Premium alın.",
-                recipeGenerated: "Resept yaradıldı!",
-                ingredientsDetected: "inqredient aşkar edildi",
-                enterIngredient: "Ən azı bir inqredient daxil edin",
-                apiKeyRequired: "API açar tələb olunur",
-                darkMode: "Qaranlıq Rejim",
-                darkModeDesc: "Açıq və qaranlıq tema arasında keçid",
+                analyze: "TÉ™hlil",
+                saved: "SaxlanmÄ±ÅŸ",
+                settings: "ParametrlÉ™r",
+                mealPlan: "YemÉ™k PlanÄ±",
+                listening: "DinlÉ™yirÉ™m... inqredientlÉ™ri sÃ¶ylÉ™yin",
+                offline: "Oflayn rejimdÉ™siniz. BÉ™zi funksiyalar iÅŸlÉ™mÉ™yÉ™ bilÉ™r.",
+                tooManyRequests: "Ã‡ox sorÄŸu. GÃ¶zlÉ™yin",
+                getFrom: "Buradan É™ldÉ™ edin",
+                noRecipes: "HÉ™lÉ™ saxlanmÄ±ÅŸ resept yoxdur",
+                noHistory: "Son reseptlÉ™r yoxdur",
+                dailyLimitReached: "GÃ¼ndÉ™lik limit bitdi! Limitsiz reseptlÉ™r Ã¼Ã§Ã¼n Premium alÄ±n.",
+                recipeGenerated: "Resept yaradÄ±ldÄ±!",
+                ingredientsDetected: "inqredient aÅŸkar edildi",
+                enterIngredient: "Æn azÄ± bir inqredient daxil edin",
+                apiKeyRequired: "API aÃ§ar tÉ™lÉ™b olunur",
+                darkMode: "QaranlÄ±q Rejim",
+                darkModeDesc: "AÃ§Ä±q vÉ™ qaranlÄ±q tema arasÄ±nda keÃ§id",
                 language: "Dil",
-                clearData: "Məlumatları Sil",
-                clearAllData: "Bütün Məlumatları Sil",
-                importRecipe: "Resept İdxal Et",
-                importFromURL: "URL-dən İdxal",
+                clearData: "MÉ™lumatlarÄ± Sil",
+                clearAllData: "BÃ¼tÃ¼n MÉ™lumatlarÄ± Sil",
+                importRecipe: "Resept Ä°dxal Et",
+                importFromURL: "URL-dÉ™n Ä°dxal",
                 buyCredits: "Kredit Al",
                 credits: "kredit",
                 stats: "Statistika",
-                breakfast: "Səhər yeməyi",
-                lunch: "Günorta yeməyi",
-                dinner: "Axşam yeməyi",
-                wantToCook: "Konkret bir yemək bişirmək istəyirsiniz?",
-                cook: "Bişir!"
+                breakfast: "SÉ™hÉ™r yemÉ™yi",
+                lunch: "GÃ¼norta yemÉ™yi",
+                dinner: "AxÅŸam yemÉ™yi",
+                wantToCook: "Konkret bir yemÉ™k biÅŸirmÉ™k istÉ™yirsiniz?",
+                cook: "BiÅŸir!"
             },
             ru: {
-                onboard1Title: "Сканировать ингредиенты",
-                onboard1Desc: "Сфотографируйте ингредиенты, и ИИ определит их автоматически",
-                onboard2Title: "Генерировать рецепты",
-                onboard2Desc: "Получайте персональные рецепты на основе того, что есть на вашей кухне",
-                onboard3Title: "Анализ питания",
-                onboard3Desc: "Получите подробную информацию о питании и более здоровые альтернативы",
-                skip: "Пропустить",
-                next: "Далее",
-                getStarted: "Начать",
-                goPremium: "Премиум",
-                premiumDesc: "Разблокируйте безлимитные рецепты и эксклюзивные функции",
-                premiumF1: "Безлимитная генерация рецептов",
-                premiumF2: "Без рекламы",
-                premiumF3: "Приоритетная обработка ИИ",
-                premiumF4: "Офлайн сохраненные рецепты",
-                premiumF5: "Планирование питания",
-                monthly: "Ежемесячно",
-                yearly: "Ежегодно",
-                perMonth: "/месяц",
-                perYear: "/год",
-                save50: "Скидка 50%",
-                subscribe: "Подписаться",
-                maybeLater: "Позже",
-                upgradePremium: "Перейти на Премиум",
-                unlimitedRecipes: "Безлимитные рецепты без рекламы",
-                upgrade: "Улучшить",
-                recipesToday: "рецептов сегодня",
-                recentRecipes: "Недавние рецепты",
-                scanIngredients: "Сканировать ингредиенты",
-                takePhoto: "Сделайте фото или загрузите изображение",
-                camera: "Камера",
-                upload: "Загрузить",
-                detectedIngredients: "Обнаруженные ингредиенты",
-                yourIngredients: "Ваши ингредиенты",
-                ingredientsPlaceholder: "напр., яйца, помидор, сыр...",
-                dietaryPrefs: "Диетические предпочтения",
-                vegetarian: "Вегетарианское",
-                vegan: "Веганское",
-                lowCal: "Низкокалорийное",
-                quickEasy: "Быстро и легко",
-                generateRecipe: "Сгенерировать рецепт",
-                analyzeFood: "Анализировать еду",
-                getCalories: "Получить калории и здоровые альтернативы",
-                analyzeBtn: "Анализировать",
-                recipe: "Рецепт",
-                analyze: "Анализ",
-                saved: "Сохраненные",
-                settings: "Настройки",
-                mealPlan: "План питания",
-                listening: "Слушаю... назовите ингредиенты",
-                offline: "Вы офлайн. Некоторые функции могут не работать.",
-                tooManyRequests: "Слишком много запросов. Подождите",
-                getFrom: "Получить от",
-                noRecipes: "Пока нет сохраненных рецептов",
-                noHistory: "Нет недавних рецептов",
-                dailyLimitReached: "Дневной лимит исчерпан! Перейдите на Премиум для безлимитных рецептов.",
-                recipeGenerated: "Рецепт создан!",
-                ingredientsDetected: "ингредиентов обнаружено",
-                enterIngredient: "Введите хотя бы один ингредиент",
-                apiKeyRequired: "Требуется API ключ",
-                darkMode: "Темная тема",
-                darkModeDesc: "Переключение между светлой и темной темой",
-                language: "Язык",
-                clearData: "Очистить данные",
-                clearAllData: "Очистить все данные",
-                importRecipe: "Импорт рецепта",
-                importFromURL: "Импорт из URL",
-                buyCredits: "Купить кредиты",
-                credits: "кредитов",
-                stats: "Статистика",
-                breakfast: "Завтрак",
-                lunch: "Обед",
-                dinner: "Ужин",
-                wantToCook: "Хотите приготовить что-то конкретное?",
-                cook: "Готовить!"
+                onboard1Title: "Ð¡ÐºÐ°Ð½Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð¸Ð½Ð³Ñ€ÐµÐ´Ð¸ÐµÐ½Ñ‚Ñ‹",
+                onboard1Desc: "Ð¡Ñ„Ð¾Ñ‚Ð¾Ð³Ñ€Ð°Ñ„Ð¸Ñ€ÑƒÐ¹Ñ‚Ðµ Ð¸Ð½Ð³Ñ€ÐµÐ´Ð¸ÐµÐ½Ñ‚Ñ‹, Ð¸ Ð˜Ð˜ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»Ð¸Ñ‚ Ð¸Ñ… Ð°Ð²Ñ‚Ð¾Ð¼Ð°Ñ‚Ð¸Ñ‡ÐµÑÐºÐ¸",
+                onboard2Title: "Ð“ÐµÐ½ÐµÑ€Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ñ€ÐµÑ†ÐµÐ¿Ñ‚Ñ‹",
+                onboard2Desc: "ÐŸÐ¾Ð»ÑƒÑ‡Ð°Ð¹Ñ‚Ðµ Ð¿ÐµÑ€ÑÐ¾Ð½Ð°Ð»ÑŒÐ½Ñ‹Ðµ Ñ€ÐµÑ†ÐµÐ¿Ñ‚Ñ‹ Ð½Ð° Ð¾ÑÐ½Ð¾Ð²Ðµ Ñ‚Ð¾Ð³Ð¾, Ñ‡Ñ‚Ð¾ ÐµÑÑ‚ÑŒ Ð½Ð° Ð²Ð°ÑˆÐµÐ¹ ÐºÑƒÑ…Ð½Ðµ",
+                onboard3Title: "ÐÐ½Ð°Ð»Ð¸Ð· Ð¿Ð¸Ñ‚Ð°Ð½Ð¸Ñ",
+                onboard3Desc: "ÐŸÐ¾Ð»ÑƒÑ‡Ð¸Ñ‚Ðµ Ð¿Ð¾Ð´Ñ€Ð¾Ð±Ð½ÑƒÑŽ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸ÑŽ Ð¾ Ð¿Ð¸Ñ‚Ð°Ð½Ð¸Ð¸ Ð¸ Ð±Ð¾Ð»ÐµÐµ Ð·Ð´Ð¾Ñ€Ð¾Ð²Ñ‹Ðµ Ð°Ð»ÑŒÑ‚ÐµÑ€Ð½Ð°Ñ‚Ð¸Ð²Ñ‹",
+                skip: "ÐŸÑ€Ð¾Ð¿ÑƒÑÑ‚Ð¸Ñ‚ÑŒ",
+                next: "Ð”Ð°Ð»ÐµÐµ",
+                getStarted: "ÐÐ°Ñ‡Ð°Ñ‚ÑŒ",
+                goPremium: "ÐŸÑ€ÐµÐ¼Ð¸ÑƒÐ¼",
+                premiumDesc: "Ð Ð°Ð·Ð±Ð»Ð¾ÐºÐ¸Ñ€ÑƒÐ¹Ñ‚Ðµ Ð±ÐµÐ·Ð»Ð¸Ð¼Ð¸Ñ‚Ð½Ñ‹Ðµ Ñ€ÐµÑ†ÐµÐ¿Ñ‚Ñ‹ Ð¸ ÑÐºÑÐºÐ»ÑŽÐ·Ð¸Ð²Ð½Ñ‹Ðµ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸",
+                premiumF1: "Ð‘ÐµÐ·Ð»Ð¸Ð¼Ð¸Ñ‚Ð½Ð°Ñ Ð³ÐµÐ½ÐµÑ€Ð°Ñ†Ð¸Ñ Ñ€ÐµÑ†ÐµÐ¿Ñ‚Ð¾Ð²",
+                premiumF2: "Ð‘ÐµÐ· Ñ€ÐµÐºÐ»Ð°Ð¼Ñ‹",
+                premiumF3: "ÐŸÑ€Ð¸Ð¾Ñ€Ð¸Ñ‚ÐµÑ‚Ð½Ð°Ñ Ð¾Ð±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ° Ð˜Ð˜",
+                premiumF4: "ÐžÑ„Ð»Ð°Ð¹Ð½ ÑÐ¾Ñ…Ñ€Ð°Ð½ÐµÐ½Ð½Ñ‹Ðµ Ñ€ÐµÑ†ÐµÐ¿Ñ‚Ñ‹",
+                premiumF5: "ÐŸÐ»Ð°Ð½Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¿Ð¸Ñ‚Ð°Ð½Ð¸Ñ",
+                monthly: "Ð•Ð¶ÐµÐ¼ÐµÑÑÑ‡Ð½Ð¾",
+                yearly: "Ð•Ð¶ÐµÐ³Ð¾Ð´Ð½Ð¾",
+                perMonth: "/Ð¼ÐµÑÑÑ†",
+                perYear: "/Ð³Ð¾Ð´",
+                save50: "Ð¡ÐºÐ¸Ð´ÐºÐ° 50%",
+                subscribe: "ÐŸÐ¾Ð´Ð¿Ð¸ÑÐ°Ñ‚ÑŒÑÑ",
+                maybeLater: "ÐŸÐ¾Ð·Ð¶Ðµ",
+                upgradePremium: "ÐŸÐµÑ€ÐµÐ¹Ñ‚Ð¸ Ð½Ð° ÐŸÑ€ÐµÐ¼Ð¸ÑƒÐ¼",
+                unlimitedRecipes: "Ð‘ÐµÐ·Ð»Ð¸Ð¼Ð¸Ñ‚Ð½Ñ‹Ðµ Ñ€ÐµÑ†ÐµÐ¿Ñ‚Ñ‹ Ð±ÐµÐ· Ñ€ÐµÐºÐ»Ð°Ð¼Ñ‹",
+                upgrade: "Ð£Ð»ÑƒÑ‡ÑˆÐ¸Ñ‚ÑŒ",
+                recipesToday: "Ñ€ÐµÑ†ÐµÐ¿Ñ‚Ð¾Ð² ÑÐµÐ³Ð¾Ð´Ð½Ñ",
+                recentRecipes: "ÐÐµÐ´Ð°Ð²Ð½Ð¸Ðµ Ñ€ÐµÑ†ÐµÐ¿Ñ‚Ñ‹",
+                scanIngredients: "Ð¡ÐºÐ°Ð½Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð¸Ð½Ð³Ñ€ÐµÐ´Ð¸ÐµÐ½Ñ‚Ñ‹",
+                takePhoto: "Ð¡Ð´ÐµÐ»Ð°Ð¹Ñ‚Ðµ Ñ„Ð¾Ñ‚Ð¾ Ð¸Ð»Ð¸ Ð·Ð°Ð³Ñ€ÑƒÐ·Ð¸Ñ‚Ðµ Ð¸Ð·Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ðµ",
+                camera: "ÐšÐ°Ð¼ÐµÑ€Ð°",
+                upload: "Ð—Ð°Ð³Ñ€ÑƒÐ·Ð¸Ñ‚ÑŒ",
+                detectedIngredients: "ÐžÐ±Ð½Ð°Ñ€ÑƒÐ¶ÐµÐ½Ð½Ñ‹Ðµ Ð¸Ð½Ð³Ñ€ÐµÐ´Ð¸ÐµÐ½Ñ‚Ñ‹",
+                yourIngredients: "Ð’Ð°ÑˆÐ¸ Ð¸Ð½Ð³Ñ€ÐµÐ´Ð¸ÐµÐ½Ñ‚Ñ‹",
+                ingredientsPlaceholder: "Ð½Ð°Ð¿Ñ€., ÑÐ¹Ñ†Ð°, Ð¿Ð¾Ð¼Ð¸Ð´Ð¾Ñ€, ÑÑ‹Ñ€...",
+                dietaryPrefs: "Ð”Ð¸ÐµÑ‚Ð¸Ñ‡ÐµÑÐºÐ¸Ðµ Ð¿Ñ€ÐµÐ´Ð¿Ð¾Ñ‡Ñ‚ÐµÐ½Ð¸Ñ",
+                vegetarian: "Ð’ÐµÐ³ÐµÑ‚Ð°Ñ€Ð¸Ð°Ð½ÑÐºÐ¾Ðµ",
+                vegan: "Ð’ÐµÐ³Ð°Ð½ÑÐºÐ¾Ðµ",
+                lowCal: "ÐÐ¸Ð·ÐºÐ¾ÐºÐ°Ð»Ð¾Ñ€Ð¸Ð¹Ð½Ð¾Ðµ",
+                quickEasy: "Ð‘Ñ‹ÑÑ‚Ñ€Ð¾ Ð¸ Ð»ÐµÐ³ÐºÐ¾",
+                generateRecipe: "Ð¡Ð³ÐµÐ½ÐµÑ€Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ñ€ÐµÑ†ÐµÐ¿Ñ‚",
+                analyzeFood: "ÐÐ½Ð°Ð»Ð¸Ð·Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ ÐµÐ´Ñƒ",
+                getCalories: "ÐŸÐ¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒ ÐºÐ°Ð»Ð¾Ñ€Ð¸Ð¸ Ð¸ Ð·Ð´Ð¾Ñ€Ð¾Ð²Ñ‹Ðµ Ð°Ð»ÑŒÑ‚ÐµÑ€Ð½Ð°Ñ‚Ð¸Ð²Ñ‹",
+                analyzeBtn: "ÐÐ½Ð°Ð»Ð¸Ð·Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ",
+                recipe: "Ð ÐµÑ†ÐµÐ¿Ñ‚",
+                analyze: "ÐÐ½Ð°Ð»Ð¸Ð·",
+                saved: "Ð¡Ð¾Ñ…Ñ€Ð°Ð½ÐµÐ½Ð½Ñ‹Ðµ",
+                settings: "ÐÐ°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸",
+                mealPlan: "ÐŸÐ»Ð°Ð½ Ð¿Ð¸Ñ‚Ð°Ð½Ð¸Ñ",
+                listening: "Ð¡Ð»ÑƒÑˆÐ°ÑŽ... Ð½Ð°Ð·Ð¾Ð²Ð¸Ñ‚Ðµ Ð¸Ð½Ð³Ñ€ÐµÐ´Ð¸ÐµÐ½Ñ‚Ñ‹",
+                offline: "Ð’Ñ‹ Ð¾Ñ„Ð»Ð°Ð¹Ð½. ÐÐµÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ðµ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ Ð¼Ð¾Ð³ÑƒÑ‚ Ð½Ðµ Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ñ‚ÑŒ.",
+                tooManyRequests: "Ð¡Ð»Ð¸ÑˆÐºÐ¾Ð¼ Ð¼Ð½Ð¾Ð³Ð¾ Ð·Ð°Ð¿Ñ€Ð¾ÑÐ¾Ð². ÐŸÐ¾Ð´Ð¾Ð¶Ð´Ð¸Ñ‚Ðµ",
+                getFrom: "ÐŸÐ¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒ Ð¾Ñ‚",
+                noRecipes: "ÐŸÐ¾ÐºÐ° Ð½ÐµÑ‚ ÑÐ¾Ñ…Ñ€Ð°Ð½ÐµÐ½Ð½Ñ‹Ñ… Ñ€ÐµÑ†ÐµÐ¿Ñ‚Ð¾Ð²",
+                noHistory: "ÐÐµÑ‚ Ð½ÐµÐ´Ð°Ð²Ð½Ð¸Ñ… Ñ€ÐµÑ†ÐµÐ¿Ñ‚Ð¾Ð²",
+                dailyLimitReached: "Ð”Ð½ÐµÐ²Ð½Ð¾Ð¹ Ð»Ð¸Ð¼Ð¸Ñ‚ Ð¸ÑÑ‡ÐµÑ€Ð¿Ð°Ð½! ÐŸÐµÑ€ÐµÐ¹Ð´Ð¸Ñ‚Ðµ Ð½Ð° ÐŸÑ€ÐµÐ¼Ð¸ÑƒÐ¼ Ð´Ð»Ñ Ð±ÐµÐ·Ð»Ð¸Ð¼Ð¸Ñ‚Ð½Ñ‹Ñ… Ñ€ÐµÑ†ÐµÐ¿Ñ‚Ð¾Ð².",
+                recipeGenerated: "Ð ÐµÑ†ÐµÐ¿Ñ‚ ÑÐ¾Ð·Ð´Ð°Ð½!",
+                ingredientsDetected: "Ð¸Ð½Ð³Ñ€ÐµÐ´Ð¸ÐµÐ½Ñ‚Ð¾Ð² Ð¾Ð±Ð½Ð°Ñ€ÑƒÐ¶ÐµÐ½Ð¾",
+                enterIngredient: "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ…Ð¾Ñ‚Ñ Ð±Ñ‹ Ð¾Ð´Ð¸Ð½ Ð¸Ð½Ð³Ñ€ÐµÐ´Ð¸ÐµÐ½Ñ‚",
+                apiKeyRequired: "Ð¢Ñ€ÐµÐ±ÑƒÐµÑ‚ÑÑ API ÐºÐ»ÑŽÑ‡",
+                darkMode: "Ð¢ÐµÐ¼Ð½Ð°Ñ Ñ‚ÐµÐ¼Ð°",
+                darkModeDesc: "ÐŸÐµÑ€ÐµÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ðµ Ð¼ÐµÐ¶Ð´Ñƒ ÑÐ²ÐµÑ‚Ð»Ð¾Ð¹ Ð¸ Ñ‚ÐµÐ¼Ð½Ð¾Ð¹ Ñ‚ÐµÐ¼Ð¾Ð¹",
+                language: "Ð¯Ð·Ñ‹Ðº",
+                clearData: "ÐžÑ‡Ð¸ÑÑ‚Ð¸Ñ‚ÑŒ Ð´Ð°Ð½Ð½Ñ‹Ðµ",
+                clearAllData: "ÐžÑ‡Ð¸ÑÑ‚Ð¸Ñ‚ÑŒ Ð²ÑÐµ Ð´Ð°Ð½Ð½Ñ‹Ðµ",
+                importRecipe: "Ð˜Ð¼Ð¿Ð¾Ñ€Ñ‚ Ñ€ÐµÑ†ÐµÐ¿Ñ‚Ð°",
+                importFromURL: "Ð˜Ð¼Ð¿Ð¾Ñ€Ñ‚ Ð¸Ð· URL",
+                buyCredits: "ÐšÑƒÐ¿Ð¸Ñ‚ÑŒ ÐºÑ€ÐµÐ´Ð¸Ñ‚Ñ‹",
+                credits: "ÐºÑ€ÐµÐ´Ð¸Ñ‚Ð¾Ð²",
+                stats: "Ð¡Ñ‚Ð°Ñ‚Ð¸ÑÑ‚Ð¸ÐºÐ°",
+                breakfast: "Ð—Ð°Ð²Ñ‚Ñ€Ð°Ðº",
+                lunch: "ÐžÐ±ÐµÐ´",
+                dinner: "Ð£Ð¶Ð¸Ð½",
+                wantToCook: "Ð¥Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð¿Ñ€Ð¸Ð³Ð¾Ñ‚Ð¾Ð²Ð¸Ñ‚ÑŒ Ñ‡Ñ‚Ð¾-Ñ‚Ð¾ ÐºÐ¾Ð½ÐºÑ€ÐµÑ‚Ð½Ð¾Ðµ?",
+                cook: "Ð“Ð¾Ñ‚Ð¾Ð²Ð¸Ñ‚ÑŒ!"
             }
         };
 
@@ -4200,10 +4200,10 @@
 
         // ========== RECIPE IMAGE FUNCTIONS ==========
         var foodEmojis = {
-            'chicken': '🍗', 'pasta': '🍝', 'rice': '🍚', 'salad': '🥗', 'soup': '🍲',
-            'fish': '🐟', 'steak': '🥩', 'pizza': '🍕', 'sushi': '🍣', 'bread': '🍞',
-            'cake': '🎂', 'egg': '🥚', 'burger': '🍔', 'taco': '🌮', 'curry': '🍛',
-            'noodle': '🍜', 'sandwich': '🥪', 'pie': '🥧', 'default': '🍽️'
+            'chicken': 'ðŸ—', 'pasta': 'ðŸ', 'rice': 'ðŸš', 'salad': 'ðŸ¥—', 'soup': 'ðŸ²',
+            'fish': 'ðŸŸ', 'steak': 'ðŸ¥©', 'pizza': 'ðŸ•', 'sushi': 'ðŸ£', 'bread': 'ðŸž',
+            'cake': 'ðŸŽ‚', 'egg': 'ðŸ¥š', 'burger': 'ðŸ”', 'taco': 'ðŸŒ®', 'curry': 'ðŸ›',
+            'noodle': 'ðŸœ', 'sandwich': 'ðŸ¥ª', 'pie': 'ðŸ¥§', 'default': 'ðŸ½ï¸'
         };
 
         function getRecipeEmoji(recipeName) {
@@ -4230,7 +4230,7 @@
         }
 
         // Fallback image: a solid gradient SVG as data URI
-        var fallbackFoodImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%236366f1'/%3E%3Cstop offset='100%25' style='stop-color:%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='800' height='600' fill='url(%23g)'/%3E%3Ctext x='400' y='320' text-anchor='middle' font-size='80' fill='white'%3E🍽️%3C/text%3E%3C/svg%3E";
+        var fallbackFoodImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%236366f1'/%3E%3Cstop offset='100%25' style='stop-color:%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='800' height='600' fill='url(%23g)'/%3E%3Ctext x='400' y='320' text-anchor='middle' font-size='80' fill='white'%3EðŸ½ï¸%3C/text%3E%3C/svg%3E";
 
 
         var currentAnalysisData = null;
@@ -4330,8 +4330,8 @@
             var isDark = document.body.classList.contains('dark-mode');
             var btn = document.getElementById('darkBtn');
             var btn2 = document.getElementById('darkBtn2');
-            if (btn) btn.textContent = isDark ? '☀️' : '🌙';
-            if (btn2) btn2.textContent = isDark ? '☀️' : '🌙';
+            if (btn) btn.textContent = isDark ? 'â˜€ï¸' : 'ðŸŒ™';
+            if (btn2) btn2.textContent = isDark ? 'â˜€ï¸' : 'ðŸŒ™';
             localStorage.setItem('snapchef_dark', isDark ? '1' : '0');
         }
 
@@ -4408,7 +4408,7 @@
             localStorage.setItem('snapchef_premium', '1');
             closePremiumModal();
             updatePremiumUI();
-            toast(t('goPremium') + '!', '👑');
+            toast(t('goPremium') + '!', 'ðŸ‘‘');
         }
 
         function updatePremiumUI() {
@@ -4480,7 +4480,7 @@
                 this.credits += amount;
                 this.save();
                 this.updateUI();
-                toast('+' + amount + ' ' + t('credits'), '💎');
+                toast('+' + amount + ' ' + t('credits'), 'ðŸ’Ž');
             },
 
             save: function() {
@@ -4508,7 +4508,7 @@
 
                 // Simulated purchase - in real app would connect to payment system
                 this.addCredits(pkg.credits);
-                toast('Purchase successful!', '✅');
+                toast('Purchase successful!', 'âœ…');
                 var modal = document.getElementById('buyCreditsModal');
                 if (modal) modal.classList.remove('active');
             }
@@ -4532,7 +4532,7 @@
         async function importRecipeFromURL() {
             var url = document.getElementById('importURL').value.trim();
             if (!url) {
-                toast('Enter a URL', '⚠️');
+                toast('Enter a URL', 'âš ï¸');
                 return;
             }
 
@@ -4540,9 +4540,9 @@
             if (!apiKey) return;
 
             var loadingInterval = showProgressiveLoading('recipeResults', [
-                '🔗 Reading URL...',
-                '📝 Extracting recipe...',
-                '✨ Formatting...'
+                'ðŸ”— Reading URL...',
+                'ðŸ“ Extracting recipe...',
+                'âœ¨ Formatting...'
             ]);
 
             try {
@@ -4559,7 +4559,7 @@
                 RecipeImporter.closeImportModal();
                 document.getElementById('importURL').value = '';
                 showConfetti();
-                toast('Recipe imported!', '✅');
+                toast('Recipe imported!', 'âœ…');
 
             } catch (error) {
                 clearInterval(loadingInterval);
@@ -4595,7 +4595,7 @@
                 this.currentWeek[dayIndex][mealType] = recipe;
                 this.save();
                 this.renderWeek();
-                toast('Added to meal plan', '📅');
+                toast('Added to meal plan', 'ðŸ“…');
             },
 
             removeRecipe: function(dayIndex, mealType) {
@@ -4620,9 +4620,9 @@
                     html += '<div class="meal-plan-day">';
                     html += '<div class="day-header"><h4>' + days[i] + '</h4><span class="day-date">' + self.getDateForDay(i) + '</span></div>';
                     html += '<div class="meal-slots">';
-                    html += self.renderMealSlot(i, 'breakfast', day.breakfast, '🌅', t('breakfast'));
-                    html += self.renderMealSlot(i, 'lunch', day.lunch, '☀️', t('lunch'));
-                    html += self.renderMealSlot(i, 'dinner', day.dinner, '🌙', t('dinner'));
+                    html += self.renderMealSlot(i, 'breakfast', day.breakfast, 'ðŸŒ…', t('breakfast'));
+                    html += self.renderMealSlot(i, 'lunch', day.lunch, 'â˜€ï¸', t('lunch'));
+                    html += self.renderMealSlot(i, 'dinner', day.dinner, 'ðŸŒ™', t('dinner'));
                     html += '</div></div>';
                 });
 
@@ -4639,7 +4639,7 @@
                 var content = recipe ? 
                     '<div class="meal-name">' + escapeHTML(recipe.name) + '</div><div class="meal-calories">' + (recipe.calories || 0) + ' cal</div>' :
                     '<div class="meal-empty">+ Add ' + label + '</div>';
-                var removeBtn = recipe ? '<button class="meal-remove" onclick="event.stopPropagation(); MealPlanner.removeRecipe(' + dayIndex + ', \'' + mealType + '\')">×</button>' : '';
+                var removeBtn = recipe ? '<button class="meal-remove" onclick="event.stopPropagation(); MealPlanner.removeRecipe(' + dayIndex + ', \'' + mealType + '\')">Ã—</button>' : '';
 
                 return '<div class="meal-slot' + filled + '" onclick="MealPlanner.openMealSelector(' + dayIndex + ', \'' + mealType + '\')">' +
                     '<span class="meal-icon">' + icon + '</span>' +
@@ -4674,7 +4674,7 @@
                 var recipes = recipeHistory.concat(favorites);
 
                 if (recipes.length === 0) {
-                    list.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title">' + t('noRecipes') + '</div></div>';
+                    list.innerHTML = '<div class="empty-state"><div class="empty-icon">ðŸ“­</div><div class="empty-title">' + t('noRecipes') + '</div></div>';
                     return;
                 }
 
@@ -4685,7 +4685,7 @@
                         '<img class="recipe-selector-thumb" src="' + imgUrl + '" alt="" onerror="this.src=\'' + fallbackFoodImage + '\'">' +
                         '<div class="recipe-info">' +
                         '<div class="recipe-name">' + escapeHTML(r.name) + '</div>' +
-                        '<div class="recipe-meta">' + (r.calories || 0) + ' cal • ' + (r.prepTime || 30) + ' min</div>' +
+                        '<div class="recipe-meta">' + (r.calories || 0) + ' cal â€¢ ' + (r.prepTime || 30) + ' min</div>' +
                         '</div></div>';
                 });
 
@@ -4775,7 +4775,7 @@
                 if (!container) return;
 
                 if (this.items.length === 0) {
-                    container.innerHTML = '<div class="empty-state"><div class="empty-icon">🛒</div><div class="empty-title">No items yet</div><div class="empty-desc">Add recipes to your meal plan first</div></div>';
+                    container.innerHTML = '<div class="empty-state"><div class="empty-icon">ðŸ›’</div><div class="empty-title">No items yet</div><div class="empty-desc">Add recipes to your meal plan first</div></div>';
                     return;
                 }
 
@@ -4789,7 +4789,7 @@
                 var self = this;
                 Object.keys(byCategory).sort().forEach(function(category) {
                     html += '<div class="shopping-category">';
-                    html += '<div class="shopping-category-title">📦 ' + category + '</div>';
+                    html += '<div class="shopping-category-title">ðŸ“¦ ' + category + '</div>';
                     byCategory[category].forEach(function(item) {
                         var checked = item.checked ? ' checked' : '';
                         html += '<div class="shopping-item' + checked + '">';
@@ -4819,9 +4819,9 @@
             },
 
             share: function() {
-                var text = '🛒 Shopping List\n\n';
+                var text = 'ðŸ›’ Shopping List\n\n';
                 this.items.forEach(function(item) {
-                    text += (item.checked ? '✅' : '⬜') + ' ' + item.name;
+                    text += (item.checked ? 'âœ…' : 'â¬œ') + ' ' + item.name;
                     if (item.quantity > 1) text += ' (x' + item.quantity + ')';
                     text += '\n';
                 });
@@ -4830,7 +4830,7 @@
                     navigator.share({ title: 'Shopping List', text: text });
                 } else {
                     navigator.clipboard.writeText(text);
-                    toast('Copied to clipboard!', '📋');
+                    toast('Copied to clipboard!', 'ðŸ“‹');
                 }
             }
         };
@@ -4866,7 +4866,7 @@
                     '<div class="history-name">' + escapeHTML(r.name) + '</div>' +
                     '<div class="history-date">' + date + '</div>' +
                     '</div>' +
-                    '<button class="history-delete" onclick="event.stopPropagation(); deleteHistory(' + i + ')">🗑️</button>' +
+                    '<button class="history-delete" onclick="event.stopPropagation(); deleteHistory(' + i + ')">ðŸ—‘ï¸</button>' +
                     '</div>';
             });
             list.innerHTML = html;
@@ -4882,7 +4882,7 @@
             recipeHistory.splice(index, 1);
             localStorage.setItem('snapchef_history', JSON.stringify(recipeHistory));
             renderHistory();
-            toast('Deleted', '🗑️');
+            toast('Deleted', 'ðŸ—‘ï¸');
         }
 
         function toggleFavorite() {
@@ -4890,10 +4890,10 @@
             var index = favorites.findIndex(function(f) { return f.name === currentRecipeData.name; });
             if (index > -1) {
                 favorites.splice(index, 1);
-                toast('Removed from favorites', '💔');
+                toast('Removed from favorites', 'ðŸ’”');
             } else {
                 favorites.push({ ...currentRecipeData, date: Date.now() });
-                toast('Added to favorites!', '❤️');
+                toast('Added to favorites!', 'â¤ï¸');
                 // Visual feedback
                 var card = document.querySelector('.recipe-card');
                 if (card) {
@@ -4927,7 +4927,7 @@
                     '<div class="history-name">' + escapeHTML(r.name) + '</div>' +
                     '<div class="history-date">' + (r.calories || 0) + ' cal</div>' +
                     '</div>' +
-                    '<button class="history-delete" onclick="event.stopPropagation(); deleteFavorite(' + i + ')">🗑️</button>' +
+                    '<button class="history-delete" onclick="event.stopPropagation(); deleteFavorite(' + i + ')">ðŸ—‘ï¸</button>' +
                     '</div>';
             });
             list.innerHTML = html;
@@ -4944,7 +4944,7 @@
             favorites.splice(index, 1);
             localStorage.setItem('snapchef_favs', JSON.stringify(favorites));
             renderFavorites();
-            toast('Deleted', '🗑️');
+            toast('Deleted', 'ðŸ—‘ï¸');
         }
 
         function searchFavorites(query) {
@@ -4956,7 +4956,7 @@
             });
 
             if (!filtered.length) {
-                list.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">No results</div></div>';
+                list.innerHTML = '<div class="empty-state"><div class="empty-icon">ðŸ”</div><div class="empty-title">No results</div></div>';
                 return;
             }
 
@@ -4964,7 +4964,7 @@
             filtered.forEach(function(r, i) {
                 var originalIndex = favorites.indexOf(r);
                 html += '<div class="history-item" onclick="loadFavoriteRecipe(' + originalIndex + ')">' +
-                    '<div class="history-img">❤️</div>' +
+                    '<div class="history-img">â¤ï¸</div>' +
                     '<div class="history-info">' +
                     '<div class="history-name">' + escapeHTML(r.name) + '</div>' +
                     '</div></div>';
@@ -4975,9 +4975,9 @@
         // ========================================
         // FIREBASE AUTH & BACKEND PROXY
         // ========================================
-        // TODO: Firebase konfiqurasiyasını öz layihənizlə əvəz edin
+        // TODO: Firebase konfiqurasiyasÄ±nÄ± Ã¶z layihÉ™nizlÉ™ É™vÉ™z edin
         var firebaseConfig = {
-            apiKey: "YOUR_FIREBASE_API_KEY",
+            apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             authDomain: "YOUR_PROJECT.firebaseapp.com",
             projectId: "YOUR_PROJECT_ID",
             storageBucket: "YOUR_PROJECT.appspot.com",
@@ -5013,36 +5013,36 @@
             try {
                 var provider = new firebase.auth.GoogleAuthProvider();
                 await auth.signInWithPopup(provider);
-                toast('Welcome!', '👋');
+                toast('Welcome!', 'ðŸ‘‹');
             } catch (e) {
-                toast('Login failed: ' + e.message, '❌');
+                toast('Login failed: ' + e.message, 'âŒ');
             }
         }
 
         async function signInWithEmail() {
             var email = document.getElementById('loginEmail').value.trim();
             var password = document.getElementById('loginPassword').value;
-            if (!email || !password) { toast('Enter email and password', '⚠️'); return; }
+            if (!email || !password) { toast('Enter email and password', 'âš ï¸'); return; }
             try {
                 await auth.signInWithEmailAndPassword(email, password);
-                toast('Welcome back!', '👋');
+                toast('Welcome back!', 'ðŸ‘‹');
             } catch (e) {
                 if (e.code === 'auth/user-not-found') {
                     try {
                         await auth.createUserWithEmailAndPassword(email, password);
-                        toast('Account created!', '🎉');
+                        toast('Account created!', 'ðŸŽ‰');
                     } catch (e2) {
-                        toast('Error: ' + e2.message, '❌');
+                        toast('Error: ' + e2.message, 'âŒ');
                     }
                 } else {
-                    toast('Error: ' + e.message, '❌');
+                    toast('Error: ' + e.message, 'âŒ');
                 }
             }
         }
 
         function signOut() {
             auth.signOut();
-            toast('Signed out', '👋');
+            toast('Signed out', 'ðŸ‘‹');
         }
 
         // Backend API proxy call
@@ -5096,8 +5096,8 @@
         function getApiKey() { return 'BACKEND'; }
         function getApiKeyOrGuide() { return 'BACKEND'; }
         function isValidApiKey() { return true; }
-        function testApiKey() { toast('API managed by server', '✅'); }
-        function clearApiKey() { toast('API managed by server', 'ℹ️');
+        function testApiKey() { toast('API managed by server', 'âœ…'); }
+        function clearApiKey() { toast('API managed by server', 'â„¹ï¸');
         }
 
         async function generateRecipe() {
@@ -5106,7 +5106,7 @@
 
             var ingredients = document.getElementById('ingredients').value.trim();
             if (!ingredients) {
-                toast(t('enterIngredient'), '⚠️');
+                toast(t('enterIngredient'), 'âš ï¸');
                 return;
             }
 
@@ -5124,10 +5124,10 @@
             prompt += '. Return JSON: {"name":"Recipe Name","description":"Brief description","ingredients":["item1 with amount","item2"],"steps":["Detailed step 1","Step 2"],"prepTime":15,"cookTime":30,"servings":4,"calories":350}';
 
             var loadingInterval = showProgressiveLoading('recipeResults', [
-                '🔍 Analyzing ingredients...',
-                '👨‍🍳 Creating recipe...',
-                '📊 Calculating nutrition...',
-                '✨ Final touches...'
+                'ðŸ” Analyzing ingredients...',
+                'ðŸ‘¨â€ðŸ³ Creating recipe...',
+                'ðŸ“Š Calculating nutrition...',
+                'âœ¨ Final touches...'
             ]);
             document.getElementById('generateBtn').disabled = true;
 
@@ -5145,7 +5145,7 @@
                 addToHistory(recipe);
                 incrementUsage();
                 showConfetti();
-                toast(t('recipeGenerated'), '✅');
+                toast(t('recipeGenerated'), 'âœ…');
 
             } catch (error) {
                 clearInterval(loadingInterval);
@@ -5163,7 +5163,7 @@
         async function cookSpecificDish() {
             var dishName = document.getElementById('specificDish').value.trim();
             if (!dishName) {
-                toast('Enter a dish name', '⚠️');
+                toast('Enter a dish name', 'âš ï¸');
                 return;
             }
 
@@ -5186,10 +5186,10 @@
             prompt += '. Return JSON: {"name":"Recipe Name","description":"Brief description","ingredients":["item1 with amount","item2"],"steps":["Detailed step 1","Step 2"],"prepTime":15,"cookTime":30,"servings":4,"calories":350}';
 
             var loadingInterval = showProgressiveLoading('recipeResults', [
-                '🔍 Searching "' + escapeHTML(dishName) + '"...',
-                '📝 Writing recipe...',
-                '📊 Calculating nutrition...',
-                '✨ Ready!'
+                'ðŸ” Searching "' + escapeHTML(dishName) + '"...',
+                'ðŸ“ Writing recipe...',
+                'ðŸ“Š Calculating nutrition...',
+                'âœ¨ Ready!'
             ]);
             document.getElementById('generateBtn').disabled = true;
 
@@ -5207,7 +5207,7 @@
                 addToHistory(recipe);
                 incrementUsage();
                 showConfetti();
-                toast(t('recipeGenerated'), '✅');
+                toast(t('recipeGenerated'), 'âœ…');
 
             } catch (error) {
                 clearInterval(loadingInterval);
@@ -5236,25 +5236,25 @@
                 '<div class="recipe-desc">' + escapeHTML(recipe.description || '') + '</div>' +
                 '</div>' +
                 '<div class="recipe-actions">' +
-                '<button class="recipe-action' + (isFav ? ' fav' : '') + '" onclick="toggleFavorite()" title="Favorite">' + (isFav ? '❤️' : '🤍') + '</button>' +
-                '<button class="recipe-action" onclick="shareRecipe()" title="Share">📤</button>' +
-                '<button class="recipe-action" onclick="speakRecipe()" title="Read aloud" aria-label="Read recipe aloud">🔊</button>' +
+                '<button class="recipe-action' + (isFav ? ' fav' : '') + '" onclick="toggleFavorite()" title="Favorite">' + (isFav ? 'â¤ï¸' : 'ðŸ¤') + '</button>' +
+                '<button class="recipe-action" onclick="shareRecipe()" title="Share">ðŸ“¤</button>' +
+                '<button class="recipe-action" onclick="speakRecipe()" title="Read aloud" aria-label="Read recipe aloud">ðŸ”Š</button>' +
                 '</div></div>' +
                 '<div class="recipe-stats">' +
-                '<div class="stat-item"><div class="stat-icon">⏱️</div><div class="stat-value">' + (recipe.prepTime || 15) + '</div><div class="stat-label">Prep (min)</div></div>' +
-                '<div class="stat-item"><div class="stat-icon">🍳</div><div class="stat-value">' + (recipe.cookTime || 30) + '</div><div class="stat-label">Cook (min)</div></div>' +
-                '<div class="stat-item"><div class="stat-icon">👥</div><div class="servings-control"><button class="serv-btn" onclick="changeServings(-1)" aria-label="Decrease servings">−</button><span id="servingsValue" class="stat-value">' + (recipe.servings || 4) + '</span><button class="serv-btn" onclick="changeServings(1)" aria-label="Increase servings">+</button></div><div class="stat-label">Servings</div></div>' +
-                '<div class="stat-item"><div class="stat-icon">🔥</div><div class="stat-value">' + (recipe.calories || 350) + '</div><div class="stat-label">Calories</div></div>' +
+                '<div class="stat-item"><div class="stat-icon">â±ï¸</div><div class="stat-value">' + (recipe.prepTime || 15) + '</div><div class="stat-label">Prep (min)</div></div>' +
+                '<div class="stat-item"><div class="stat-icon">ðŸ³</div><div class="stat-value">' + (recipe.cookTime || 30) + '</div><div class="stat-label">Cook (min)</div></div>' +
+                '<div class="stat-item"><div class="stat-icon">ðŸ‘¥</div><div class="servings-control"><button class="serv-btn" onclick="changeServings(-1)" aria-label="Decrease servings">âˆ’</button><span id="servingsValue" class="stat-value">' + (recipe.servings || 4) + '</span><button class="serv-btn" onclick="changeServings(1)" aria-label="Increase servings">+</button></div><div class="stat-label">Servings</div></div>' +
+                '<div class="stat-item"><div class="stat-icon">ðŸ”¥</div><div class="stat-value">' + (recipe.calories || 350) + '</div><div class="stat-label">Calories</div></div>' +
                 '</div>' +
                 '<div class="recipe-body">' +
-                '<h3 class="section-title">🥗 Ingredients</h3>' +
+                '<h3 class="section-title">ðŸ¥— Ingredients</h3>' +
                 '<div class="ingredients-grid">';
 
             (recipe.ingredients || []).forEach(function(ing) {
                 html += '<div class="ing-item">' + escapeHTML(ing) + '</div>';
             });
 
-            html += '</div><h3 class="section-title">📝 Instructions</h3><div class="steps-list">';
+            html += '</div><h3 class="section-title">ðŸ“ Instructions</h3><div class="steps-list">';
 
             (recipe.steps || []).forEach(function(step, i) {
                 html += '<div class="step-item"><div class="step-num">' + (i + 1) + '</div><div class="step-text">' + escapeHTML(step) + '</div></div>';
@@ -5263,9 +5263,9 @@
             html += '</div>' +
                 '<div style="display:flex;gap:10px;margin-top:15px;">' +
                 '<button class="main-btn" onclick="addToMealPlan()" style="flex:1; background: linear-gradient(135deg, var(--secondary), #db2777);">' +
-                '<span>📅</span><span>Add to Plan</span></button>' +
-                '<button class="main-btn" onclick="HealthTarget.addMealFromRecipe(currentRecipeData); toast(\'Meal logged! 🎯\', \'✅\');" style="flex:1; background: linear-gradient(135deg, #14b8a6, #0d9488);">' +
-                '<span>🎯</span><span>Log Meal</span></button>' +
+                '<span>ðŸ“…</span><span>Add to Plan</span></button>' +
+                '<button class="main-btn" onclick="HealthTarget.addMealFromRecipe(currentRecipeData); toast(\'Meal logged! ðŸŽ¯\', \'âœ…\');" style="flex:1; background: linear-gradient(135deg, #14b8a6, #0d9488);">' +
+                '<span>ðŸŽ¯</span><span>Log Meal</span></button>' +
                 '</div></div></div>';
 
             document.getElementById('recipeResults').innerHTML = html;
@@ -5287,15 +5287,15 @@
 
         function shareRecipe() {
             if (!currentRecipeData) return;
-            var text = '🍳 ' + currentRecipeData.name + '\n\n';
-            text += '📝 Ingredients:\n' + (currentRecipeData.ingredients || []).join('\n') + '\n\n';
-            text += '👨‍🍳 Steps:\n' + (currentRecipeData.steps || []).map(function(s, i) { return (i + 1) + '. ' + s; }).join('\n');
+            var text = 'ðŸ³ ' + currentRecipeData.name + '\n\n';
+            text += 'ðŸ“ Ingredients:\n' + (currentRecipeData.ingredients || []).join('\n') + '\n\n';
+            text += 'ðŸ‘¨â€ðŸ³ Steps:\n' + (currentRecipeData.steps || []).map(function(s, i) { return (i + 1) + '. ' + s; }).join('\n');
 
             if (navigator.share) {
                 navigator.share({ title: currentRecipeData.name, text: text });
             } else {
                 navigator.clipboard.writeText(text);
-                toast('Recipe copied!', '📋');
+                toast('Recipe copied!', 'ðŸ“‹');
             }
         }
 
@@ -5325,10 +5325,10 @@
             if (!CreditSystem.useCredits(1)) return;
 
             var loadingInterval = showProgressiveLoading('analyzeResults', [
-                '📸 Analyzing image...',
-                '🔍 Identifying food...',
-                '📊 Calculating nutrition...',
-                '💚 Finding healthier alternatives...'
+                'ðŸ“¸ Analyzing image...',
+                'ðŸ” Identifying food...',
+                'ðŸ“Š Calculating nutrition...',
+                'ðŸ’š Finding healthier alternatives...'
             ]);
 
             try {
@@ -5365,18 +5365,18 @@
                 '<div class="score-box"><div class="score-circle ' + scoreClass + '">' + analysis.score + '</div><div class="score-label">Health Score</div></div>' +
                 '</div>' +
                 '<div class="nutrition-grid">' +
-                '<div class="nutrition-item"><div class="nutrition-icon">🔥</div><div class="nutrition-value">' + analysis.calories + '</div><div class="nutrition-label">Calories</div></div>' +
-                '<div class="nutrition-item"><div class="nutrition-icon">🥩</div><div class="nutrition-value">' + analysis.protein + 'g</div><div class="nutrition-label">Protein</div></div>' +
-                '<div class="nutrition-item"><div class="nutrition-icon">🍞</div><div class="nutrition-value">' + analysis.carbs + 'g</div><div class="nutrition-label">Carbs</div></div>' +
-                '<div class="nutrition-item"><div class="nutrition-icon">🧈</div><div class="nutrition-value">' + analysis.fat + 'g</div><div class="nutrition-label">Fat</div></div>' +
+                '<div class="nutrition-item"><div class="nutrition-icon">ðŸ”¥</div><div class="nutrition-value">' + analysis.calories + '</div><div class="nutrition-label">Calories</div></div>' +
+                '<div class="nutrition-item"><div class="nutrition-icon">ðŸ¥©</div><div class="nutrition-value">' + analysis.protein + 'g</div><div class="nutrition-label">Protein</div></div>' +
+                '<div class="nutrition-item"><div class="nutrition-icon">ðŸž</div><div class="nutrition-value">' + analysis.carbs + 'g</div><div class="nutrition-label">Carbs</div></div>' +
+                '<div class="nutrition-item"><div class="nutrition-icon">ðŸ§ˆ</div><div class="nutrition-value">' + analysis.fat + 'g</div><div class="nutrition-label">Fat</div></div>' +
                 '</div></div>';
 
             if (analysis.alternatives && analysis.alternatives.length) {
-                html += '<h3 class="alternatives-title">💚 Healthier Alternatives</h3><div class="alt-grid">';
+                html += '<h3 class="alternatives-title">ðŸ’š Healthier Alternatives</h3><div class="alt-grid">';
                 analysis.alternatives.forEach(function(alt) {
                     html += '<div class="alt-card">' +
                         '<div class="alt-name">' + escapeHTML(alt.name) + '</div>' +
-                        '<div class="calorie-save">🔥 ' + alt.calories + ' cal</div>' +
+                        '<div class="calorie-save">ðŸ”¥ ' + alt.calories + ' cal</div>' +
                         '<div class="alt-desc">' + escapeHTML(alt.benefit || '') + '</div>' +
                         '</div>';
                 });
@@ -5398,7 +5398,7 @@
             if (!file) return;
 
             if (file.size > CONFIG.MAX_IMAGE_SIZE) {
-                toast('Image too large (max 4MB)', '⚠️');
+                toast('Image too large (max 4MB)', 'âš ï¸');
                 return;
             }
 
@@ -5433,7 +5433,7 @@
                     document.getElementById(type + 'CameraPreview').classList.add('active');
                 })
                 .catch(function() {
-                    toast('Camera access denied', '📷');
+                    toast('Camera access denied', 'ðŸ“·');
                 });
         }
 
@@ -5510,14 +5510,14 @@
             var ind = document.getElementById('voiceIndicator');
             if (btn) {
                 btn.classList.toggle('voice-active', active);
-                btn.textContent = active ? '⏹️' : '🎤';
+                btn.textContent = active ? 'â¹ï¸' : 'ðŸŽ¤';
             }
             if (ind) ind.classList.toggle('active', active);
         }
 
         function toggleVoice() {
             if (!recognition && !initVoice()) {
-                toast('Voice not supported', '🎤');
+                toast('Voice not supported', 'ðŸŽ¤');
                 return;
             }
 
@@ -5567,10 +5567,10 @@
             var totalCredits = CreditSystem.credits;
 
             container.innerHTML = 
-                '<div class="nutrition-item"><div class="nutrition-icon">📖</div><div class="nutrition-value">' + totalRecipes + '</div><div class="nutrition-label">Recipes</div></div>' +
-                '<div class="nutrition-item"><div class="nutrition-icon">❤️</div><div class="nutrition-value">' + totalFavorites + '</div><div class="nutrition-label">Favorites</div></div>' +
-                '<div class="nutrition-item"><div class="nutrition-icon">💎</div><div class="nutrition-value">' + totalCredits + '</div><div class="nutrition-label">Credits</div></div>' +
-                '<div class="nutrition-item"><div class="nutrition-icon">📅</div><div class="nutrition-value">' + dailyUsage.count + '</div><div class="nutrition-label">Today</div></div>';
+                '<div class="nutrition-item"><div class="nutrition-icon">ðŸ“–</div><div class="nutrition-value">' + totalRecipes + '</div><div class="nutrition-label">Recipes</div></div>' +
+                '<div class="nutrition-item"><div class="nutrition-icon">â¤ï¸</div><div class="nutrition-value">' + totalFavorites + '</div><div class="nutrition-label">Favorites</div></div>' +
+                '<div class="nutrition-item"><div class="nutrition-icon">ðŸ’Ž</div><div class="nutrition-value">' + totalCredits + '</div><div class="nutrition-label">Credits</div></div>' +
+                '<div class="nutrition-item"><div class="nutrition-icon">ðŸ“…</div><div class="nutrition-value">' + dailyUsage.count + '</div><div class="nutrition-label">Today</div></div>';
         }
 
         function clearAllData() {
@@ -5593,7 +5593,7 @@
             MealPlanner.init();
             CreditSystem.init();
 
-            toast('All data cleared', '🗑️');
+            toast('All data cleared', 'ðŸ—‘ï¸');
         }
 
         function updateOnlineStatus() {
@@ -5711,11 +5711,11 @@
             },
 
             getScoreEmoji: function(score) {
-                if (score >= 85) return '🌟';
-                if (score >= 70) return '💚';
-                if (score >= 50) return '💛';
-                if (score >= 30) return '🧡';
-                return '❤️';
+                if (score >= 85) return 'ðŸŒŸ';
+                if (score >= 70) return 'ðŸ’š';
+                if (score >= 50) return 'ðŸ’›';
+                if (score >= 30) return 'ðŸ§¡';
+                return 'â¤ï¸';
             },
 
             getScoreColor: function(score) {
@@ -5727,16 +5727,16 @@
             },
 
             getScoreMessage: function(score) {
-                if (score >= 85) return 'Excellent work! 🎉';
-                if (score >= 70) return 'Good progress 👏';
-                if (score >= 50) return 'On the right track 💪';
+                if (score >= 85) return 'Excellent work! ðŸŽ‰';
+                if (score >= 70) return 'Good progress ðŸ‘';
+                if (score >= 50) return 'On the right track ðŸ’ª';
                 if (score >= 30) return 'Needs more attention';
                 return 'Start logging your meals!';
             },
 
             getGoalLabel: function(goal) {
-                var labels = { loss: '⬇️ Weight Loss', maintain: '⚖️ Maintain', gain: '💪 Muscle Gain', healthy: '🥗 Healthy Eating' };
-                return labels[goal] || '🥗 Healthy';
+                var labels = { loss: 'â¬‡ï¸ Weight Loss', maintain: 'âš–ï¸ Maintain', gain: 'ðŸ’ª Muscle Gain', healthy: 'ðŸ¥— Healthy Eating' };
+                return labels[goal] || 'ðŸ¥— Healthy';
             },
 
             getGoalClass: function(goal) {
@@ -5745,8 +5745,8 @@
 
             getDietLabel: function(diet) {
                 var labels = {
-                    balanced: '⚖️ Balanced', lowcarb: '🥩 Low Carb', highprotein: '💪 High Protein',
-                    vegetarian: '🌿 Vegetarian', mediterranean: '🫒 Mediterranean', vegan: '🥬 Vegan'
+                    balanced: 'âš–ï¸ Balanced', lowcarb: 'ðŸ¥© Low Carb', highprotein: 'ðŸ’ª High Protein',
+                    vegetarian: 'ðŸŒ¿ Vegetarian', mediterranean: 'ðŸ«’ Mediterranean', vegan: 'ðŸ¥¬ Vegan'
                 };
                 return labels[diet] || diet;
             },
@@ -5758,28 +5758,28 @@
                 var cal = this.profile ? this.profile.calories : 2000;
 
                 if (log.calories === 0) {
-                    tips.push({ icon: '🍳', text: 'No meals logged yet today. Start by adding breakfast!' });
+                    tips.push({ icon: 'ðŸ³', text: 'No meals logged yet today. Start by adding breakfast!' });
                 }
                 if (log.protein < macros.protein * 0.5 && log.calories > cal * 0.3) {
-                    tips.push({ icon: '🥚', text: 'Protein is low. Add eggs, chicken, or fish to your meals.' });
+                    tips.push({ icon: 'ðŸ¥š', text: 'Protein is low. Add eggs, chicken, or fish to your meals.' });
                 }
                 if (log.calories > cal * 0.9 && log.meals.length < 3) {
-                    tips.push({ icon: '⚠️', text: 'Near calorie limit but few meals eaten. Try smaller portions.' });
+                    tips.push({ icon: 'âš ï¸', text: 'Near calorie limit but few meals eaten. Try smaller portions.' });
                 }
                 if (log.water < 4) {
-                    tips.push({ icon: '💧', text: 'Don\'t forget to drink water! Your goal is ' + (this.profile ? this.profile.waterTarget : 8) + ' glasses.' });
+                    tips.push({ icon: 'ðŸ’§', text: 'Don\'t forget to drink water! Your goal is ' + (this.profile ? this.profile.waterTarget : 8) + ' glasses.' });
                 }
                 if (log.calories > cal * 1.2) {
-                    tips.push({ icon: '🔴', text: 'You\'ve exceeded your daily calorie target. Be more mindful tomorrow.' });
+                    tips.push({ icon: 'ðŸ”´', text: 'You\'ve exceeded your daily calorie target. Be more mindful tomorrow.' });
                 }
                 if (tips.length === 0) {
-                    tips.push({ icon: '✨', text: 'You\'re doing great! Keep up the balanced nutrition.' });
+                    tips.push({ icon: 'âœ¨', text: 'You\'re doing great! Keep up the balanced nutrition.' });
                 }
 
                 // Add goal-specific tip
                 var goal = this.profile ? this.profile.goal : 'healthy';
-                if (goal === 'loss') tips.push({ icon: '🥗', text: 'For weight loss, choose high-fiber foods: vegetables, fruits, whole grains.' });
-                if (goal === 'gain') tips.push({ icon: '🍚', text: 'For muscle gain, balance protein and carbs in every meal.' });
+                if (goal === 'loss') tips.push({ icon: 'ðŸ¥—', text: 'For weight loss, choose high-fiber foods: vegetables, fruits, whole grains.' });
+                if (goal === 'gain') tips.push({ icon: 'ðŸš', text: 'For muscle gain, balance protein and carbs in every meal.' });
 
                 return tips.slice(0, 3);
             },
@@ -5802,10 +5802,10 @@
 
                 if (!this.profile) {
                     container.innerHTML = '<div class="health-no-profile">' +
-                        '<div class="health-no-profile-icon">🎯</div>' +
+                        '<div class="health-no-profile-icon">ðŸŽ¯</div>' +
                         '<div class="health-no-profile-title">Set Your Health Goal</div>' +
                         '<div class="health-no-profile-desc">Set your daily calorie, macro, and water targets to start eating healthy</div>' +
-                        '<button class="health-setup-btn" onclick="HealthTarget.openProfile()">🚀 Get Started</button>' +
+                        '<button class="health-setup-btn" onclick="HealthTarget.openProfile()">ðŸš€ Get Started</button>' +
                         '</div>';
                     return;
                 }
@@ -5827,8 +5827,8 @@
 
                 // Header
                 html += '<div class="health-dash-header">' +
-                    '<div class="health-dash-title">🎯 Today\'s Goal</div>' +
-                    '<button class="health-edit-btn" onclick="HealthTarget.openProfile()">✏️ Edit</button>' +
+                    '<div class="health-dash-title">ðŸŽ¯ Today\'s Goal</div>' +
+                    '<button class="health-edit-btn" onclick="HealthTarget.openProfile()">âœï¸ Edit</button>' +
                     '</div>';
 
                 // Goal badge + diet
@@ -5846,7 +5846,7 @@
                     '<div class="daily-score-title">' + this.getScoreMessage(score) + '</div>' +
                     '<div class="daily-score-desc">Daily health score</div>' +
                     '</div>' +
-                    '<div class="daily-score-streak">🔥 ' + streak + ' days</div>' +
+                    '<div class="daily-score-streak">ðŸ”¥ ' + streak + ' days</div>' +
                     '</div>';
 
                 // Progress Rings
@@ -5876,30 +5876,30 @@
                 // Water Tracker
                 html += '<div class="health-water-section">' +
                     '<div class="water-header">' +
-                    '<div class="water-title">💧 Water Tracker</div>' +
+                    '<div class="water-title">ðŸ’§ Water Tracker</div>' +
                     '<div class="water-count">' + log.water + '/' + waterTarget + ' glasses</div>' +
                     '</div><div class="water-glasses">';
                 for (var i = 0; i < waterTarget; i++) {
                     html += '<div class="water-glass' + (i < log.water ? ' filled' : '') + '" onclick="HealthTarget.toggleWater(' + i + ')">' +
-                        (i < log.water ? '💧' : '○') + '</div>';
+                        (i < log.water ? 'ðŸ’§' : 'â—‹') + '</div>';
                 }
                 html += '</div></div>';
 
                 // Quick Meal Logging
                 html += '<div class="health-water-section" style="margin-bottom:14px;">' +
                     '<div class="water-header">' +
-                    '<div class="water-title">🍽️ Today\'s Meals (' + log.meals.length + ')</div>' +
+                    '<div class="water-title">ðŸ½ï¸ Today\'s Meals (' + log.meals.length + ')</div>' +
                     '<button class="health-edit-btn" onclick="HealthTarget.openMealLogger()">+ Add Meal</button>' +
                     '</div>';
                 if (log.meals.length > 0) {
                     log.meals.forEach(function(meal, idx) {
                         html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-light);">' +
                             '<div style="display:flex;align-items:center;gap:10px;">' +
-                            '<span style="font-size:20px;">' + (meal.icon || '🍽️') + '</span>' +
+                            '<span style="font-size:20px;">' + (meal.icon || 'ðŸ½ï¸') + '</span>' +
                             '<div><div style="font-weight:600;font-size:13px;color:var(--text-light);">' + escapeHTML(meal.name) + '</div>' +
-                            '<div style="font-size:11px;color:#64748b;">' + meal.calories + ' kcal · P:' + (meal.protein || 0) + 'g · C:' + (meal.carbs || 0) + 'g · F:' + (meal.fat || 0) + 'g</div></div>' +
+                            '<div style="font-size:11px;color:#64748b;">' + meal.calories + ' kcal Â· P:' + (meal.protein || 0) + 'g Â· C:' + (meal.carbs || 0) + 'g Â· F:' + (meal.fat || 0) + 'g</div></div>' +
                             '</div>' +
-                            '<button style="border:none;background:none;font-size:16px;cursor:pointer;" onclick="HealthTarget.removeMeal(' + idx + ')">❌</button>' +
+                            '<button style="border:none;background:none;font-size:16px;cursor:pointer;" onclick="HealthTarget.removeMeal(' + idx + ')">âŒ</button>' +
                             '</div>';
                     });
                 } else {
@@ -5909,7 +5909,7 @@
 
                 // Tips
                 html += '<div class="health-tips">' +
-                    '<div style="font-weight:600;font-size:13px;margin-bottom:8px;color:var(--text-light);">💡 Tips</div>';
+                    '<div style="font-weight:600;font-size:13px;margin-bottom:8px;color:var(--text-light);">ðŸ’¡ Tips</div>';
                 tips.forEach(function(tip) {
                     html += '<div class="health-tip"><span class="tip-icon">' + tip.icon + '</span><span>' + tip.text + '</span></div>';
                 });
@@ -5929,7 +5929,7 @@
                 this.render();
                 if (navigator.vibrate) navigator.vibrate(30);
                 if (this.todayLog.water >= (this.profile ? this.profile.waterTarget : 8)) {
-                    toast('Water goal reached! 💧🎉', '✅');
+                    toast('Water goal reached! ðŸ’§ðŸŽ‰', 'âœ…');
                 }
             },
 
@@ -5979,7 +5979,7 @@
                 });
 
                 if (!goal) {
-                    toast('Select a goal', '⚠️');
+                    toast('Select a goal', 'âš ï¸');
                     return;
                 }
 
@@ -5999,14 +5999,14 @@
                 localStorage.setItem('snapchef_health_profile', JSON.stringify(this.profile));
                 document.getElementById('healthProfileModal').classList.remove('active');
                 this.render();
-                toast('Health goal saved! 🎯', '✅');
+                toast('Health goal saved! ðŸŽ¯', 'âœ…');
                 showConfetti();
             },
 
             openMealLogger: function() {
                 var html = '<div style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:8500;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);" id="mealLogModal" onclick="if(event.target===this)this.remove()">' +
                     '<div class="api-guide-content" style="max-width:400px;" onclick="event.stopPropagation()">' +
-                    '<div style="text-align:center;margin-bottom:15px;"><div style="font-size:40px;">🍽️</div>' +
+                    '<div style="text-align:center;margin-bottom:15px;"><div style="font-size:40px;">ðŸ½ï¸</div>' +
                     '<h2 class="premium-title" style="margin-top:8px;">Log a Meal</h2></div>' +
 
                     '<div class="profile-field"><label>Meal name</label>' +
@@ -6014,29 +6014,29 @@
 
                     '<div class="profile-field"><label>Meal type</label>' +
                     '<div style="display:flex;gap:8px;flex-wrap:wrap;" id="mealTypeSelector">' +
-                    '<div class="diet-chip selected" onclick="HealthTarget._selectMealType(this)" data-icon="🌅" data-type="breakfast">🌅 Breakfast</div>' +
-                    '<div class="diet-chip" onclick="HealthTarget._selectMealType(this)" data-icon="☀️" data-type="lunch">☀️ Lunch</div>' +
-                    '<div class="diet-chip" onclick="HealthTarget._selectMealType(this)" data-icon="🌙" data-type="dinner">🌙 Dinner</div>' +
-                    '<div class="diet-chip" onclick="HealthTarget._selectMealType(this)" data-icon="🍎" data-type="snack">🍎 Snack</div>' +
+                    '<div class="diet-chip selected" onclick="HealthTarget._selectMealType(this)" data-icon="ðŸŒ…" data-type="breakfast">ðŸŒ… Breakfast</div>' +
+                    '<div class="diet-chip" onclick="HealthTarget._selectMealType(this)" data-icon="â˜€ï¸" data-type="lunch">â˜€ï¸ Lunch</div>' +
+                    '<div class="diet-chip" onclick="HealthTarget._selectMealType(this)" data-icon="ðŸŒ™" data-type="dinner">ðŸŒ™ Dinner</div>' +
+                    '<div class="diet-chip" onclick="HealthTarget._selectMealType(this)" data-icon="ðŸŽ" data-type="snack">ðŸŽ Snack</div>' +
                     '</div></div>' +
 
                     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">' +
-                    '<div class="profile-field"><label>🔥 Calories</label>' +
+                    '<div class="profile-field"><label>ðŸ”¥ Calories</label>' +
                     '<input type="number" id="mealLogCal" class="profile-input" placeholder="350" min="0"></div>' +
-                    '<div class="profile-field"><label>🥩 Protein (g)</label>' +
+                    '<div class="profile-field"><label>ðŸ¥© Protein (g)</label>' +
                     '<input type="number" id="mealLogProt" class="profile-input" placeholder="20" min="0"></div>' +
-                    '<div class="profile-field"><label>🍞 Carbs (g)</label>' +
+                    '<div class="profile-field"><label>ðŸž Carbs (g)</label>' +
                     '<input type="number" id="mealLogCarb" class="profile-input" placeholder="30" min="0"></div>' +
-                    '<div class="profile-field"><label>🧈 Fat (g)</label>' +
+                    '<div class="profile-field"><label>ðŸ§ˆ Fat (g)</label>' +
                     '<input type="number" id="mealLogFat" class="profile-input" placeholder="15" min="0"></div>' +
                     '</div>' +
 
                     '<div style="display:flex;gap:8px;margin-top:5px;">' +
-                    '<button class="main-btn" style="flex:1;background:linear-gradient(135deg,var(--primary),var(--primary-dark));" onclick="HealthTarget._quickEstimate()"><span>🤖</span><span>AI Estimate</span></button>' +
+                    '<button class="main-btn" style="flex:1;background:linear-gradient(135deg,var(--primary),var(--primary-dark));" onclick="HealthTarget._quickEstimate()"><span>ðŸ¤–</span><span>AI Estimate</span></button>' +
                     '</div>' +
 
                     '<button class="main-btn" onclick="HealthTarget.addMealFromLogger()" style="margin-top:10px;background:linear-gradient(135deg,#14b8a6,#0d9488);">' +
-                    '<span>✅</span><span>Add Meal</span></button>' +
+                    '<span>âœ…</span><span>Add Meal</span></button>' +
                     '<button class="premium-close" onclick="document.getElementById(\'mealLogModal\').remove()">Cancel</button>' +
                     '</div></div>';
 
@@ -6051,12 +6051,12 @@
 
             _quickEstimate: async function() {
                 var name = document.getElementById('mealLogName').value.trim();
-                if (!name) { toast('Enter a meal name', '⚠️'); return; }
+                if (!name) { toast('Enter a meal name', 'âš ï¸'); return; }
 
                 var apiKey = getApiKeyOrGuide();
                 if (!apiKey) return;
 
-                toast('AI is estimating...', '🤖');
+                toast('AI is estimating...', 'ðŸ¤–');
 
                 try {
                     var data = await callAI(
@@ -6068,18 +6068,18 @@
                     document.getElementById('mealLogProt').value = est.protein || 0;
                     document.getElementById('mealLogCarb').value = est.carbs || 0;
                     document.getElementById('mealLogFat').value = est.fat || 0;
-                    toast('Estimated values filled!', '✅');
+                    toast('Estimated values filled!', 'âœ…');
                 } catch (e) {
-                    toast('Estimation failed', '❌');
+                    toast('Estimation failed', 'âŒ');
                 }
             },
 
             addMealFromLogger: function() {
                 var name = document.getElementById('mealLogName').value.trim();
-                if (!name) { toast('Enter a meal name', '⚠️'); return; }
+                if (!name) { toast('Enter a meal name', 'âš ï¸'); return; }
 
                 var selectedType = document.querySelector('#mealTypeSelector .diet-chip.selected');
-                var icon = selectedType ? selectedType.getAttribute('data-icon') : '🍽️';
+                var icon = selectedType ? selectedType.getAttribute('data-icon') : 'ðŸ½ï¸';
 
                 var meal = {
                     name: name,
@@ -6101,7 +6101,7 @@
                 var modal = document.getElementById('mealLogModal');
                 if (modal) modal.remove();
                 this.render();
-                toast(name + ' added! 🎉', '✅');
+                toast(name + ' added! ðŸŽ‰', 'âœ…');
                 if (navigator.vibrate) navigator.vibrate(50);
             },
 
@@ -6110,7 +6110,7 @@
                 var servings = recipe.servings || 4;
                 var meal = {
                     name: recipe.name,
-                    icon: '👨‍🍳',
+                    icon: 'ðŸ‘¨â€ðŸ³',
                     calories: Math.round((recipe.calories || 350) / servings),
                     protein: Math.round((recipe.protein || 20) / servings),
                     carbs: Math.round((recipe.carbs || 30) / servings),
@@ -6137,7 +6137,7 @@
                     this.todayLog.meals.splice(index, 1);
                     this.saveTodayLog();
                     this.render();
-                    toast('Meal removed', '🗑️');
+                    toast('Meal removed', 'ðŸ—‘ï¸');
                 }
             }
         };
@@ -6170,7 +6170,7 @@
             
             steps.forEach(function(step, i) {
                 html += '<div class="loading-step' + (i === 0 ? ' active' : '') + '" id="loadStep' + i + '">' +
-                    '<div class="loading-step-icon">' + (i === 0 ? '⏳' : '○') + '</div>' +
+                    '<div class="loading-step-icon">' + (i === 0 ? 'â³' : 'â—‹') + '</div>' +
                     '<span>' + step + '</span></div>';
             });
 
@@ -6186,13 +6186,13 @@
                     if (prev) {
                         prev.classList.remove('active');
                         prev.classList.add('done');
-                        prev.querySelector('.loading-step-icon').textContent = '✓';
+                        prev.querySelector('.loading-step-icon').textContent = 'âœ“';
                     }
                     currentStep++;
                     var next = document.getElementById('loadStep' + currentStep);
                     if (next) {
                         next.classList.add('active');
-                        next.querySelector('.loading-step-icon').textContent = '⏳';
+                        next.querySelector('.loading-step-icon').textContent = 'â³';
                     }
                 } else {
                     clearInterval(interval);
@@ -6234,42 +6234,42 @@
         function showError(containerId, type) {
             var errors = {
                 'api_key': {
-                    icon: '🔑',
+                    icon: 'ðŸ”‘',
                     title: 'API Key Not Found',
                     desc: 'An OpenAI API key is required to generate recipes. Enter it in Settings.',
                     action: 'Enter API Key',
                     handler: 'showApiGuide()'
                 },
                 'network': {
-                    icon: '📡',
+                    icon: 'ðŸ“¡',
                     title: 'No Internet Connection',
                     desc: 'This feature requires an internet connection. Please check your network.',
                     action: 'Retry',
                     handler: 'updateOnlineStatus()'
                 },
                 'api_error': {
-                    icon: '⚠️',
+                    icon: 'âš ï¸',
                     title: 'API Error',
                     desc: 'Could not connect to OpenAI. Make sure your API key is valid.',
                     action: 'Check API Key',
                     handler: 'switchTab("settings")'
                 },
                 'rate_limit': {
-                    icon: '⏰',
+                    icon: 'â°',
                     title: 'Too Many Requests',
                     desc: 'Please wait and try again. If daily limit is reached, upgrade to Premium.',
                     action: 'Go Premium',
                     handler: 'openPremiumModal()'
                 },
                 'image_required': {
-                    icon: '📸',
+                    icon: 'ðŸ“¸',
                     title: 'Image Required',
                     desc: 'Take or upload a photo of the food to analyze it.',
                     action: null,
                     handler: null
                 },
                 'analysis_failed': {
-                    icon: '❌',
+                    icon: 'âŒ',
                     title: 'Analysis Failed',
                     desc: 'Could not identify the food. Try taking a clearer photo.',
                     action: 'Try Again',
@@ -6277,7 +6277,7 @@
                 }
             };
 
-            var err = errors[type] || { icon: '❌', title: 'Xəta', desc: 'Naməlum xəta baş verdi.', action: null };
+            var err = errors[type] || { icon: 'âŒ', title: 'XÉ™ta', desc: 'NamÉ™lum xÉ™ta baÅŸ verdi.', action: null };
             
             var html = '<div class="error-box">' +
                 '<div class="error-icon">' + err.icon + '</div>' +
@@ -6303,8 +6303,8 @@
             return '<div class="empty-state">' +
                 '<div class="empty-icon"><i data-lucide="heart" style="width:48px;height:48px;color:var(--text-muted)"></i></div>' +
                 '<div class="empty-title">' + t('noRecipes') + '</div>' +
-                '<div class="empty-desc">Tap the ❤️ button on any recipe to save it here</div>' +
-                '<button class="empty-state-action" onclick="switchTab(\'recipe\')">🍳 Create Recipe</button>' +
+                '<div class="empty-desc">Tap the â¤ï¸ button on any recipe to save it here</div>' +
+                '<button class="empty-state-action" onclick="switchTab(\'recipe\')">ðŸ³ Create Recipe</button>' +
                 '</div>';
         }
 
@@ -6343,15 +6343,15 @@
             requestPermission: function() {
                 var self = this;
                 if (!('Notification' in window)) {
-                    toast('Browser notifications not supported', '⚠️');
+                    toast('Browser notifications not supported', 'âš ï¸');
                     return;
                 }
                 Notification.requestPermission().then(function(perm) {
                     if (perm === 'granted') {
-                        toast('Notifications enabled! 🔔', '✅');
-                        self.sendBrowserNotif('SnapChef 🍳', 'Notifications are now active! You\'ll get reminders for water, meals, and more.', '🎉');
+                        toast('Notifications enabled! ðŸ””', 'âœ…');
+                        self.sendBrowserNotif('SnapChef ðŸ³', 'Notifications are now active! You\'ll get reminders for water, meals, and more.', 'ðŸŽ‰');
                     } else if (perm === 'denied') {
-                        toast('Notifications blocked. Enable in browser settings.', '⚠️');
+                        toast('Notifications blocked. Enable in browser settings.', 'âš ï¸');
                     }
                     self.renderSettingsPanel();
                 });
@@ -6368,14 +6368,14 @@
                 // Permission banner
                 if (perm === 'default') {
                     permArea.innerHTML = '<div class="notif-permission-banner">' +
-                        '<div style="font-size:24px;margin-bottom:6px;">🔔</div>' +
+                        '<div style="font-size:24px;margin-bottom:6px;">ðŸ””</div>' +
                         '<div style="font-weight:700;font-size:14px;color:#92400e;">Enable Notifications</div>' +
                         '<div style="font-size:12px;color:#a16207;margin-top:4px;">Get reminders for water, meals, and daily health tips</div>' +
                         '<button class="notif-permission-btn" onclick="NotifSystem.requestPermission()">Allow Notifications</button>' +
                         '</div>';
                 } else if (perm === 'denied') {
                     permArea.innerHTML = '<div class="notif-permission-banner" style="background:linear-gradient(135deg,#fee2e2,#fecaca);border-color:#fca5a5;">' +
-                        '<div style="font-size:24px;margin-bottom:6px;">🚫</div>' +
+                        '<div style="font-size:24px;margin-bottom:6px;">ðŸš«</div>' +
                         '<div style="font-weight:700;font-size:14px;color:#991b1b;">Notifications Blocked</div>' +
                         '<div style="font-size:12px;color:#b91c1c;margin-top:4px;">Enable in your browser settings to receive reminders</div>' +
                         '</div>';
@@ -6394,7 +6394,7 @@
                 // 1. Water reminders
                 html += '<div class="notif-toggle-row">' +
                     '<div class="notif-toggle-info">' +
-                    '<div class="notif-toggle-icon" style="background:#dbeafe;">💧</div>' +
+                    '<div class="notif-toggle-icon" style="background:#dbeafe;">ðŸ’§</div>' +
                     '<div><div class="notif-toggle-text">Water Reminders</div>' +
                     '<div class="notif-toggle-desc">Remind every ' + s.water.interval + ' min to drink water</div>' +
                     '<div class="notif-time-picker">' +
@@ -6409,9 +6409,9 @@
                 // 2. Meal time reminders
                 html += '<div class="notif-toggle-row">' +
                     '<div class="notif-toggle-info">' +
-                    '<div class="notif-toggle-icon" style="background:#fef3c7;">🍽️</div>' +
+                    '<div class="notif-toggle-icon" style="background:#fef3c7;">ðŸ½ï¸</div>' +
                     '<div><div class="notif-toggle-text">Meal Reminders</div>' +
-                    '<div class="notif-toggle-desc">Breakfast ' + s.meals.times[0] + ' · Lunch ' + s.meals.times[1] + ' · Dinner ' + s.meals.times[2] + '</div>' +
+                    '<div class="notif-toggle-desc">Breakfast ' + s.meals.times[0] + ' Â· Lunch ' + s.meals.times[1] + ' Â· Dinner ' + s.meals.times[2] + '</div>' +
                     '</div></div>' +
                     '<label class="notif-switch"><input type="checkbox" ' + (s.meals.enabled ? 'checked' : '') + ' onchange="NotifSystem.toggle(\'meals\', this.checked)"><span class="notif-slider"></span></label>' +
                     '</div>';
@@ -6419,7 +6419,7 @@
                 // 3. Daily summary
                 html += '<div class="notif-toggle-row">' +
                     '<div class="notif-toggle-info">' +
-                    '<div class="notif-toggle-icon" style="background:#ede9fe;">📊</div>' +
+                    '<div class="notif-toggle-icon" style="background:#ede9fe;">ðŸ“Š</div>' +
                     '<div><div class="notif-toggle-text">Daily Summary</div>' +
                     '<div class="notif-toggle-desc">Evening recap at ' + s.summary.time + ' with your health score</div>' +
                     '</div></div>' +
@@ -6429,7 +6429,7 @@
                 // 4. Health tips
                 html += '<div class="notif-toggle-row">' +
                     '<div class="notif-toggle-info">' +
-                    '<div class="notif-toggle-icon" style="background:#dcfce7;">💡</div>' +
+                    '<div class="notif-toggle-icon" style="background:#dcfce7;">ðŸ’¡</div>' +
                     '<div><div class="notif-toggle-text">Health Tips</div>' +
                     '<div class="notif-toggle-desc">Smart nutrition tips every ' + (s.tips.interval / 60) + 'h based on your goals</div>' +
                     '</div></div>' +
@@ -6444,8 +6444,8 @@
                 this.settings[type].enabled = enabled;
                 this.save();
                 this.restartScheduler();
-                if (enabled) toast(this._getTypeName(type) + ' enabled', '🔔');
-                else toast(this._getTypeName(type) + ' disabled', '🔕');
+                if (enabled) toast(this._getTypeName(type) + ' enabled', 'ðŸ””');
+                else toast(this._getTypeName(type) + ' disabled', 'ðŸ”•');
             },
 
             setWaterInterval: function(minutes) {
@@ -6453,7 +6453,7 @@
                 this.save();
                 this.renderSettingsPanel();
                 this.restartScheduler();
-                toast('Water reminder: every ' + minutes + ' min', '💧');
+                toast('Water reminder: every ' + minutes + ' min', 'ðŸ’§');
             },
 
             _getTypeName: function(type) {
@@ -6477,7 +6477,7 @@
                     setTimeout(function() { self.checkWaterReminder(); }, 5000);
                 }
 
-                // Meal time checker — check every minute
+                // Meal time checker â€” check every minute
                 if (this.settings.meals.enabled) {
                     var mealTimer = setInterval(function() {
                         self.checkMealReminder();
@@ -6485,7 +6485,7 @@
                     this.timers.push(mealTimer);
                 }
 
-                // Daily summary checker — check every minute
+                // Daily summary checker â€” check every minute
                 if (this.settings.summary.enabled) {
                     var summaryTimer = setInterval(function() {
                         self.checkSummaryReminder();
@@ -6523,12 +6523,12 @@
 
                 var remaining = target - current;
                 var messages = [
-                    { title: 'Time to hydrate! 💧', msg: 'You\'ve had ' + current + '/' + target + ' glasses. Drink some water!' },
-                    { title: 'Water break! 💧', msg: remaining + ' more glasses to reach your goal. Keep going!' },
-                    { title: 'Stay hydrated! 💧', msg: 'Your body needs water. ' + current + ' down, ' + remaining + ' to go!' }
+                    { title: 'Time to hydrate! ðŸ’§', msg: 'You\'ve had ' + current + '/' + target + ' glasses. Drink some water!' },
+                    { title: 'Water break! ðŸ’§', msg: remaining + ' more glasses to reach your goal. Keep going!' },
+                    { title: 'Stay hydrated! ðŸ’§', msg: 'Your body needs water. ' + current + ' down, ' + remaining + ' to go!' }
                 ];
                 var pick = messages[Math.floor(Math.random() * messages.length)];
-                this.sendNotification('💧', pick.title, pick.msg, 'switchTab("health")');
+                this.sendNotification('ðŸ’§', pick.title, pick.msg, 'switchTab("health")');
             },
 
             checkMealReminder: function() {
@@ -6542,7 +6542,7 @@
                 var sent = JSON.parse(localStorage.getItem(sentKey) || '[]');
 
                 var mealNames = ['Breakfast', 'Lunch', 'Dinner'];
-                var mealIcons = ['🌅', '☀️', '🌙'];
+                var mealIcons = ['ðŸŒ…', 'â˜€ï¸', 'ðŸŒ™'];
                 var mealTips = [
                     'A healthy breakfast boosts your energy for the day!',
                     'Time for a balanced lunch to keep you going!',
@@ -6586,38 +6586,38 @@
                 var mealCount = log.meals ? log.meals.length : 0;
                 var waterTarget = profile.waterTarget || 8;
 
-                var msg = 'Score: ' + score + '/100 · ' + log.calories + '/' + cal + ' kcal (' + pct + '%) · ' +
-                    mealCount + ' meals · ' + log.water + '/' + waterTarget + ' 💧';
+                var msg = 'Score: ' + score + '/100 Â· ' + log.calories + '/' + cal + ' kcal (' + pct + '%) Â· ' +
+                    mealCount + ' meals Â· ' + log.water + '/' + waterTarget + ' ðŸ’§';
 
-                var emoji = score >= 80 ? '🌟' : score >= 60 ? '👏' : score >= 40 ? '💪' : '📋';
+                var emoji = score >= 80 ? 'ðŸŒŸ' : score >= 60 ? 'ðŸ‘' : score >= 40 ? 'ðŸ’ª' : 'ðŸ“‹';
 
-                this.sendNotification('📊', 'Daily Summary ' + emoji, msg, 'switchTab("health")');
+                this.sendNotification('ðŸ“Š', 'Daily Summary ' + emoji, msg, 'switchTab("health")');
                 localStorage.setItem(sentKey, '1');
             },
 
             sendRandomTip: function() {
                 var tips = [
-                    { icon: '🥗', title: 'Eat more greens!', msg: 'Adding vegetables to every meal improves nutrition and keeps you full longer.' },
-                    { icon: '🥚', title: 'Protein power!', msg: 'Include protein in each meal to maintain muscle and control appetite.' },
-                    { icon: '🚶', title: 'Move more!', msg: 'A 10-minute walk after meals helps digestion and blood sugar control.' },
-                    { icon: '😴', title: 'Sleep well!', msg: 'Good sleep is essential for metabolism and healthy eating habits.' },
-                    { icon: '🍎', title: 'Snack smart!', msg: 'Choose fruits, nuts, or yogurt instead of processed snacks.' },
-                    { icon: '🍳', title: 'Cook at home!', msg: 'Home-cooked meals are usually healthier and more nutritious.' },
-                    { icon: '🥤', title: 'Skip sugary drinks!', msg: 'Replace soda and juice with water, tea, or sparkling water.' },
-                    { icon: '🫘', title: 'Fiber is key!', msg: 'High-fiber foods keep you full and support digestive health.' },
-                    { icon: '🧘', title: 'Mindful eating!', msg: 'Eat slowly and without distractions — you\'ll feel fuller with less food.' },
-                    { icon: '🐟', title: 'Omega-3 boost!', msg: 'Eat fish 2x per week for heart and brain health.' }
+                    { icon: 'ðŸ¥—', title: 'Eat more greens!', msg: 'Adding vegetables to every meal improves nutrition and keeps you full longer.' },
+                    { icon: 'ðŸ¥š', title: 'Protein power!', msg: 'Include protein in each meal to maintain muscle and control appetite.' },
+                    { icon: 'ðŸš¶', title: 'Move more!', msg: 'A 10-minute walk after meals helps digestion and blood sugar control.' },
+                    { icon: 'ðŸ˜´', title: 'Sleep well!', msg: 'Good sleep is essential for metabolism and healthy eating habits.' },
+                    { icon: 'ðŸŽ', title: 'Snack smart!', msg: 'Choose fruits, nuts, or yogurt instead of processed snacks.' },
+                    { icon: 'ðŸ³', title: 'Cook at home!', msg: 'Home-cooked meals are usually healthier and more nutritious.' },
+                    { icon: 'ðŸ¥¤', title: 'Skip sugary drinks!', msg: 'Replace soda and juice with water, tea, or sparkling water.' },
+                    { icon: 'ðŸ«˜', title: 'Fiber is key!', msg: 'High-fiber foods keep you full and support digestive health.' },
+                    { icon: 'ðŸ§˜', title: 'Mindful eating!', msg: 'Eat slowly and without distractions â€” you\'ll feel fuller with less food.' },
+                    { icon: 'ðŸŸ', title: 'Omega-3 boost!', msg: 'Eat fish 2x per week for heart and brain health.' }
                 ];
 
                 var profile = HealthTarget.profile;
                 if (profile) {
                     if (profile.goal === 'loss') {
-                        tips.push({ icon: '⬇️', title: 'Weight loss tip', msg: 'Use smaller plates to naturally reduce portion sizes.' });
-                        tips.push({ icon: '🥒', title: 'Low-calorie fill', msg: 'Start meals with a salad or soup to eat fewer total calories.' });
+                        tips.push({ icon: 'â¬‡ï¸', title: 'Weight loss tip', msg: 'Use smaller plates to naturally reduce portion sizes.' });
+                        tips.push({ icon: 'ðŸ¥’', title: 'Low-calorie fill', msg: 'Start meals with a salad or soup to eat fewer total calories.' });
                     }
                     if (profile.goal === 'gain') {
-                        tips.push({ icon: '💪', title: 'Muscle fuel', msg: 'Eat protein within 30 minutes after exercise for best recovery.' });
-                        tips.push({ icon: '🥜', title: 'Calorie boost', msg: 'Add nuts, nut butter, or avocado for healthy calorie-dense foods.' });
+                        tips.push({ icon: 'ðŸ’ª', title: 'Muscle fuel', msg: 'Eat protein within 30 minutes after exercise for best recovery.' });
+                        tips.push({ icon: 'ðŸ¥œ', title: 'Calorie boost', msg: 'Add nuts, nut butter, or avocado for healthy calorie-dense foods.' });
                     }
                 }
 
@@ -6640,8 +6640,8 @@
                 try {
                     var notif = new Notification(title, {
                         body: body,
-                        icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">' + (icon || '🍳') + '</text></svg>',
-                        badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🍳</text></svg>',
+                        icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">' + (icon || 'ðŸ³') + '</text></svg>',
+                        badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">ðŸ³</text></svg>',
                         tag: 'snapchef-' + Date.now(),
                         requireInteraction: false
                     });
@@ -6705,7 +6705,7 @@
 
             // ---- Test notification ----
             testNotification: function() {
-                this.sendNotification('🧪', 'Test Notification', 'Notifications are working! You\'ll receive reminders for water, meals, and health tips.', 'switchTab("health")');
+                this.sendNotification('ðŸ§ª', 'Test Notification', 'Notifications are working! You\'ll receive reminders for water, meals, and health tips.', 'switchTab("health")');
             }
         };
 
@@ -6723,8 +6723,8 @@
                 document.body.classList.add('dark-mode');
                 var btn = document.getElementById('darkBtn');
                 var btn2 = document.getElementById('darkBtn2');
-                if (btn) btn.textContent = '☀️';
-                if (btn2) btn2.textContent = '☀️';
+                if (btn) btn.textContent = 'â˜€ï¸';
+                if (btn2) btn2.textContent = 'â˜€ï¸';
             }
 
             // Load saved API key
