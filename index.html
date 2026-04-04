@@ -5802,9 +5802,13 @@
             <div style="text-align: right; margin-bottom: 12px;">
                 <a onclick="forgotPassword()" style="color: var(--primary); font-size: 13px; cursor: pointer; text-decoration: none;">Forgot Password?</a>
             </div>
-            <button onclick="signInWithEmail()" style="width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700; cursor: pointer;">
-                Sign In / Sign Up
+            <button onclick="signInWithEmail()" id="emailAuthBtn" style="width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700; cursor: pointer;">
+                Sign In
             </button>
+            <div style="text-align: center; margin-top: 12px;">
+                <span id="authToggleText" style="font-size: 13px; color: var(--text-muted);">Don't have an account? </span>
+                <a onclick="toggleAuthMode()" id="authToggleLink" style="color: var(--primary); font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none;">Sign Up</a>
+            </div>
             
             <p style="text-align: center; margin-top: 16px; font-size: 12px; color: var(--text-muted);">
                 🎁 Free AI-powered recipe generation!
@@ -10211,24 +10215,54 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             }
         }
 
+        var _authMode = 'signin'; // 'signin' or 'signup'
+
+        function toggleAuthMode() {
+            _authMode = _authMode === 'signin' ? 'signup' : 'signin';
+            var btn = document.getElementById('emailAuthBtn');
+            var toggleText = document.getElementById('authToggleText');
+            var toggleLink = document.getElementById('authToggleLink');
+            if (_authMode === 'signup') {
+                btn.textContent = 'Create Account';
+                toggleText.textContent = 'Already have an account? ';
+                toggleLink.textContent = 'Sign In';
+            } else {
+                btn.textContent = 'Sign In';
+                toggleText.textContent = "Don't have an account? ";
+                toggleLink.textContent = 'Sign Up';
+            }
+        }
+
         async function signInWithEmail() {
             var email = document.getElementById('loginEmail').value.trim();
             var password = document.getElementById('loginPassword').value;
             if (!email || !password) { toast(t('enterEmailPassword') || 'Enter email and password', '⚠️'); return; }
+            if (password.length < 6) { toast('Password must be at least 6 characters', '⚠️'); return; }
+
             try {
-                await auth.signInWithEmailAndPassword(email, password);
-                toast(t('welcomeBack'), '👋');
-            } catch (e) {
-                if (e.code === 'auth/user-not-found') {
-                    try {
-                        await auth.createUserWithEmailAndPassword(email, password);
-                        toast(t('accountCreated'), '🎉');
-                    } catch (e2) {
-                        toast('Error: ' + e2.message, '❌');
-                    }
+                if (_authMode === 'signup') {
+                    await auth.createUserWithEmailAndPassword(email, password);
+                    toast(t('accountCreated'), '🎉');
                 } else {
-                    toast('Error: ' + e.message, '❌');
+                    await auth.signInWithEmailAndPassword(email, password);
+                    toast(t('welcomeBack'), '👋');
                 }
+            } catch (e) {
+                var msg = e.message || 'Unknown error';
+                if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') {
+                    msg = _authMode === 'signin' ? 'Account not found. Tap "Sign Up" to create one.' : msg;
+                } else if (e.code === 'auth/email-already-in-use') {
+                    msg = 'This email already has an account. Tap "Sign In" instead.';
+                } else if (e.code === 'auth/wrong-password') {
+                    msg = 'Incorrect password. Try again or use "Forgot Password".';
+                } else if (e.code === 'auth/weak-password') {
+                    msg = 'Password too weak. Use at least 6 characters.';
+                } else if (e.code === 'auth/invalid-email') {
+                    msg = 'Invalid email address.';
+                } else if (e.code === 'auth/too-many-requests') {
+                    msg = 'Too many attempts. Try again later.';
+                }
+                toast(msg, '❌');
             }
         }
 
