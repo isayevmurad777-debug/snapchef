@@ -11224,8 +11224,8 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             try {
                 var prompt = type === 'recipe' 
-                    ? 'Look at this image and list all food ingredients you can see. Return ONLY a JSON array of ingredient names in English, e.g. ["eggs","tomato","cheese","onion"]. No other text.'
-                    : 'What food is in this image? Return ONLY a JSON array of food names, e.g. ["grilled chicken","rice","salad"]. No other text.';
+                    ? 'Look at this image. If it contains food or food ingredients, list all ingredients you can see. Return ONLY a JSON array of ingredient names in English, e.g. ["eggs","tomato","cheese"]. If the image does NOT contain any food or ingredients (e.g. wall, furniture, person, landscape, text), return exactly: ["NOT_FOOD"]. No other text.'
+                    : 'Look at this image. If it contains food, list what food you see. Return ONLY a JSON array of food names, e.g. ["grilled chicken","rice"]. If the image does NOT contain any food, return exactly: ["NOT_FOOD"]. No other text.';
 
                 var data = await callAI([{
                     role: 'user',
@@ -11240,6 +11240,14 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 var match = response.match(/\[.*\]/s);
                 if (match) {
                     var ingredients = JSON.parse(match[0]);
+                    
+                    // Check if AI detected non-food image
+                    if (ingredients.length === 1 && ingredients[0] === 'NOT_FOOD') {
+                        tagsContainer.innerHTML = '<span style="color:#ef4444;font-size:13px;">⚠️ No food detected in this image. Please upload a photo of food or ingredients.</span>';
+                        detectedBox.classList.add('show');
+                        toast('No food detected — try a different photo', '⚠️');
+                        return;
+                    }
                     
                     // Show detected tags
                     tagsContainer.innerHTML = '';
