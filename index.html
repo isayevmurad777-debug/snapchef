@@ -10456,7 +10456,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             }
             if (prefs.length) prompt += '. Dietary restrictions (MUST follow): ' + prefs.join(', ');
             prompt += ChefProfile.getPromptContext();
-            prompt += '. Return JSON: {"name":"Recipe Name","description":"Brief description","ingredients":["item1 with amount","item2"],"steps":["Detailed step 1","Step 2"],"prepTime":15,"cookTime":30,"servings":4,"calories":350,"imageKeyword":"simple english food name for image search"}';
+            prompt += '. Return JSON: {"name":"Recipe Name","description":"Brief description","ingredients":["item1 with amount","item2"],"steps":["Detailed step 1","Step 2"],"prepTime":15,"cookTime":30,"servings":4,"calories":350,"protein":25,"carbs":40,"fat":15,"imageKeyword":"simple english food name for image search"}';
 
             var loadingInterval = showProgressiveLoading('recipeResults', [
                 '🔍 Analyzing ingredients...',
@@ -10516,7 +10516,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             var ingredients = document.getElementById('ingredients').value.trim();
             var prefs = getFullDietaryPrefs();
 
-            var prompt = 'Create a detailed recipe for: ' + sanitizeInput(dishName, 100);
+            var prompt = 'Create a detailed, authentic recipe for EXACTLY this dish: "' + sanitizeInput(dishName, 100) + '". IMPORTANT: The recipe MUST be for "' + sanitizeInput(dishName, 100) + '" specifically — do NOT substitute with a different dish. Use traditional authentic ingredients and preparation methods for this exact dish.';
             if (ingredients) {
                 if (document.getElementById('fridgeMode').checked) {
                     prompt += '. ONLY use these ingredients (do not add others): ' + sanitizeInput(ingredients, 500);
@@ -10526,7 +10526,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             }
             if (prefs.length) prompt += '. Dietary restrictions: ' + prefs.join(', ');
             prompt += ChefProfile.getPromptContext();
-            prompt += '. Return JSON: {"name":"Recipe Name","description":"Brief description","ingredients":["item1 with amount","item2"],"steps":["Detailed step 1","Step 2"],"prepTime":15,"cookTime":30,"servings":4,"calories":350,"imageKeyword":"simple english food name for image search"}';
+            prompt += '. Return JSON: {"name":"Recipe Name","description":"Brief description","ingredients":["item1 with amount","item2"],"steps":["Detailed step 1","Step 2"],"prepTime":15,"cookTime":30,"servings":4,"calories":350,"protein":25,"carbs":40,"fat":15,"imageKeyword":"simple english food name for image search"}';
 
             var loadingInterval = showProgressiveLoading('recipeResults', [
                 '🔍 Searching "' + escapeHTML(dishName) + '"...',
