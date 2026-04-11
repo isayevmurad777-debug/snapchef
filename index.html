@@ -6297,6 +6297,17 @@
                     </div>
                 </div>
 
+                <!-- Sound Effects -->
+                <div class="settings-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-light);">🔊 Sound Effects</div>
+                            <div style="font-size: 12px; color: var(--text-muted);">Sounds when scanning, generating & logging</div>
+                        </div>
+                        <button class="icon-btn" onclick="var on=SoundFX.toggle();this.textContent=on?'🔊':'🔇'" id="soundBtn">🔊</button>
+                    </div>
+                </div>
+
                 <!-- Theme Color -->
                 <div class="settings-item">
                     <div style="font-weight: 600; color: var(--text-light); margin-bottom: 10px;">🎨 <span data-i18n="themeColor">Theme Color</span></div>
@@ -8828,6 +8839,7 @@
 
         function switchTab(tab) {
             try {
+                SoundFX.play('tap');
                 document.querySelectorAll('.tab-content').forEach(function(c) {
                     c.classList.remove('active');
                 });
@@ -10340,11 +10352,12 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             var body = {
                 messages: messages,
                 model: options.model || 'gpt-4o-mini',
-                max_tokens: options.max_tokens || 1000,
+                max_tokens: options.max_tokens || 800,
                 userId: getDeviceId(),
                 idToken: idToken
             };
             if (options.response_format) body.response_format = options.response_format;
+            if (options.temperature !== undefined) body.temperature = options.temperature;
 
             var response = await fetch('/.netlify/functions/ai', {
                 method: 'POST',
@@ -10469,7 +10482,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             try {
                 var data = await callAI(
                     [{ role: 'user', content: prompt }],
-                    { response_format: { type: "json_object" }, max_tokens: 1000 }
+                    { response_format: { type: "json_object" }, max_tokens: 800, temperature: 0.7 }
                 );
 
                 clearInterval(loadingInterval);
@@ -10480,7 +10493,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 addToHistory(recipe);
                 incrementUsage();
                 showConfetti();
-                toast(t('recipeGenerated'), '✅');
+                toast(t('recipeGenerated'), '✅'); SoundFX.play('generate');
 
                 // Ask notification permission after first recipe
                 if (NotifSystem && NotifSystem.getPermissionStatus() === 'default') {
@@ -10539,7 +10552,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             try {
                 var data = await callAI(
                     [{ role: 'user', content: prompt }],
-                    { response_format: { type: "json_object" }, max_tokens: 1000 }
+                    { response_format: { type: "json_object" }, max_tokens: 800, temperature: 0.7 }
                 );
 
                 clearInterval(loadingInterval);
@@ -10550,7 +10563,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 addToHistory(recipe);
                 incrementUsage();
                 showConfetti();
-                toast(t('recipeGenerated'), '✅');
+                toast(t('recipeGenerated'), '✅'); SoundFX.play('generate');
 
             } catch (error) {
                 clearInterval(loadingInterval);
@@ -10994,6 +11007,8 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             if (!CreditSystem.useCredits(1)) return;
 
+            SoundFX.play('scan');
+
             var loadingInterval = showProgressiveLoading('analyzeResults', [
                 '📸 Analyzing image...',
                 '🔍 Identifying food...',
@@ -11005,23 +11020,33 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 var data = await callAI([{
                     role: 'user',
                     content: [
-                        { type: 'text', text: 'Analyze this food image. Return JSON: {"name":"Food Name","description":"Brief description","calories":350,"protein":20,"carbs":30,"fat":15,"fiber":5,"score":75,"alternatives":[{"name":"Healthier option","calories":250,"benefit":"Why it is better"}]}' },
+                        { type: 'text', text: 'Analyze this food image. If this is NOT food, return {"name":"Not Food","error":true}. Otherwise return JSON: {"name":"Food Name","description":"Brief description","calories":350,"protein":20,"carbs":30,"fat":15,"fiber":5,"score":75,"alternatives":[{"name":"Healthier option","calories":250,"benefit":"Why it is better"}]}' },
                         { type: 'image_url', image_url: { url: images.analyze } }
                     ]
-                }], { response_format: { type: "json_object" }, max_tokens: 800 });
+                }], { response_format: { type: "json_object" }, max_tokens: 600, temperature: 0.5 });
 
                 clearInterval(loadingInterval);
                 var analysis = safeParseJSON(data.response);
+                
+                if (analysis.error) {
+                    document.getElementById('analyzeResults').innerHTML = '<div style="text-align:center;padding:24px;"><div style="font-size:40px;margin-bottom:8px;">⚠️</div><div style="font-weight:700;color:var(--text-light);">Not a food image</div><div style="color:var(--text-muted);font-size:13px;margin-top:4px;">Please upload a photo of food to analyze</div></div>';
+                    SoundFX.play('error');
+                    return;
+                }
+                
                 displayAnalysis(analysis);
+                SoundFX.play('success');
                 showConfetti();
 
             } catch (error) {
                 clearInterval(loadingInterval);
+                console.error('Analyze error:', error);
                 if (!navigator.onLine) {
                     showError('analyzeResults', 'network');
                 } else {
                     showError('analyzeResults', 'analysis_failed');
                 }
+                SoundFX.play('error');
             }
         }
 
@@ -11053,6 +11078,10 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 html += '</div>';
             }
 
+            // Log to Health button
+            html += '<button class="main-btn" id="analyzeLogBtn" onclick="HealthTarget.addMealFromRecipe({name:\'' + escapeHTML(analysis.name).replace(/'/g, "\\'") + '\',calories:' + (analysis.calories||0) + ',protein:' + (analysis.protein||0) + ',carbs:' + (analysis.carbs||0) + ',fat:' + (analysis.fat||0) + ',servings:1});this.innerHTML=\'✅ Logged!\';this.style.background=\'#166534\';this.disabled=true;toast(\'Logged to Health!\',\'✅\');SoundFX.play(\'success\');" style="margin-top:14px;background:linear-gradient(135deg,#10b981,#059669);">' +
+                '<span>🎯</span><span>Log ' + (analysis.calories||0) + ' kcal to Health</span></button>';
+
             document.getElementById('analyzeResults').innerHTML = html;
         }
 
@@ -11074,18 +11103,41 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             var reader = new FileReader();
             reader.onload = function(e) {
-                images[type] = e.target.result;
-                document.getElementById(type + 'Image').src = e.target.result;
-                document.getElementById(type + 'ImagePreview').classList.add('show');
+                // Compress image for faster AI processing
+                compressImage(e.target.result, 800, 0.7, function(compressed) {
+                    images[type] = compressed;
+                    document.getElementById(type + 'Image').src = compressed;
+                    document.getElementById(type + 'ImagePreview').classList.add('show');
 
-                if (type === 'analyze') {
-                    document.getElementById('analyzeBtn').classList.add('show');
-                }
+                    if (type === 'analyze') {
+                        document.getElementById('analyzeBtn').classList.add('show');
+                    }
 
-                // Auto-detect ingredients from uploaded image
-                detectIngredients(type);
+                    // Auto-detect ingredients from uploaded image
+                    detectIngredients(type);
+                    SoundFX.play('scan');
+                });
             };
             reader.readAsDataURL(file);
+        }
+
+        // Compress image for faster API calls
+        function compressImage(dataUrl, maxSize, quality, callback) {
+            var img = new Image();
+            img.onload = function() {
+                var canvas = document.createElement('canvas');
+                var w = img.width, h = img.height;
+                if (w > maxSize || h > maxSize) {
+                    var ratio = Math.min(maxSize / w, maxSize / h);
+                    w = Math.round(w * ratio);
+                    h = Math.round(h * ratio);
+                }
+                canvas.width = w;
+                canvas.height = h;
+                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                callback(canvas.toDataURL('image/jpeg', quality));
+            };
+            img.src = dataUrl;
         }
 
         function removeImage(type) {
@@ -11203,11 +11255,19 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             var video = document.getElementById(type + 'Video');
             var canvas = document.getElementById('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
+            // Limit capture size for faster AI processing
+            var maxDim = 800;
+            var w = video.videoWidth, h = video.videoHeight;
+            if (w > maxDim || h > maxDim) {
+                var ratio = Math.min(maxDim / w, maxDim / h);
+                w = Math.round(w * ratio);
+                h = Math.round(h * ratio);
+            }
+            canvas.width = w;
+            canvas.height = h;
+            canvas.getContext('2d').drawImage(video, 0, 0, w, h);
 
-            images[type] = canvas.toDataURL('image/jpeg', 0.8);
+            images[type] = canvas.toDataURL('image/jpeg', 0.7);
             document.getElementById(type + 'Image').src = images[type];
             document.getElementById(type + 'ImagePreview').classList.add('show');
 
@@ -12356,7 +12416,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 }
                 this.saveTodayLog();
                 this.render();
-                if (navigator.vibrate) navigator.vibrate(30);
+                if (navigator.vibrate) navigator.vibrate(30); SoundFX.play('water');
                 if (this.todayLog.water >= (this.profile ? this.profile.waterTarget : 8)) {
                     toast('Water goal reached! 💧🎉', '✅');
                 }
@@ -13982,6 +14042,99 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
         };
 
         // ========================================
+        // SOUND EFFECTS (Web Audio API)
+        // ========================================
+        var SoundFX = {
+            ctx: null,
+            enabled: localStorage.getItem('snapchef_sounds') !== '0',
+
+            getCtx: function() {
+                if (!this.ctx) {
+                    try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+                }
+                return this.ctx;
+            },
+
+            play: function(type) {
+                if (!this.enabled) return;
+                var ctx = this.getCtx();
+                if (!ctx) return;
+                try {
+                    var osc = ctx.createOscillator();
+                    var gain = ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    gain.gain.value = 0.08;
+
+                    switch(type) {
+                        case 'success': // Happy ascending
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(523, ctx.currentTime);
+                            osc.frequency.setValueAtTime(659, ctx.currentTime + 0.1);
+                            osc.frequency.setValueAtTime(784, ctx.currentTime + 0.2);
+                            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+                            osc.start(ctx.currentTime);
+                            osc.stop(ctx.currentTime + 0.4);
+                            break;
+                        case 'scan': // Quick blip
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(880, ctx.currentTime);
+                            osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.05);
+                            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+                            osc.start(ctx.currentTime);
+                            osc.stop(ctx.currentTime + 0.15);
+                            break;
+                        case 'tap': // Soft tap
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(600, ctx.currentTime);
+                            gain.gain.value = 0.04;
+                            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+                            osc.start(ctx.currentTime);
+                            osc.stop(ctx.currentTime + 0.08);
+                            break;
+                        case 'water': // Bubble pop
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(400, ctx.currentTime);
+                            osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.08);
+                            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+                            osc.start(ctx.currentTime);
+                            osc.stop(ctx.currentTime + 0.12);
+                            break;
+                        case 'error': // Descending buzz
+                            osc.type = 'square';
+                            osc.frequency.setValueAtTime(400, ctx.currentTime);
+                            osc.frequency.setValueAtTime(300, ctx.currentTime + 0.1);
+                            gain.gain.value = 0.04;
+                            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+                            osc.start(ctx.currentTime);
+                            osc.stop(ctx.currentTime + 0.2);
+                            break;
+                        case 'generate': // Sparkle
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(700, ctx.currentTime);
+                            osc.frequency.setValueAtTime(900, ctx.currentTime + 0.06);
+                            osc.frequency.setValueAtTime(1200, ctx.currentTime + 0.12);
+                            osc.frequency.setValueAtTime(1400, ctx.currentTime + 0.18);
+                            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+                            osc.start(ctx.currentTime);
+                            osc.stop(ctx.currentTime + 0.35);
+                            break;
+                        default:
+                            osc.disconnect();
+                            gain.disconnect();
+                    }
+                } catch(e) {}
+            },
+
+            toggle: function() {
+                this.enabled = !this.enabled;
+                localStorage.setItem('snapchef_sounds', this.enabled ? '1' : '0');
+                if (this.enabled) this.play('success');
+                return this.enabled;
+            }
+        };
+
+        // ========================================
         // INITIALIZATION
         // ========================================
         document.addEventListener('DOMContentLoaded', function() {
@@ -13998,6 +14151,10 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 if (btn) btn.textContent = '☀️';
                 if (btn2) btn2.textContent = '☀️';
             }
+
+            // Sound effects button state
+            var soundBtn = document.getElementById('soundBtn');
+            if (soundBtn) soundBtn.textContent = SoundFX.enabled ? '🔊' : '🔇';
 
             // Load saved API key
             // (no longer needed - API key is on server)
