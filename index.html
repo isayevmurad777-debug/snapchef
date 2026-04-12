@@ -7790,12 +7790,21 @@
             greet: function() {
                 var hour = new Date().getHours();
                 var greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
-                var name = currentUser ? (currentUser.displayName || '').split(' ')[0] : '';
+                var mem = LunaMemory.get();
+                var name = mem.name || (currentUser ? (currentUser.displayName || '').split(' ')[0] : '');
                 
-                var messages = [
-                    greeting + (name ? ', ' + name : '') + '! I\'m Chef Luna, your cooking assistant. 👩‍🍳',
-                    'Ask me anything about cooking — recipe ideas, ingredient substitutes, cooking tips, or help navigating the app!',
-                ];
+                var messages = [];
+                if (mem.totalChats > 5) {
+                    messages.push(greeting + (name ? ', ' + name : '') + '! Welcome back to Chef Luna! 👩‍🍳');
+                    if (mem.favCuisine) {
+                        messages.push('Want to try a new ' + mem.favCuisine + ' recipe today, or explore something different?');
+                    } else {
+                        messages.push('What shall we cook today? I remember our last chats! 😊');
+                    }
+                } else {
+                    messages.push(greeting + (name ? ', ' + name : '') + '! I\'m Chef Luna, your cooking assistant. 👩‍🍳');
+                    messages.push('Ask me anything — recipe ideas, substitutes, cooking tips! I learn your preferences over time. 🧠');
+                }
                 
                 var self = this;
                 messages.forEach(function(msg, i) {
@@ -7827,7 +7836,13 @@
                     var ttsResp = await fetch('/.netlify/functions/tts', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ text: text.substring(0, 500), lang: currentLang })
+                        body: JSON.stringify({ 
+                            text: text.substring(0, 500), 
+                            lang: currentLang,
+                            style: 'friendly',
+                            stability: 0.4,
+                            similarity: 0.75
+                        })
                     });
                     
                     if (ttsResp.ok) {
@@ -7868,9 +7883,9 @@
                     
                     var utterance = new SpeechSynthesisUtterance(sentence);
                     if (self.femaleVoice) utterance.voice = self.femaleVoice;
-                    utterance.rate = 0.92;
-                    utterance.pitch = 1.1;
-                    utterance.volume = 0.95;
+                    utterance.rate = 0.95;
+                    utterance.pitch = 1.08;
+                    utterance.volume = 0.9;
                     utterance.lang = lang;
                     utterance.onend = function() { setTimeout(function() { speakNext(index + 1); }, 250); };
                     utterance.onerror = function() { self.isSpeaking = false; };
@@ -7985,7 +8000,9 @@
 
                 // Quick local responses for common commands
                 if (lower.indexOf('hello') > -1 || lower.indexOf('hi') > -1 || lower.indexOf('salam') > -1 || lower.indexOf('привет') > -1) {
-                    response = 'Hey there! What would you like to cook today? I can suggest recipes, help with substitutes, or give cooking tips!';
+                    var mem = LunaMemory.get();
+                    response = mem.name ? ('Hey ' + mem.name + '! ') : 'Hey there! ';
+                    response += 'What would you like to cook today? I can suggest recipes, help with substitutes, or give cooking tips!';
                 }
                 else if (lower.indexOf('scan') > -1 || lower.indexOf('camera') > -1 || lower.indexOf('kamera') > -1) {
                     response = 'Sure! I\'ll open the camera for you. Point it at your ingredients!';
@@ -8003,24 +8020,78 @@
                     response = 'Switching theme for you!';
                     setTimeout(function() { toggleDarkMode(); }, 1000);
                 }
+                else if (lower.indexOf('my name is') > -1 || lower.indexOf('call me') > -1 || lower.indexOf('adım') > -1 || lower.indexOf('меня зовут') > -1) {
+                    var nameMatch = text.match(/(?:my name is|call me|adım|adim|меня зовут)\s+(\w+)/i);
+                    if (nameMatch) {
+                        LunaMemory.update({ name: nameMatch[1] });
+                        response = 'Nice to meet you, ' + nameMatch[1] + '! I\'ll remember your name. 😊';
+                    } else {
+                        response = 'What\'s your name? Just say "My name is..."';
+                    }
+                }
+                else if (lower.indexOf('remember') > -1 || lower.indexOf('yadda saxla') > -1 || lower.indexOf('запомни') > -1) {
+                    LunaMemory.addNote(text);
+                    response = 'Got it! I\'ll remember that. 📝';
+                }
+                else if (lower.indexOf('what do you know') > -1 || lower.indexOf('what do you remember') > -1 || lower.indexOf('nə bilirsən') > -1) {
+                    var mem = LunaMemory.get();
+                    var parts = [];
+                    if (mem.name) parts.push('Your name is ' + mem.name);
+                    if (mem.favCuisine) parts.push('You love ' + mem.favCuisine + ' food');
+                    if (mem.allergies && mem.allergies.length) parts.push('You\'re allergic to: ' + mem.allergies.join(', '));
+                    if (mem.notes && mem.notes.length) parts.push('Notes: ' + mem.notes.slice(-3).join('; '));
+                    if (mem.totalChats) parts.push('We\'ve chatted ' + mem.totalChats + ' times');
+                    response = parts.length > 0 ? 'Here\'s what I remember: ' + parts.join('. ') + '. 📝' : 'I don\'t have any saved notes about you yet. Tell me about your preferences!';
+                }
+                else if (lower.indexOf('pantry') > -1 || lower.indexOf('fridge') > -1 || lower.indexOf('soyuducu') > -1) {
+                    if (MyPantry.items.length > 0) {
+                        response = 'You have ' + MyPantry.items.length + ' items in your pantry: ' + MyPantry.items.slice(0, 8).join(', ') + (MyPantry.items.length > 8 ? '...' : '') + '. Want me to suggest a recipe with these?';
+                    } else {
+                        response = 'Your pantry is empty! Open it from the Recipe tab and add some items. You can even scan a shopping receipt! 🧾';
+                    }
+                }
                 else {
-                    // Use AI for complex questions
+                    // Use AI with memory context
                     try {
-                        var aiContext = 'You are Chef Luna, a friendly female AI cooking assistant inside the SnapChef app. ';
-                        aiContext += 'You speak in a warm, conversational, and helpful tone — like a friend who loves cooking. ';
+                        var mem = LunaMemory.get();
+                        var aiContext = 'You are Chef Luna, a friendly, warm female AI cooking assistant inside the SnapChef app. ';
+                        aiContext += 'Personality: enthusiastic about food, encouraging, uses food emojis occasionally, speaks like a friend. ';
                         aiContext += 'Keep responses SHORT (2-4 sentences max). Be practical and specific. ';
-                        aiContext += 'User language: ' + currentLang + '. ';
+                        aiContext += 'User language: ' + (currentLang === 'az' ? 'Azerbaijani' : currentLang === 'ru' ? 'Russian' : 'English') + '. Respond in this language. ';
                         
+                        // Memory context
+                        if (mem.name) aiContext += 'User\'s name: ' + mem.name + '. Use it occasionally. ';
+                        if (mem.favCuisine) aiContext += 'User loves ' + mem.favCuisine + ' cuisine. ';
+                        if (mem.allergies && mem.allergies.length) aiContext += 'ALLERGIES (never suggest these): ' + mem.allergies.join(', ') + '. ';
+                        if (mem.skillLevel) aiContext += 'Cooking skill: ' + mem.skillLevel + '. Adjust complexity. ';
+                        if (mem.notes && mem.notes.length) aiContext += 'User notes: ' + mem.notes.slice(-5).join('; ') + '. ';
+                        
+                        // App context
                         if (currentRecipeData) {
                             aiContext += 'Current recipe being viewed: ' + currentRecipeData.name + '. ';
                         }
+                        var chefData = ChefProfile.data || null;
+                        if (chefData && chefData.skillLevel) {
+                            aiContext += 'Chef profile: ' + chefData.skillLevel + ' cook. ';
+                            mem.skillLevel = chefData.skillLevel;
+                        }
+                        if (MyPantry.items.length > 0) {
+                            aiContext += 'User\'s pantry has: ' + MyPantry.items.slice(0, 10).join(', ') + '. ';
+                        }
 
-                        var data = await callAI([
-                            { role: 'system', content: aiContext },
-                            { role: 'user', content: text }
-                        ], { max_tokens: 300 });
+                        // Build conversation history (last 6 messages)
+                        var aiMessages = [{ role: 'system', content: aiContext }];
+                        var recentHistory = this.chatHistory.slice(-6);
+                        recentHistory.forEach(function(msg) {
+                            aiMessages.push({ role: msg.role === 'assistant' ? 'assistant' : 'user', content: msg.text });
+                        });
+                        aiMessages.push({ role: 'user', content: text });
 
+                        var data = await callAI(aiMessages, { max_tokens: 300, temperature: 0.8 });
                         response = data.response || 'Hmm, I\'m not sure about that. Try asking me about recipes, ingredients, or cooking tips!';
+                        
+                        // Auto-learn from conversation
+                        LunaMemory.learnFrom(text, response);
                     } catch(e) {
                         response = 'Sorry, I couldn\'t process that right now. Try asking about recipes, cooking tips, or ingredient substitutes!';
                     }
@@ -8030,9 +8101,100 @@
                 if (thinkingDiv.parentNode) thinkingDiv.remove();
                 document.getElementById('vaStatus').innerHTML = 'Online';
                 
+                // Update chat count
+                LunaMemory.incrementChats();
+                
                 // Add response and speak it
                 this.addMessage(response, 'assistant');
                 this.speak(response);
+                SoundFX.play('tap');
+            }
+        };
+
+        // ========================================
+        // CHEF LUNA MEMORY SYSTEM
+        // ========================================
+        var LunaMemory = {
+            _key: 'snapchef_luna_memory',
+
+            get: function() {
+                return JSON.parse(localStorage.getItem(this._key) || '{"notes":[],"totalChats":0}');
+            },
+
+            save: function(mem) {
+                localStorage.setItem(this._key, JSON.stringify(mem));
+                // Firestore sync
+                if (currentUser && db) {
+                    db.collection('users').doc(currentUser.uid).set({ lunaMemory: mem }, { merge: true }).catch(function(){});
+                }
+            },
+
+            load: async function() {
+                if (currentUser && db) {
+                    try {
+                        var doc = await db.collection('users').doc(currentUser.uid).get();
+                        if (doc.exists && doc.data().lunaMemory) {
+                            localStorage.setItem(this._key, JSON.stringify(doc.data().lunaMemory));
+                        }
+                    } catch(e) {}
+                }
+            },
+
+            update: function(data) {
+                var mem = this.get();
+                Object.keys(data).forEach(function(k) { mem[k] = data[k]; });
+                this.save(mem);
+            },
+
+            addNote: function(text) {
+                var mem = this.get();
+                if (!mem.notes) mem.notes = [];
+                // Clean the note
+                var note = text.replace(/^(remember|yadda saxla|запомни)\s*/i, '').trim();
+                if (note && mem.notes.indexOf(note) === -1) {
+                    mem.notes.push(note);
+                    if (mem.notes.length > 20) mem.notes = mem.notes.slice(-20); // Keep last 20
+                }
+                this.save(mem);
+            },
+
+            incrementChats: function() {
+                var mem = this.get();
+                mem.totalChats = (mem.totalChats || 0) + 1;
+                mem.lastChat = Date.now();
+                this.save(mem);
+            },
+
+            learnFrom: function(userMsg, aiResp) {
+                var lower = userMsg.toLowerCase();
+                var mem = this.get();
+                
+                // Auto-detect cuisine preferences
+                var cuisines = ['italian','turkish','azerbaijani','chinese','japanese','indian','mexican','french','thai','korean','georgian','russian','greek','arabic'];
+                cuisines.forEach(function(c) {
+                    if (lower.indexOf(c) > -1 && (lower.indexOf('love') > -1 || lower.indexOf('like') > -1 || lower.indexOf('favorite') > -1 || lower.indexOf('sevirəm') > -1)) {
+                        mem.favCuisine = c;
+                    }
+                });
+
+                // Auto-detect allergies
+                var allergyKeywords = ['allergic','allergy','cannot eat','intolerant','can\'t eat','allerji','allergiyam'];
+                allergyKeywords.forEach(function(kw) {
+                    if (lower.indexOf(kw) > -1) {
+                        if (!mem.allergies) mem.allergies = [];
+                        var foods = lower.split(kw)[1];
+                        if (foods) {
+                            foods.split(/[,;and]+/).forEach(function(f) {
+                                var clean = f.trim().replace(/[^a-zA-Z\s]/g, '').trim();
+                                if (clean && clean.length > 1 && mem.allergies.indexOf(clean) === -1) {
+                                    mem.allergies.push(clean);
+                                }
+                            });
+                        }
+                    }
+                });
+
+                this.save(mem);
             }
         };
 
@@ -10211,6 +10373,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                     // Load chef profile from Firestore
                     ChefProfile.load().then(function() { ChefProfile.renderCard(); });
                     MyPantry.load();
+                    LunaMemory.load();
                 }, 3000);
             }
         });
