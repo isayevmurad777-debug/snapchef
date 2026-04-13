@@ -7831,7 +7831,43 @@
                 this.stopSpeaking();
                 this.isSpeaking = true;
                 
-                // Try ElevenLabs first (natural human voice)
+                // TTS Cascade: OpenAI ($0.015/1K) → ElevenLabs → Browser
+                
+                // 1. Try OpenAI TTS first (cheapest, good quality)
+                try {
+                    var oaiResp = await fetch('/.netlify/functions/tts-openai', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            text: text.substring(0, 500),
+                            voice: 'nova',  // warm female voice
+                            speed: 1.0
+                        })
+                    });
+                    
+                    if (oaiResp.ok) {
+                        var oaiData = await oaiResp.json();
+                        if (oaiData.audio) {
+                            var audioSrc = 'data:audio/mpeg;base64,' + oaiData.audio;
+                            this.currentAudio = new Audio(audioSrc);
+                            this.currentAudio.volume = 0.9;
+                            var self = this;
+                            this.currentAudio.onended = function() { self.isSpeaking = false; };
+                            this.currentAudio.onerror = function() { 
+                                self.isSpeaking = false;
+                                self.speakElevenLabs(text); // Fallback
+                            };
+                            await this.currentAudio.play();
+                            return;
+                        }
+                    }
+                } catch(e) { /* OpenAI TTS failed, try ElevenLabs */ }
+                
+                // 2. Try ElevenLabs (more natural but expensive)
+                this.speakElevenLabs(text);
+            },
+
+            speakElevenLabs: async function(text) {
                 try {
                     var ttsResp = await fetch('/.netlify/functions/tts', {
                         method: 'POST',
@@ -7848,7 +7884,6 @@
                     if (ttsResp.ok) {
                         var ttsData = await ttsResp.json();
                         if (ttsData.audio && !ttsData.fallback) {
-                            // Play ElevenLabs audio
                             var audioSrc = 'data:audio/mpeg;base64,' + ttsData.audio;
                             this.currentAudio = new Audio(audioSrc);
                             this.currentAudio.volume = 0.95;
@@ -7856,15 +7891,15 @@
                             this.currentAudio.onended = function() { self.isSpeaking = false; };
                             this.currentAudio.onerror = function() { 
                                 self.isSpeaking = false;
-                                self.speakBrowser(text); // Fallback
+                                self.speakBrowser(text);
                             };
                             await this.currentAudio.play();
                             return;
                         }
                     }
-                } catch(e) { /* ElevenLabs failed, use browser TTS */ }
+                } catch(e) { /* ElevenLabs failed, use browser */ }
                 
-                // Fallback: Browser TTS
+                // 3. Final fallback: Browser TTS (free)
                 this.speakBrowser(text);
             },
 
@@ -8004,9 +8039,25 @@
                     response = mem.name ? ('Hey ' + mem.name + '! ') : 'Hey there! ';
                     response += 'What would you like to cook today? I can suggest recipes, help with substitutes, or give cooking tips!';
                 }
+                else if (lower.indexOf('analyz') > -1 || lower.indexOf('nutrition') > -1 || lower.indexOf('calorie') > -1 || lower.indexOf('təhlil') > -1 || lower.indexOf('kalori') > -1 || lower.indexOf('анализ') > -1 || lower.indexOf('калори') > -1) {
+                    response = 'Opening the food analyzer! Upload or scan your food to get nutrition info.';
+                    setTimeout(function() { switchTab('analyze'); }, 1500);
+                }
                 else if (lower.indexOf('scan') > -1 || lower.indexOf('camera') > -1 || lower.indexOf('kamera') > -1) {
-                    response = 'Sure! I\'ll open the camera for you. Point it at your ingredients!';
-                    setTimeout(function() { startCamera('recipe'); }, 1500);
+                    // Detect which tab is active
+                    var activeTab = document.querySelector('.nav-item.active');
+                    var tabName = activeTab ? activeTab.getAttribute('data-tab') : 'recipe';
+                    if (tabName === 'analyze') {
+                        response = 'Opening camera to scan your food for nutrition analysis! 📸';
+                        setTimeout(function() { startCamera('analyze'); }, 1500);
+                    } else {
+                        response = 'Opening camera to scan your ingredients! Point it at your food. 📸';
+                        setTimeout(function() { switchTab('recipe'); startCamera('recipe'); }, 1500);
+                    }
+                }
+                else if (lower.indexOf('health') > -1 || lower.indexOf('sağlamlıq') > -1 || lower.indexOf('здоров') > -1) {
+                    response = 'Opening your health dashboard!';
+                    setTimeout(function() { switchTab('health'); }, 1500);
                 }
                 else if (lower.indexOf('meal plan') > -1 || lower.indexOf('plan') > -1 || lower.indexOf('yemək planı') > -1) {
                     response = 'Let me open the meal planner for you!';
