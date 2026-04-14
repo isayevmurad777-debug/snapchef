@@ -8034,15 +8034,20 @@
                 var response = '';
 
                 // Quick local responses for common commands
-                if (lower.indexOf('hello') > -1 || lower.indexOf('hi') > -1 || lower.indexOf('salam') > -1 || lower.indexOf('привет') > -1) {
-                    var mem = LunaMemory.get();
-                    response = mem.name ? ('Hey ' + mem.name + '! ') : 'Hey there! ';
-                    response += 'What would you like to cook today? I can suggest recipes, help with substitutes, or give cooking tips!';
+                if (lower.indexOf('hello') > -1 || /\bhi\b/.test(lower) || /\bhey\b/.test(lower) || lower.indexOf('salam') > -1 || lower.indexOf('привет') > -1) {
+                    // Only greet if message is short (likely just a greeting)
+                    if (lower.length < 30) {
+                        var mem = LunaMemory.get();
+                        response = mem.name ? ('Hey ' + mem.name + '! ') : 'Hey there! ';
+                        response += 'What would you like to cook today? I can suggest recipes, help with substitutes, or give cooking tips!';
+                    } else {
+                        response = null; // Long message with "hi" → route to AI
+                    }
                 }
                 else if ((lower.indexOf('analyz') > -1 || lower.indexOf('nutrition') > -1 || lower.indexOf('təhlil') > -1 || lower.indexOf('анализ') > -1) && lower.length < 25) {
                     // Short generic "analyze" command → just open tab
                     response = 'Opening the food analyzer! Upload or scan your food to get nutrition info. 📸';
-                    setTimeout(function() { switchTab('analyze'); }, 1500);
+                    setTimeout(function() { switchTab('analyze'); VoiceAssistant.close(); }, 1500);
                 }
                 else if ((lower.indexOf('calorie') > -1 || lower.indexOf('kalori') > -1 || lower.indexOf('калори') > -1 || lower.indexOf('nutrition') > -1 || lower.indexOf('protein') > -1 || lower.indexOf('analyz') > -1 || lower.indexOf('təhlil') > -1) && lower.length >= 25) {
                     // Specific food question → route to AI with action engine
@@ -8054,15 +8059,15 @@
                     var tabName = activeTab ? activeTab.getAttribute('data-tab') : 'recipe';
                     if (tabName === 'analyze') {
                         response = 'Opening camera to scan your food for nutrition analysis! 📸';
-                        setTimeout(function() { startCamera('analyze'); }, 1500);
+                        setTimeout(function() { startCamera('analyze'); VoiceAssistant.close(); }, 1500);
                     } else {
                         response = 'Opening camera to scan your ingredients! Point it at your food. 📸';
-                        setTimeout(function() { switchTab('recipe'); startCamera('recipe'); }, 1500);
+                        setTimeout(function() { switchTab('recipe'); startCamera('recipe'); VoiceAssistant.close(); }, 1500);
                     }
                 }
                 else if (lower.indexOf('health') > -1 || lower.indexOf('sağlamlıq') > -1 || lower.indexOf('здоров') > -1) {
                     response = 'Opening your health dashboard!';
-                    setTimeout(function() { switchTab('health'); }, 1500);
+                    setTimeout(function() { switchTab('health'); VoiceAssistant.close(); }, 1500);
                 }
                 else if ((lower.indexOf('meal plan') > -1 || lower.indexOf('plan') > -1 || lower.indexOf('yemək planı') > -1 || lower.indexOf('план') > -1) && (lower.indexOf('kalori') > -1 || lower.indexOf('calori') > -1 || lower.indexOf('калори') > -1 || lower.indexOf('generate') > -1 || lower.indexOf('yarat') > -1 || lower.indexOf('hazırla') > -1 || lower.indexOf('yaz') > -1 || lower.indexOf('help') > -1 || lower.indexOf('kömək') > -1)) {
                     // Smart: kalori və ya generasiya sözü varsa → AI-a yönləndir (action tag ilə)
@@ -8071,11 +8076,11 @@
                 else if (lower.indexOf('meal plan') > -1 || lower.indexOf('yemək planı') > -1 || lower.indexOf('план питания') > -1) {
                     // Sadəcə "meal plan" deyibsə, tab-ı aç
                     response = 'Opening the meal planner! Ask me something like "500 kalorilik plan yaz" and I\'ll generate it automatically! 🍽️';
-                    setTimeout(function() { switchTab('mealplan'); }, 1500);
+                    setTimeout(function() { switchTab('mealplan'); VoiceAssistant.close(); }, 1500);
                 }
                 else if (lower.indexOf('favorite') > -1 || lower.indexOf('saved') > -1 || lower.indexOf('saxla') > -1) {
                     response = 'Here are your saved recipes!';
-                    setTimeout(function() { switchTab('favorites'); }, 1500);
+                    setTimeout(function() { switchTab('favorites'); VoiceAssistant.close(); }, 1500);
                 }
                 else if (lower.indexOf('dark mode') > -1 || lower.indexOf('qaranlıq') > -1 || lower.indexOf('тёмн') > -1) {
                     response = 'Switching theme for you!';
@@ -8279,12 +8284,21 @@
                                 switchTab('recipe');
                                 await this.delay(400);
                                 var query = action.params.query || '';
-                                var searchInput = document.getElementById('ingredientInput');
-                                if (searchInput) {
-                                    searchInput.value = query;
-                                    // Trigger recipe generation
-                                    if (typeof generateRecipe === 'function') {
-                                        generateRecipe();
+                                // Use specificDish input + cookSpecificDish for named dishes
+                                var dishInput = document.getElementById('specificDish');
+                                if (dishInput && query) {
+                                    dishInput.value = query;
+                                    if (typeof cookSpecificDish === 'function') {
+                                        cookSpecificDish();
+                                    }
+                                } else {
+                                    // Fallback: use ingredients input
+                                    var ingInput = document.getElementById('ingredients');
+                                    if (ingInput && query) {
+                                        ingInput.value = query;
+                                        if (typeof generateRecipe === 'function') {
+                                            generateRecipe();
+                                        }
                                     }
                                 }
                                 break;
@@ -8353,6 +8367,17 @@
                         console.error('Luna Action xətası (' + action.command + '):', err);
                     }
                 }
+
+                // Auto-close Luna chat if any action requires seeing the main UI
+                var closeCommands = ['SWITCH_TAB', 'GENERATE_MEAL_PLAN', 'SEARCH_RECIPE', 
+                    'CLEAR_MEAL_PLAN', 'ANALYZE_NUTRITION', 'OPEN_CAMERA', 'GENERATE_SHOPPING_LIST'];
+                var shouldClose = actions.some(function(a) {
+                    return closeCommands.indexOf(a.command) > -1;
+                });
+                if (shouldClose && VoiceAssistant.isOpen) {
+                    await this.delay(600);
+                    VoiceAssistant.close();
+                }
             },
 
             // Meal plan generasiyası
@@ -8405,7 +8430,7 @@
                     '[ACTION:GENERATE_MEAL_PLAN:{"calories":NUMBER,"meals":NUMBER,"diet":"STRING","days":NUMBER}] - Generate meal plan. calories=daily total, meals=per day (2 or 3), diet=normal/keto/vegan/vegetarian/high-protein, days=1-7\n' +
                     '[ACTION:SWITCH_TAB:{"tab":"TAB"}] - Switch tab. TAB: recipe, analyze, health, mealplan, favorites, settings\n' +
                     '[ACTION:SET_CALORIES:{"target":NUMBER}] - Set daily calorie target\n' +
-                    '[ACTION:SEARCH_RECIPE:{"query":"STRING"}] - Search/generate a recipe\n' +
+                    '[ACTION:SEARCH_RECIPE:{"query":"STRING"}] - Generate a specific recipe by dish name (e.g. pizza, pasta, kebab). The app will switch to Recipe tab and generate the full recipe with ingredients and steps.\n' +
                     '[ACTION:ADD_TO_FAVORITES] - Save current recipe to favorites\n' +
                     '[ACTION:START_TIMER:{"minutes":NUMBER,"label":"STRING"}] - Start cooking timer\n' +
                     '[ACTION:CLEAR_MEAL_PLAN] - Clear all meal plan\n' +
@@ -8420,7 +8445,10 @@
                     '4. ALWAYS try to execute what user asks - NEVER just say "let me open X for you" without an action tag\n' +
                     '5. If user mentions calories/plan/recipe, include the relevant action\n' +
                     '6. For meal plans: extract calorie target from message, default 2000 if not specified\n' +
-                    '7. Example: User says "500 kalorilik plan yaz" → respond with text + [ACTION:SWITCH_TAB:{"tab":"mealplan"}][ACTION:GENERATE_MEAL_PLAN:{"calories":500,"meals":3,"diet":"normal","days":7}]\n';
+                    '7. Example: User says "500 kalorilik plan yaz" → respond with text + [ACTION:SWITCH_TAB:{"tab":"mealplan"}][ACTION:GENERATE_MEAL_PLAN:{"calories":500,"meals":3,"diet":"normal","days":7}]\n' +
+                    '8. Example: User says "show pizza recipe" or "pizza resepti göstər" → respond with text + [ACTION:SEARCH_RECIPE:{"query":"pizza"}]\n' +
+                    '9. Example: User says "resept bölməsində X göstər" → respond with text + [ACTION:SEARCH_RECIPE:{"query":"X"}]\n' +
+                    '10. IMPORTANT: When user asks to show/find/make any food or dish, ALWAYS include [ACTION:SEARCH_RECIPE] with the dish name\n';
             }
         };
 
