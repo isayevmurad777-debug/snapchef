@@ -11227,14 +11227,102 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             }
         }
 
+        // ========================================
+        // UNIVERSAL APP TTS (OpenAI → Browser fallback)
+        // ========================================
+        var AppTTS = {
+            currentAudio: null,
+            speaking: false,
+
+            speak: async function(text, onEnd) {
+                this.stop();
+                this.speaking = true;
+                var self = this;
+                var cleanText = text.replace(/<[^>]*>/g, '').substring(0, 500);
+
+                // 1. Try OpenAI TTS
+                try {
+                    var resp = await fetch('/.netlify/functions/tts-openai', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            text: cleanText,
+                            voice: 'nova',
+                            speed: 0.95
+                        })
+                    });
+                    if (resp.ok) {
+                        var data = await resp.json();
+                        if (data.audio) {
+                            var src = 'data:audio/mpeg;base64,' + data.audio;
+                            self.currentAudio = new Audio(src);
+                            self.currentAudio.volume = 0.9;
+                            self.currentAudio.onended = function() {
+                                self.speaking = false;
+                                self.currentAudio = null;
+                                if (onEnd) onEnd();
+                            };
+                            self.currentAudio.onerror = function() {
+                                self.speaking = false;
+                                self.currentAudio = null;
+                                self._speakBrowser(cleanText, onEnd);
+                            };
+                            await self.currentAudio.play();
+                            return;
+                        }
+                    }
+                } catch(e) { /* fallback */ }
+
+                // 2. Browser fallback
+                this._speakBrowser(cleanText, onEnd);
+            },
+
+            _speakBrowser: function(text, onEnd) {
+                if (!('speechSynthesis' in window)) {
+                    this.speaking = false;
+                    if (onEnd) onEnd();
+                    return;
+                }
+                var self = this;
+                var lang = typeof currentLang !== 'undefined' ? 
+                    (currentLang === 'az' ? 'az-AZ' : currentLang === 'ru' ? 'ru-RU' : 'en-US') : 'en-US';
+                var utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.92;
+                utterance.pitch = 1.05;
+                utterance.volume = 0.9;
+                utterance.lang = lang;
+                // Try to use female voice if VoiceAssistant found one
+                if (typeof VoiceAssistant !== 'undefined' && VoiceAssistant.femaleVoice) {
+                    utterance.voice = VoiceAssistant.femaleVoice;
+                }
+                utterance.onend = function() {
+                    self.speaking = false;
+                    if (onEnd) onEnd();
+                };
+                utterance.onerror = function() {
+                    self.speaking = false;
+                    if (onEnd) onEnd();
+                };
+                speechSynthesis.speak(utterance);
+            },
+
+            stop: function() {
+                if (this.currentAudio) {
+                    this.currentAudio.pause();
+                    this.currentAudio.currentTime = 0;
+                    this.currentAudio = null;
+                }
+                if ('speechSynthesis' in window) {
+                    speechSynthesis.cancel();
+                }
+                this.speaking = false;
+            }
+        };
+
         function speakRecipe() {
-            if (!currentRecipeData || !('speechSynthesis' in window)) return;
-            window.speechSynthesis.cancel();
+            if (!currentRecipeData) return;
             var text = currentRecipeData.name + '. ' + (currentRecipeData.description || '') + '. Ingredients: ' + (currentRecipeData.ingredients || []).join(', ');
-            var utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-US';
-            utterance.rate = 0.9;
-            window.speechSynthesis.speak(utterance);
+            AppTTS.speak(text);
         }
 
 
@@ -11955,7 +12043,6 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             steps: [],
             current: 0,
             speaking: false,
-            synth: window.speechSynthesis,
 
             start: function(recipe) {
                 if (!recipe || !recipe.steps || !recipe.steps.length) {
@@ -12005,24 +12092,20 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             },
 
             speak: function() {
-                this.synth.cancel();
-                var utter = new SpeechSynthesisUtterance(this.steps[this.current]);
-                utter.rate = 0.9;
-                utter.pitch = 1;
-                utter.lang = document.documentElement.lang || 'en';
+                AppTTS.stop();
                 var self = this;
-                utter.onend = function() {
+                var stepText = 'Step ' + (this.current + 1) + '. ' + this.steps[this.current];
+                this.speaking = true;
+                this.render();
+                AppTTS.speak(stepText, function() {
                     self.speaking = false;
                     self.render();
-                };
-                this.speaking = true;
-                this.synth.speak(utter);
-                this.render();
+                });
             },
 
             toggleSpeak: function() {
                 if (this.speaking) {
-                    this.synth.cancel();
+                    AppTTS.stop();
                     this.speaking = false;
                     this.render();
                 } else {
@@ -12032,7 +12115,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             next: function() {
                 if (this.current < this.steps.length - 1) {
-                    this.synth.cancel();
+                    AppTTS.stop();
                     this.current++;
                     this.render();
                     this.speak();
@@ -12043,7 +12126,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             prev: function() {
                 if (this.current > 0) {
-                    this.synth.cancel();
+                    AppTTS.stop();
                     this.current--;
                     this.render();
                     this.speak();
@@ -12055,7 +12138,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             },
 
             stop: function() {
-                this.synth.cancel();
+                AppTTS.stop();
                 this.speaking = false;
                 var panel = document.getElementById('voiceCookPanel');
                 if (panel) panel.remove();
