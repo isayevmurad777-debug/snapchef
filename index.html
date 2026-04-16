@@ -13590,6 +13590,8 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 document.getElementById('cookTimerOverlay').classList.remove('active');
                 this.stopTimer();
                 this.releaseScreenLock();
+                // Stop voice if playing
+                if (typeof AppTTS !== 'undefined') AppTTS.stop();
             },
 
             renderStep: function() {
@@ -13627,8 +13629,12 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                     document.getElementById('cookTimerControls').style.display = 'none';
                 }
 
-                // Speak step
-                if ('speechSynthesis' in window) {
+                // Speak step using OpenAI TTS (natural voice)
+                if (typeof AppTTS !== 'undefined') {
+                    var stepPrefix = (t('step') || 'Step') + ' ' + (this.currentStep + 1) + '. ';
+                    AppTTS.speak(stepPrefix + step);
+                } else if ('speechSynthesis' in window) {
+                    // Fallback to browser TTS if AppTTS not available
                     window.speechSynthesis.cancel();
                     var utter = new SpeechSynthesisUtterance(t('step') + ' ' + (this.currentStep + 1) + '. ' + step);
                     utter.rate = 0.85;
