@@ -6344,6 +6344,15 @@
                     <div id="notifToggles"></div>
                 </div>
 
+                <!-- Smart Notifications -->
+                <div class="settings-item" id="smartNotifPanel">
+                    <div style="font-weight: 600; color: var(--text-light); margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                        🧠 <span data-i18n="smartNotifTitle">Smart Notifications</span>
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;" data-i18n="smartNotifDesc">Context-aware reminders based on your timezone, meal times, and local cuisine.</div>
+                    <div id="smartNotifToggles"></div>
+                </div>
+
                 <!-- Language -->
                 <div class="settings-item">
                     <div style="font-weight: 600; color: var(--text-light); margin-bottom: 10px;" data-i18n="language">Language</div>
@@ -9360,7 +9369,7 @@
                 if (tab === 'health') { HealthTarget.render(); }
                 if (tab === 'favorites') { ShoppingList.render(); }
                 if (tab === 'mealplan') { MealPlanner.renderWeek(); }
-                if (tab === 'settings') renderStats();
+                if (tab === 'settings') { renderStats(); if (typeof SmartNotif !== 'undefined') SmartNotif.renderPanel(); }
             } catch(e) {
                 console.error('Tab switch error:', e);
             }
@@ -14328,6 +14337,41 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             QUIET_START: 22, // 22:00
             QUIET_END: 7,    // 07:00
             
+            // User settings (saved in localStorage)
+            DEFAULT_SETTINGS: {
+                enabled: true,
+                preMeal: true,       // 1-2h before meal recipes
+                mealFacts: true,     // Fun calorie facts at meal times
+                dailyRecipe: true,   // AI recipe at 9:30 AM
+                weeklyPlan: true,    // Sunday 18:00 meal plan reminder
+                maxDaily: 3,         // 2, 3, or 5
+                quietHours: true,    // Respect 22:00-07:00
+                regional: true       // Local cuisine suggestions
+            },
+            
+            settings: null,
+            
+            loadSettings: function() {
+                var saved = JSON.parse(localStorage.getItem(this._key) || 'null');
+                if (saved) {
+                    this.settings = Object.assign({}, this.DEFAULT_SETTINGS, saved);
+                } else {
+                    this.settings = Object.assign({}, this.DEFAULT_SETTINGS);
+                }
+                return this.settings;
+            },
+            
+            saveSettings: function() {
+                localStorage.setItem(this._key, JSON.stringify(this.settings));
+            },
+            
+            updateSetting: function(key, value) {
+                if (!this.settings) this.loadSettings();
+                this.settings[key] = value;
+                this.saveSettings();
+                this.renderPanel();
+            },
+            
             // Meal time windows (local time, auto-adjusts to user's timezone)
             WINDOWS: {
                 breakfast: { start: 7, end: 9, icon: '🌅' },
@@ -14386,6 +14430,12 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             },
             
             init: function() {
+                // Load user settings
+                this.loadSettings();
+                
+                // Render settings panel (works even without notification permission)
+                this.renderPanel();
+                
                 // Check if notifications enabled
                 if (!('Notification' in window)) return;
                 if (Notification.permission !== 'granted') return;
@@ -14426,16 +14476,29 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
             
             // Check if in quiet hours
             isQuietHours: function() {
+                if (!this.settings) this.loadSettings();
+                if (!this.settings.quietHours) return false;
                 var h = new Date().getHours();
                 return h >= this.QUIET_START || h < this.QUIET_END;
             },
             
             // Check if we can send another notification today
             canSend: function(type) {
+                if (!this.settings) this.loadSettings();
+                if (!this.settings.enabled) return false;
+                
                 var data = this.getSentToday();
-                if (data.count >= this.MAX_DAILY) return false;
+                var maxDaily = this.settings.maxDaily || 3;
+                if (data.count >= maxDaily) return false;
                 if (data.types.indexOf(type) > -1) return false; // Don't repeat same type
                 if (this.isQuietHours()) return false;
+                
+                // Check per-type settings
+                if (type.indexOf('pre-meal') === 0 && !this.settings.preMeal) return false;
+                if (type.indexOf('fact') === 0 && !this.settings.mealFacts) return false;
+                if (type === 'daily-recipe' && !this.settings.dailyRecipe) return false;
+                if (type === 'weekly-plan' && !this.settings.weeklyPlan) return false;
+                
                 return true;
             },
             
@@ -14543,7 +14606,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 var title = titleSet[meal];
                 var body = bodies[lang] || bodies.en;
                 
-                this.send(title, body, 'switchTab("recipe"); setTimeout(function(){ var inp = document.getElementById("specificDish"); if(inp){ inp.value="' + cuisine + '"; if(typeof cookSpecificDish==="function") cookSpecificDish(); } }, 500);');
+                this.send(title, body, 'cook-dish|' + cuisine);
                 this.markSent('pre-meal-' + meal);
             },
             
@@ -14557,7 +14620,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                     ru: fact.emoji + ' А знали?'
                 };
                 
-                this.send(titles[lang] || titles.en, fact.fact, 'switchTab("analyze")');
+                this.send(titles[lang] || titles.en, fact.fact, 'switch-analyze');
                 this.markSent('fact-' + new Date().getHours());
             },
             
@@ -14581,7 +14644,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 this.send(
                     titles[lang] || titles.en,
                     bodies[lang] || bodies.en,
-                    'switchTab("recipe"); setTimeout(function(){ var inp = document.getElementById("specificDish"); if(inp){ inp.value="' + cuisine + '"; if(typeof cookSpecificDish==="function") cookSpecificDish(); } }, 500);'
+                    'cook-dish|' + cuisine
                 );
                 this.markSent('daily-recipe');
             },
@@ -14605,14 +14668,56 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 this.send(
                     titles[lang] || titles.en,
                     bodies[lang] || bodies.en,
-                    'switchTab("mealplan")'
+                    'switch-mealplan'
                 );
                 this.markSent('weekly-plan');
+            },
+            
+            // Safe action executor (no eval, only predefined actions)
+            _executeAction: function(action) {
+                if (!action) return;
+                // Parse action: format "actionName|param" or just "actionName"
+                var parts = action.split('|');
+                var name = parts[0];
+                var param = parts[1] || '';
+                
+                switch (name) {
+                    case 'switch-recipe':
+                        if (typeof switchTab === 'function') switchTab('recipe');
+                        break;
+                    case 'switch-analyze':
+                        if (typeof switchTab === 'function') switchTab('analyze');
+                        break;
+                    case 'switch-health':
+                        if (typeof switchTab === 'function') switchTab('health');
+                        break;
+                    case 'switch-mealplan':
+                        if (typeof switchTab === 'function') switchTab('mealplan');
+                        break;
+                    case 'switch-favorites':
+                        if (typeof switchTab === 'function') switchTab('favorites');
+                        break;
+                    case 'cook-dish':
+                        if (typeof switchTab === 'function') switchTab('recipe');
+                        setTimeout(function() {
+                            var inp = document.getElementById('specificDish');
+                            if (inp && param) {
+                                inp.value = param;
+                                if (typeof cookSpecificDish === 'function') cookSpecificDish();
+                            }
+                        }, 500);
+                        break;
+                    default:
+                        // Unknown action — ignore silently
+                        console.warn('SmartNotif: unknown action', name);
+                }
             },
             
             // Universal notification sender (direct Notification API with action)
             send: function(title, body, action) {
                 if (!('Notification' in window) || Notification.permission !== 'granted') return;
+                
+                var self = this;
                 
                 // Prefer ServiceWorker notification (works when app is closed)
                 if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
@@ -14631,7 +14736,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                         var n = new Notification(title, { body: body, tag: 'smartnotif' });
                         n.onclick = function() {
                             window.focus();
-                            if (action) try { eval(action); } catch(e) {}
+                            self._executeAction(action);
                             n.close();
                         };
                         setTimeout(function() { n.close(); }, 8000);
@@ -14640,7 +14745,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                     var n = new Notification(title, { body: body, tag: 'smartnotif' });
                     n.onclick = function() {
                         window.focus();
-                        if (action) try { eval(action); } catch(e) {}
+                        self._executeAction(action);
                         n.close();
                     };
                     setTimeout(function() { n.close(); }, 8000);
@@ -14655,6 +14760,127 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                 } else {
                     this.sendFactNotif();
                 }
+            },
+            
+            // Render settings panel
+            renderPanel: function() {
+                var el = document.getElementById('smartNotifToggles');
+                if (!el) return;
+                if (!this.settings) this.loadSettings();
+                var s = this.settings;
+                var lang = typeof currentLang !== 'undefined' ? currentLang : 'en';
+                
+                var labels = {
+                    en: {
+                        enabled: 'Enable smart notifications',
+                        preMeal: '⏰ Pre-meal recipes',
+                        preMealDesc: '1-2 hours before each meal',
+                        mealFacts: '💡 Fun calorie facts',
+                        mealFactsDesc: 'Interesting food facts at meal times',
+                        dailyRecipe: '🤖 Daily AI recipe',
+                        dailyRecipeDesc: 'Personalized recipe every morning',
+                        weeklyPlan: '📅 Weekly plan reminder',
+                        weeklyPlanDesc: 'Every Sunday evening',
+                        regional: '🌍 Regional cuisine',
+                        regionalDesc: 'Suggests dishes from your region',
+                        quietHours: '🌙 Quiet hours (22:00–07:00)',
+                        quietHoursDesc: 'No notifications at night',
+                        maxDaily: 'Max notifications per day',
+                        test: '🧪 Test notification',
+                        today: 'Sent today',
+                        max: 'max'
+                    },
+                    az: {
+                        enabled: 'Ağıllı bildirişləri aktivləşdir',
+                        preMeal: '⏰ Yemək öncəsi reseptlər',
+                        preMealDesc: 'Hər yemək vaxtından 1-2 saat əvvəl',
+                        mealFacts: '💡 Maraqlı kalori faktları',
+                        mealFactsDesc: 'Yemək vaxtı qida haqqında faktlar',
+                        dailyRecipe: '🤖 Günün AI resepti',
+                        dailyRecipeDesc: 'Hər səhər şəxsi resept',
+                        weeklyPlan: '📅 Həftəlik plan xatırlatması',
+                        weeklyPlanDesc: 'Hər bazar axşamı',
+                        regional: '🌍 Regional yeməklər',
+                        regionalDesc: 'Sənin regionundan yeməklər təklif edir',
+                        quietHours: '🌙 Sakitlik saatları (22:00–07:00)',
+                        quietHoursDesc: 'Gecə bildirim yoxdur',
+                        maxDaily: 'Gündə maksimum bildiriş',
+                        test: '🧪 Test bildirişi',
+                        today: 'Bu gün göndərilib',
+                        max: 'maks'
+                    },
+                    ru: {
+                        enabled: 'Включить умные уведомления',
+                        preMeal: '⏰ Рецепты перед едой',
+                        preMealDesc: 'За 1-2 часа до каждого приёма пищи',
+                        mealFacts: '💡 Интересные факты о калориях',
+                        mealFactsDesc: 'Факты о еде во время приёма пищи',
+                        dailyRecipe: '🤖 Рецепт дня от ИИ',
+                        dailyRecipeDesc: 'Персональный рецепт каждое утро',
+                        weeklyPlan: '📅 Напоминание о недельном плане',
+                        weeklyPlanDesc: 'Каждое воскресенье вечером',
+                        regional: '🌍 Региональная кухня',
+                        regionalDesc: 'Предлагает блюда вашего региона',
+                        quietHours: '🌙 Тихие часы (22:00–07:00)',
+                        quietHoursDesc: 'Ночью без уведомлений',
+                        maxDaily: 'Макс. уведомлений в день',
+                        test: '🧪 Тестовое уведомление',
+                        today: 'Отправлено сегодня',
+                        max: 'макс'
+                    }
+                };
+                
+                var L = labels[lang] || labels.en;
+                var sent = this.getSentToday();
+                var maxD = s.maxDaily || 3;
+                
+                // Helper to create toggle row
+                var toggle = function(key, label, desc, checked) {
+                    return '<div class="smart-notif-row" style="display:flex; align-items:center; justify-content:space-between; padding:10px 4px; border-bottom:1px solid var(--border, rgba(255,255,255,0.08));">' +
+                        '<div style="flex:1; min-width:0; padding-right:10px;">' +
+                            '<div style="font-size:13px; font-weight:600; color:var(--text-light);">' + label + '</div>' +
+                            '<div style="font-size:11px; color:var(--text-muted); margin-top:2px;">' + desc + '</div>' +
+                        '</div>' +
+                        '<label class="smart-notif-toggle" style="position:relative; display:inline-block; width:42px; height:24px; flex-shrink:0; cursor:pointer;">' +
+                            '<input type="checkbox" ' + (checked ? 'checked' : '') + ' onchange="SmartNotif.updateSetting(\'' + key + '\', this.checked)" style="opacity:0; width:0; height:0;">' +
+                            '<span style="position:absolute; top:0; left:0; right:0; bottom:0; background:' + (checked ? 'var(--primary, #6c5ce7)' : '#6b7280') + '; border-radius:24px; transition:0.3s;"></span>' +
+                            '<span style="position:absolute; top:3px; left:' + (checked ? '21px' : '3px') + '; width:18px; height:18px; background:white; border-radius:50%; transition:0.3s; z-index:1;"></span>' +
+                        '</label>' +
+                    '</div>';
+                };
+                
+                // Status bar
+                var statusBar = '<div style="display:flex; justify-content:space-between; align-items:center; padding:10px 12px; background:rgba(108,92,231,0.1); border-radius:10px; margin-bottom:12px;">' +
+                    '<div style="font-size:12px; color:var(--text-light);"><strong>' + sent.count + '/' + maxD + '</strong> ' + L.today + '</div>' +
+                    '<button onclick="SmartNotif.test()" style="font-size:11px; padding:5px 10px; border:none; background:var(--primary, #6c5ce7); color:white; border-radius:6px; cursor:pointer; font-weight:600;">' + L.test + '</button>' +
+                '</div>';
+                
+                // Max daily selector
+                var maxSel = '<div style="display:flex; align-items:center; justify-content:space-between; padding:10px 4px; border-bottom:1px solid var(--border, rgba(255,255,255,0.08));">' +
+                    '<div style="font-size:13px; font-weight:600; color:var(--text-light);">' + L.maxDaily + '</div>' +
+                    '<div style="display:flex; gap:4px;">' +
+                        [2,3,5].map(function(n) {
+                            var selected = s.maxDaily === n;
+                            return '<button onclick="SmartNotif.updateSetting(\'maxDaily\', ' + n + ')" style="padding:5px 12px; border:1px solid ' + (selected ? 'var(--primary, #6c5ce7)' : 'var(--border, rgba(255,255,255,0.2))') + '; background:' + (selected ? 'var(--primary, #6c5ce7)' : 'transparent') + '; color:' + (selected ? 'white' : 'var(--text-light)') + '; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;">' + n + '</button>';
+                        }).join('') +
+                    '</div>' +
+                '</div>';
+                
+                // Build full panel
+                var html = statusBar;
+                html += toggle('enabled', L.enabled, '', s.enabled);
+                
+                if (s.enabled) {
+                    html += toggle('preMeal', L.preMeal, L.preMealDesc, s.preMeal);
+                    html += toggle('mealFacts', L.mealFacts, L.mealFactsDesc, s.mealFacts);
+                    html += toggle('dailyRecipe', L.dailyRecipe, L.dailyRecipeDesc, s.dailyRecipe);
+                    html += toggle('weeklyPlan', L.weeklyPlan, L.weeklyPlanDesc, s.weeklyPlan);
+                    html += toggle('regional', L.regional, L.regionalDesc, s.regional);
+                    html += toggle('quietHours', L.quietHours, L.quietHoursDesc, s.quietHours);
+                    html += maxSel;
+                }
+                
+                el.innerHTML = html;
             }
         };
 
