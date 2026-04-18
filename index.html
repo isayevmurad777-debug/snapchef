@@ -14319,6 +14319,346 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
         };
 
         // ========================================
+        // SMART NOTIFICATIONS — Context-aware, timezone-based
+        // ========================================
+        var SmartNotif = {
+            _key: 'snapchef_smart_notif',
+            _sentKey: 'snapchef_smart_notif_sent',
+            MAX_DAILY: 3,
+            QUIET_START: 22, // 22:00
+            QUIET_END: 7,    // 07:00
+            
+            // Meal time windows (local time, auto-adjusts to user's timezone)
+            WINDOWS: {
+                breakfast: { start: 7, end: 9, icon: '🌅' },
+                lunch:     { start: 11, end: 13, icon: '🍽️' },
+                dinner:    { start: 18, end: 20, icon: '🌙' }
+            },
+            
+            // Regional cuisine suggestions
+            CUISINES: {
+                'Asia/Baku':      ['plov', 'kebab', 'dolma', 'kutab', 'dushbara'],
+                'Europe/Istanbul':['lahmacun', 'döner', 'pide', 'köfte', 'menemen'],
+                'Europe/Moscow':  ['borshch', 'pelmeni', 'beef stroganoff', 'blini', 'shchi'],
+                'Europe/Kiev':    ['borshch', 'varenyky', 'salo', 'holubtsi'],
+                'Asia/Almaty':    ['beshbarmak', 'plov', 'lagman', 'manty'],
+                '_default':       ['pasta', 'stir fry', 'grilled chicken', 'salad', 'soup']
+            },
+            
+            // Fun facts for notifications
+            FACTS: {
+                en: [
+                    { fact: "A single avocado has ~240 kcal — more than an apple!", emoji: "🥑" },
+                    { fact: "Restaurant meals are often 2x more calories than homemade", emoji: "🏠" },
+                    { fact: "Eating slowly can reduce calorie intake by up to 20%", emoji: "🐢" },
+                    { fact: "Water before meals helps you eat 13% less", emoji: "💧" },
+                    { fact: "Eggs have only ~70 kcal but 6g of protein", emoji: "🥚" },
+                    { fact: "Greek yogurt has 2x the protein of regular yogurt", emoji: "🥛" },
+                    { fact: "Dark chocolate can boost mood — 30g is the sweet spot", emoji: "🍫" },
+                    { fact: "Avocado toast: ~350 kcal, perfect breakfast energy", emoji: "🥑" },
+                    { fact: "Spicy food can boost metabolism by 8% temporarily", emoji: "🌶️" },
+                    { fact: "Green tea has ~0 kcal but boosts fat burning", emoji: "🍵" }
+                ],
+                az: [
+                    { fact: "Bir avokado ~240 kkal — almadan çoxdur!", emoji: "🥑" },
+                    { fact: "Restoran yeməkləri evdəkindən 2x çox kaloridir", emoji: "🏠" },
+                    { fact: "Yavaş yemək kalori qəbulunu 20% azalda bilər", emoji: "🐢" },
+                    { fact: "Yeməkdən əvvəl su içmək 13% az yeməyə kömək edir", emoji: "💧" },
+                    { fact: "Yumurta cəmi ~70 kkal, 6qr protein", emoji: "🥚" },
+                    { fact: "Yunan yoğurdunda 2x çox protein var", emoji: "🥛" },
+                    { fact: "Qara şokolad əhval-ruhiyyəni yaxşılaşdırır — 30qr kifayətdir", emoji: "🍫" },
+                    { fact: "Avokadolu tost: ~350 kkal, mükəmməl səhər enerjisi", emoji: "🥑" },
+                    { fact: "Acılı yemək metabolizmi 8% sürətləndirir", emoji: "🌶️" },
+                    { fact: "Yaşıl çay 0 kkal amma yağ yandırır", emoji: "🍵" }
+                ],
+                ru: [
+                    { fact: "В одном авокадо ~240 ккал — больше, чем в яблоке!", emoji: "🥑" },
+                    { fact: "Ресторанная еда обычно в 2 раза калорийнее домашней", emoji: "🏠" },
+                    { fact: "Медленная еда снижает калории на 20%", emoji: "🐢" },
+                    { fact: "Вода перед едой — едите на 13% меньше", emoji: "💧" },
+                    { fact: "Яйцо: только ~70 ккал и 6г белка", emoji: "🥚" },
+                    { fact: "В греческом йогурте в 2 раза больше белка", emoji: "🥛" },
+                    { fact: "Тёмный шоколад улучшает настроение — 30г достаточно", emoji: "🍫" },
+                    { fact: "Тост с авокадо: ~350 ккал, идеальный завтрак", emoji: "🥑" },
+                    { fact: "Острая еда ускоряет метаболизм на 8%", emoji: "🌶️" },
+                    { fact: "Зелёный чай: 0 ккал, сжигает жир", emoji: "🍵" }
+                ]
+            },
+            
+            init: function() {
+                // Check if notifications enabled
+                if (!('Notification' in window)) return;
+                if (Notification.permission !== 'granted') return;
+                
+                this.schedule();
+                
+                // Re-schedule every hour (in case user keeps app open)
+                var self = this;
+                setInterval(function() { self.schedule(); }, 60 * 60 * 1000);
+                
+                console.log('🧠 SmartNotif initialized');
+            },
+            
+            // Get user's timezone
+            getTimezone: function() {
+                try {
+                    return Intl.DateTimeFormat().resolvedOptions().timeZone;
+                } catch(e) { return '_default'; }
+            },
+            
+            // Get today's sent notifications count
+            getSentToday: function() {
+                var today = new Date().toISOString().split('T')[0];
+                var data = JSON.parse(localStorage.getItem(this._sentKey) || '{}');
+                if (data.date !== today) {
+                    data = { date: today, count: 0, types: [] };
+                    localStorage.setItem(this._sentKey, JSON.stringify(data));
+                }
+                return data;
+            },
+            
+            markSent: function(type) {
+                var data = this.getSentToday();
+                data.count++;
+                data.types.push(type);
+                localStorage.setItem(this._sentKey, JSON.stringify(data));
+            },
+            
+            // Check if in quiet hours
+            isQuietHours: function() {
+                var h = new Date().getHours();
+                return h >= this.QUIET_START || h < this.QUIET_END;
+            },
+            
+            // Check if we can send another notification today
+            canSend: function(type) {
+                var data = this.getSentToday();
+                if (data.count >= this.MAX_DAILY) return false;
+                if (data.types.indexOf(type) > -1) return false; // Don't repeat same type
+                if (this.isQuietHours()) return false;
+                return true;
+            },
+            
+            // Get localized cuisine suggestion based on timezone
+            getLocalCuisine: function() {
+                var tz = this.getTimezone();
+                var list = this.CUISINES[tz] || this.CUISINES._default;
+                return list[Math.floor(Math.random() * list.length)];
+            },
+            
+            // Get random fun fact in user's language
+            getFact: function() {
+                var lang = typeof currentLang !== 'undefined' ? currentLang : 'en';
+                var list = this.FACTS[lang] || this.FACTS.en;
+                return list[Math.floor(Math.random() * list.length)];
+            },
+            
+            // Get current meal context (which meal is coming up?)
+            getMealContext: function() {
+                var h = new Date().getHours();
+                // Pre-meal window: 1-2 hours before meal time
+                if (h >= 6 && h < 8) return { type: 'pre-breakfast', meal: 'breakfast' };
+                if (h >= 10 && h < 12) return { type: 'pre-lunch', meal: 'lunch' };
+                if (h >= 17 && h < 19) return { type: 'pre-dinner', meal: 'dinner' };
+                // During meal: actual meal time
+                if (h >= 8 && h < 10) return { type: 'meal-time', meal: 'breakfast' };
+                if (h >= 12 && h < 14) return { type: 'meal-time', meal: 'lunch' };
+                if (h >= 19 && h < 21) return { type: 'meal-time', meal: 'dinner' };
+                return null;
+            },
+            
+            // Schedule next notifications
+            schedule: function() {
+                var self = this;
+                var now = new Date();
+                var h = now.getHours();
+                var m = now.getMinutes();
+                
+                // Check every 15 minutes for opportunities
+                // Pre-meal window (e.g. at 11:00 for lunch)
+                if (m < 15 || m >= 45) {
+                    var ctx = this.getMealContext();
+                    if (ctx && this.canSend('pre-meal-' + ctx.meal)) {
+                        this.sendPreMealNotif(ctx.meal);
+                        return;
+                    }
+                }
+                
+                // Meal-time facts (e.g. at 13:00 during lunch)
+                if (h === 13 || h === 20) {
+                    if (this.canSend('fact-' + h)) {
+                        this.sendFactNotif();
+                        return;
+                    }
+                }
+                
+                // Evening: weekly meal plan reminder (Sunday 18:00)
+                if (now.getDay() === 0 && h === 18 && m < 30) {
+                    if (this.canSend('weekly-plan')) {
+                        this.sendPlanReminder();
+                        return;
+                    }
+                }
+                
+                // Morning: daily AI recipe suggestion (9:30-10:30)
+                if (h === 9 && m >= 30 && this.canSend('daily-recipe')) {
+                    this.sendDailyRecipe();
+                }
+            },
+            
+            // === Bildirim növləri ===
+            
+            // 1. Yemək vaxtından əvvəl (1-2 saat)
+            sendPreMealNotif: function(meal) {
+                var cuisine = this.getLocalCuisine();
+                var lang = typeof currentLang !== 'undefined' ? currentLang : 'en';
+                var cal = meal === 'breakfast' ? '320-400' : meal === 'lunch' ? '450-550' : '480-600';
+                var prep = meal === 'breakfast' ? '10-15' : meal === 'lunch' ? '20-30' : '25-35';
+                
+                var titles = {
+                    en: {
+                        breakfast: '🌅 Breakfast in 1 hour — what\'s cooking?',
+                        lunch:     '🍽️ Lunch is coming — ready to plan?',
+                        dinner:    '🌙 Dinner prep time!'
+                    },
+                    az: {
+                        breakfast: '🌅 1 saata səhər yeməyi — nə bişirək?',
+                        lunch:     '🍽️ Nahar yaxınlaşır — plan quraq?',
+                        dinner:    '🌙 Axşam yeməyi vaxtıdır!'
+                    },
+                    ru: {
+                        breakfast: '🌅 Через час завтрак — что готовим?',
+                        lunch:     '🍽️ Скоро обед — планируем?',
+                        dinner:    '🌙 Время готовить ужин!'
+                    }
+                };
+                
+                var bodies = {
+                    en: 'Try ' + cuisine + ' — ~' + cal + ' kcal, ' + prep + ' min. Tap to get the recipe ✨',
+                    az: cuisine + ' necə olardı? ~' + cal + ' kkal, ' + prep + ' dəq. Resept almaq üçün aç ✨',
+                    ru: 'Попробуй ' + cuisine + ' — ~' + cal + ' ккал, ' + prep + ' мин. Открой для рецепта ✨'
+                };
+                
+                var titleSet = titles[lang] || titles.en;
+                var title = titleSet[meal];
+                var body = bodies[lang] || bodies.en;
+                
+                this.send(title, body, 'switchTab("recipe"); setTimeout(function(){ var inp = document.getElementById("specificDish"); if(inp){ inp.value="' + cuisine + '"; if(typeof cookSpecificDish==="function") cookSpecificDish(); } }, 500);');
+                this.markSent('pre-meal-' + meal);
+            },
+            
+            // 2. Yemək vaxtı kalori faktları
+            sendFactNotif: function() {
+                var fact = this.getFact();
+                var lang = typeof currentLang !== 'undefined' ? currentLang : 'en';
+                var titles = {
+                    en: fact.emoji + ' Did you know?',
+                    az: fact.emoji + ' Bilirdin?',
+                    ru: fact.emoji + ' А знали?'
+                };
+                
+                this.send(titles[lang] || titles.en, fact.fact, 'switchTab("analyze")');
+                this.markSent('fact-' + new Date().getHours());
+            },
+            
+            // 3. Günün AI resepti
+            sendDailyRecipe: function() {
+                var cuisine = this.getLocalCuisine();
+                var lang = typeof currentLang !== 'undefined' ? currentLang : 'en';
+                
+                var titles = {
+                    en: '🤖 Today\'s AI recipe for you',
+                    az: '🤖 Bu günün AI resepti sənə özəl',
+                    ru: '🤖 Сегодняшний ИИ-рецепт для тебя'
+                };
+                
+                var bodies = {
+                    en: 'Fresh ' + cuisine + ' recipe generated just for you. Open to see →',
+                    az: 'Sənə özəl ' + cuisine + ' resepti hazırdır. Açıb baxmaq üçün →',
+                    ru: 'Свежий рецепт ' + cuisine + ' специально для тебя. Открой →'
+                };
+                
+                this.send(
+                    titles[lang] || titles.en,
+                    bodies[lang] || bodies.en,
+                    'switchTab("recipe"); setTimeout(function(){ var inp = document.getElementById("specificDish"); if(inp){ inp.value="' + cuisine + '"; if(typeof cookSpecificDish==="function") cookSpecificDish(); } }, 500);'
+                );
+                this.markSent('daily-recipe');
+            },
+            
+            // 4. Həftəlik meal plan
+            sendPlanReminder: function() {
+                var lang = typeof currentLang !== 'undefined' ? currentLang : 'en';
+                
+                var titles = {
+                    en: '📅 Plan your week!',
+                    az: '📅 Həftəni planlaşdır!',
+                    ru: '📅 Спланируй неделю!'
+                };
+                
+                var bodies = {
+                    en: 'AI can generate a balanced 7-day meal plan in seconds. Start now →',
+                    az: 'AI 7 günlük balansl plan 5 saniyəyə yaradır. Başla →',
+                    ru: 'ИИ создаст план на 7 дней за секунды. Начать →'
+                };
+                
+                this.send(
+                    titles[lang] || titles.en,
+                    bodies[lang] || bodies.en,
+                    'switchTab("mealplan")'
+                );
+                this.markSent('weekly-plan');
+            },
+            
+            // Universal notification sender (direct Notification API with action)
+            send: function(title, body, action) {
+                if (!('Notification' in window) || Notification.permission !== 'granted') return;
+                
+                // Prefer ServiceWorker notification (works when app is closed)
+                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.ready.then(function(reg) {
+                        reg.showNotification(title, {
+                            body: body,
+                            icon: '/icons/icon-192x192.png',
+                            badge: '/icons/icon-72x72.png',
+                            tag: 'smartnotif-' + Date.now(),
+                            vibrate: [100, 50, 100],
+                            data: { action: action, url: window.location.href },
+                            requireInteraction: false
+                        });
+                    }).catch(function(){ 
+                        // Fallback to regular Notification
+                        var n = new Notification(title, { body: body, tag: 'smartnotif' });
+                        n.onclick = function() {
+                            window.focus();
+                            if (action) try { eval(action); } catch(e) {}
+                            n.close();
+                        };
+                        setTimeout(function() { n.close(); }, 8000);
+                    });
+                } else {
+                    var n = new Notification(title, { body: body, tag: 'smartnotif' });
+                    n.onclick = function() {
+                        window.focus();
+                        if (action) try { eval(action); } catch(e) {}
+                        n.close();
+                    };
+                    setTimeout(function() { n.close(); }, 8000);
+                }
+            },
+            
+            // Manual test
+            test: function() {
+                var ctx = this.getMealContext();
+                if (ctx && ctx.type === 'pre-meal') {
+                    this.sendPreMealNotif(ctx.meal);
+                } else {
+                    this.sendFactNotif();
+                }
+            }
+        };
+
+        // ========================================
         // MY PANTRY SYSTEM
         // ========================================
         var MyPantry = {
@@ -14855,6 +15195,9 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
 
             // Init Notification System
             NotifSystem.init();
+            
+            // Init Smart Notifications (context-aware, timezone-based)
+            setTimeout(function() { SmartNotif.init(); }, 5000);
         });
     </script>
     <!-- Health Profile Setup Modal -->
