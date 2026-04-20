@@ -1,8 +1,11 @@
-[{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "com.snapchef.app",
-        "sha256_cert_fingerprints": ["33:83:EF:FE:84:77:A1:E5:00:F1:33:42:2F:A7:BF:33:95:76:32:DD:CA:FB:3F:41:8C:19:F2:D8:E1:70:0E:3D"]
-      }
-    }]
+﻿[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.snapchef.ai",
+    "sha256_cert_fingerprints": [
+      "33:83:EF:FE:84:77:A1:E5:00:F1:33:42:2F:A7:BF:33:95:76:32:DD:CA:FB:3F:41:8C:19:F2:D8:E1:70:0E:3D",
+      "BB:D3:DF:34:E9:1E:00:34:83:72:98:AB:B4:45:A5:00:ED:3A:50:8E:08:A3:21:9B:40:9E:68:52:76:92:08:E2"
+    ]
+  }
+}]
