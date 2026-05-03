@@ -5475,14 +5475,20 @@
             <div class="premium-plans">
                 <div class="premium-plan selected" data-plan="monthly" onclick="selectPlan('monthly')">
                     <div class="plan-name" data-i18n="monthly">Monthly</div>
-                    <div class="plan-price">$4.99</div>
+                    <div class="plan-price">$2.99</div>
                     <div class="plan-period" data-i18n="perMonth">/month</div>
                 </div>
                 <div class="premium-plan" data-plan="yearly" onclick="selectPlan('yearly')">
                     <div class="plan-name" data-i18n="yearly">Yearly</div>
-                    <div class="plan-price">$29.99</div>
+                    <div class="plan-price">$19.99</div>
                     <div class="plan-period" data-i18n="perYear">/year</div>
-                    <div class="plan-save" data-i18n="save50">Save 50%</div>
+                    <div class="plan-save" data-i18n="save44">Save 44%</div>
+                </div>
+                <div class="premium-plan" data-plan="lifetime" onclick="selectPlan('lifetime')">
+                    <div class="plan-name" data-i18n="lifetime">Lifetime</div>
+                    <div class="plan-price">$39.99</div>
+                    <div class="plan-period" data-i18n="oneTimeOnly">one-time</div>
+                    <div class="plan-save" data-i18n="bestValue">Best value</div>
                 </div>
             </div>
             <button class="premium-subscribe" onclick="subscribePremium()" data-i18n="subscribe">Subscribe Now</button>
@@ -6475,6 +6481,10 @@
                 perYear: "/year",
                 save50: "Save 50%",
                 subscribe: "Subscribe Now",
+                lifetime: "Lifetime",
+                oneTimeOnly: "one-time",
+                bestValue: "Best value",
+                save44: "Save 44%",
                 maybeLater: "Maybe Later",
                 upgradePremium: "Upgrade to Premium",
                 unlimitedRecipes: "Unlimited recipes & no ads",
@@ -6752,6 +6762,10 @@
                 perYear: "/il",
                 save50: "50% Qənaət",
                 subscribe: "Abunə Ol",
+                lifetime: "Ömürlük",
+                oneTimeOnly: "birdəfəlik",
+                bestValue: "Ən sərfəli",
+                save44: "44% qənaət",
                 maybeLater: "Sonra Baxaram",
                 upgradePremium: "Premium-a Yüksəlt",
                 unlimitedRecipes: "Limitsiz reseptlər və reklamsız",
@@ -7069,6 +7083,10 @@
                 perYear: "/год",
                 save50: "Скидка 50%",
                 subscribe: "Подписаться",
+                lifetime: "Навсегда",
+                oneTimeOnly: "разовый платёж",
+                bestValue: "Лучшая цена",
+                save44: "Скидка 44%",
                 maybeLater: "Позже",
                 upgradePremium: "Перейти на Премиум",
                 unlimitedRecipes: "Безлимитные рецепты без рекламы",
@@ -9447,36 +9465,68 @@
             var btn = document.querySelector('.premium-subscribe');
             if (btn) {
                 btn.disabled = true;
-                btn.textContent = 'Redirecting to payment...';
+                btn.textContent = t('processing') || 'Processing...';
             }
 
+            // Map plan type to Play Console SKU
+            var skuMap = {
+                'monthly': 'snapchef_monthly',
+                'yearly': 'snapchef_annual',
+                'lifetime': 'snapchef_lifetime'
+            };
+            var sku = skuMap[selectedPlanType] || 'snapchef_monthly';
+            var isLifetime = (selectedPlanType === 'lifetime');
+
             try {
-                var response = await fetch('/.netlify/functions/create-checkout', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        plan: selectedPlanType,
-                        userId: currentUser ? currentUser.uid : 'anonymous',
-                        email: currentUser ? currentUser.email : null
-                    })
-                });
-
-                var data = await response.json();
-
-                if (data.url) {
-                    // Redirect to Stripe Checkout
-                    window.location.href = data.url;
-                } else if (data.error) {
-                    // Stripe not configured yet - use demo mode
-                    console.log('Stripe not configured, using demo mode:', data.error);
-                    activatePremiumDemo();
-                } else {
-                    activatePremiumDemo();
+                // Check if running inside TWA with Digital Goods API support
+                if (!('getDigitalGoodsService' in window)) {
+                    throw new Error('NOT_TWA');
                 }
+
+                var service = await window.getDigitalGoodsService('https://play.google.com/billing');
+                if (!service) {
+                    throw new Error('NO_SERVICE');
+                }
+
+                // Build PaymentRequest for the selected SKU
+                var paymentMethodData = [{
+                    supportedMethods: 'https://play.google.com/billing',
+                    data: { sku: sku }
+                }];
+                var paymentDetails = {
+                    total: {
+                        label: 'Total',
+                        amount: { currency: 'USD', value: '0' }
+                    }
+                };
+                var request = new PaymentRequest(paymentMethodData, paymentDetails);
+                var paymentResponse = await request.show();
+
+                // Acknowledge purchase (REQUIRED by Play Billing)
+                var purchaseToken = paymentResponse.details.purchaseToken;
+                if (isLifetime) {
+                    // One-time purchase: consume = false (it's a non-consumable)
+                    await service.acknowledge(purchaseToken, 'onetime');
+                } else {
+                    // Subscription: acknowledge as repeatable
+                    await service.acknowledge(purchaseToken, 'repeatable');
+                }
+
+                await paymentResponse.complete('success');
+                activatePremium(selectedPlanType, purchaseToken);
+                
             } catch (error) {
-                // Network error or Stripe not set up - use demo mode
-                console.log('Payment redirect failed, using demo mode:', error);
-                activatePremiumDemo();
+                console.error('Play Billing error:', error);
+                
+                if (error.message === 'NOT_TWA' || error.message === 'NO_SERVICE') {
+                    // User is in browser, not TWA - direct them to Play Store
+                    toast(t('openInPlayStore') || 'Please open SnapChef from Google Play Store to subscribe', '📱');
+                } else if (error.name === 'AbortError') {
+                    // User cancelled - silent
+                    console.log('Purchase cancelled by user');
+                } else {
+                    toast(t('purchaseFailed') || 'Purchase failed. Please try again.', '❌');
+                }
             }
 
             if (btn) {
@@ -9485,13 +9535,15 @@
             }
         }
 
-        // Demo mode - activates premium without real payment
-        // Remove this function when Stripe is fully configured
-        function activatePremiumDemo() {
+        // Activate premium after successful purchase
+        function activatePremium(planType, purchaseToken) {
             isPremium = true;
             localStorage.setItem('snapchef_premium', '1');
-            localStorage.setItem('snapchef_premium_plan', selectedPlanType);
+            localStorage.setItem('snapchef_premium_plan', planType);
             localStorage.setItem('snapchef_premium_date', Date.now().toString());
+            if (purchaseToken) {
+                localStorage.setItem('snapchef_purchase_token', purchaseToken);
+            }
             
             closePremiumModal();
             updatePremiumUI();
@@ -9502,9 +9554,38 @@
             if (currentUser && db) {
                 db.collection('users').doc(currentUser.uid).set({
                     isPremium: true,
-                    premiumPlan: selectedPlanType,
-                    premiumDate: Date.now()
-                }, { merge: true }).catch(function() {});
+                    premiumPlan: planType,
+                    premiumDate: Date.now(),
+                    purchaseToken: purchaseToken || null
+                }, { merge: true }).catch(function(){});
+            }
+        }
+
+        // Restore previous purchases (for users reinstalling app)
+        async function restorePurchases() {
+            if (!('getDigitalGoodsService' in window)) {
+                toast(t('openInPlayStore') || 'Please open SnapChef from Google Play Store', '📱');
+                return;
+            }
+            try {
+                var service = await window.getDigitalGoodsService('https://play.google.com/billing');
+                var purchases = await service.listPurchases();
+                if (purchases && purchases.length > 0) {
+                    // Find any active SnapChef purchase
+                    var validSkus = ['snapchef_monthly', 'snapchef_annual', 'snapchef_lifetime'];
+                    for (var i = 0; i < purchases.length; i++) {
+                        if (validSkus.indexOf(purchases[i].itemId) !== -1) {
+                            var planType = purchases[i].itemId.replace('snapchef_', '').replace('annual', 'yearly');
+                            activatePremium(planType, purchases[i].purchaseToken);
+                            toast(t('purchaseRestored') || 'Purchase restored!', '✅');
+                            return;
+                        }
+                    }
+                }
+                toast(t('noPurchases') || 'No previous purchases found', 'ℹ️');
+            } catch (e) {
+                console.error('Restore failed:', e);
+                toast(t('restoreFailed') || 'Restore failed', '❌');
             }
         }
 
