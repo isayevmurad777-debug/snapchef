@@ -9562,9 +9562,9 @@
         }
 
         // Restore previous purchases (for users reinstalling app)
-        async function restorePurchases() {
+        async function restorePurchases(silent) {
             if (!('getDigitalGoodsService' in window)) {
-                toast(t('openInPlayStore') || 'Please open SnapChef from Google Play Store', '📱');
+                if (!silent) toast(t('openInPlayStore') || 'Please open SnapChef from Google Play Store', '📱');
                 return;
             }
             try {
@@ -9582,10 +9582,10 @@
                         }
                     }
                 }
-                toast(t('noPurchases') || 'No previous purchases found', 'ℹ️');
+                if (!silent) toast(t('noPurchases') || 'No previous purchases found', 'ℹ️');
             } catch (e) {
                 console.error('Restore failed:', e);
-                toast(t('restoreFailed') || 'Restore failed', '❌');
+                if (!silent) toast(t('restoreFailed') || 'Restore failed', '❌');
             }
         }
 
@@ -10806,6 +10806,7 @@ apiKey: "AIzaSyBKam57lgDdcRHbAZ0VkT0cxUkkYfcQzaM",
                     ChefProfile.load().then(function() { ChefProfile.renderCard(); });
                     MyPantry.load();
                     LunaMemory.load();
+                    restorePurchases(true);
                 }, 3000);
             }
         });
