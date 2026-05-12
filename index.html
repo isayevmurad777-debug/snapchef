@@ -9502,16 +9502,19 @@
                 var request = new PaymentRequest(paymentMethodData, paymentDetails);
                 var paymentResponse = await request.show();
 
-                // Acknowledge purchase (REQUIRED by Play Billing)
                 var purchaseToken = paymentResponse.details.purchaseToken;
-                if (isLifetime) {
-                    // One-time purchase: consume = false (it's a non-consumable)
-                    await service.acknowledge(purchaseToken, 'onetime');
-                } else {
-                    // Subscription: acknowledge as repeatable
-                    await service.acknowledge(purchaseToken, 'repeatable');
+                // Try acknowledging (may not exist on current Chrome - complete('success') also acknowledges)
+                try {
+                    if (isLifetime) {
+                        await service.acknowledge(purchaseToken, 'onetime');
+                    } else {
+                        await service.acknowledge(purchaseToken, 'repeatable');
+                    }
+                } catch (ackErr) {
+                    console.log('service.acknowledge skipped:', ackErr.message);
                 }
 
+                // complete('success') is what tells Play Billing to confirm the purchase
                 await paymentResponse.complete('success');
                 activatePremium(selectedPlanType, purchaseToken);
                 
