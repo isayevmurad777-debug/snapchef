@@ -9528,7 +9528,7 @@
                     // User cancelled - silent
                     console.log('Purchase cancelled by user');
                 } else {
-                    toast('ERR: ' + (error.name || '?') + ' / ' + (error.message || 'no msg').substring(0, 80), '❌');
+                    toast(t('purchaseFailed') || 'Purchase failed. Please try again.', '❌');
                 }
             }
 
