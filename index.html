@@ -5413,6 +5413,72 @@
             display: flex; align-items: center; gap: 6px;
         }
         body.dark-mode .cp-section-label { color: var(--text-dark); }
+    
+        /* Chef Luna Live Voice Call */
+        .va-live-overlay {
+            position: fixed; inset: 0; z-index: 9500;
+            background: linear-gradient(135deg, #1a0f2e 0%, #2d1b4e 50%, #1a0f2e 100%);
+            display: none; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 24px; color: white;
+        }
+        .va-live-overlay.active { display: flex; }
+        .va-live-avatar {
+            width: 180px; height: 180px; border-radius: 50%;
+            background: linear-gradient(135deg, #ec4899, #f43f5e);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 80px; margin-bottom: 32px;
+            box-shadow: 0 0 60px rgba(236, 72, 153, 0.5);
+            animation: vaPulse 2s ease-in-out infinite;
+            position: relative;
+        }
+        .va-live-avatar.speaking { animation: vaSpeaking 0.6s ease-in-out infinite; }
+        @keyframes vaPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 60px rgba(236, 72, 153, 0.5); }
+            50% { transform: scale(1.05); box-shadow: 0 0 90px rgba(236, 72, 153, 0.8); }
+        }
+        @keyframes vaSpeaking {
+            0%, 100% { transform: scale(1.05); }
+            50% { transform: scale(1.12); }
+        }
+        .va-live-name { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+        .va-live-status { font-size: 16px; opacity: 0.7; margin-bottom: 12px; min-height: 24px; }
+        .va-live-timer { font-size: 14px; opacity: 0.6; font-family: 'Courier New', monospace; margin-bottom: 40px; }
+        .va-live-controls { display: flex; gap: 20px; align-items: center; }
+        .va-live-btn {
+            width: 64px; height: 64px; border-radius: 50%;
+            border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; transition: all 0.2s;
+            background: rgba(255,255,255,0.15); color: white;
+        }
+        .va-live-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.05); }
+        .va-live-btn.muted { background: rgba(239, 68, 68, 0.3); }
+        .va-live-btn.end {
+            background: #dc2626; width: 72px; height: 72px;
+            box-shadow: 0 4px 16px rgba(220, 38, 38, 0.4);
+        }
+        .va-live-btn.end:hover { background: #ef4444; }
+        .va-live-transcript {
+            position: absolute; bottom: 32px; left: 24px; right: 24px;
+            max-height: 100px; overflow-y: auto;
+            background: rgba(0,0,0,0.3); padding: 12px 16px;
+            border-radius: 12px; font-size: 14px;
+            line-height: 1.5; opacity: 0.85;
+        }
+        .va-live-talk-btn {
+            display: block; width: 100%; margin: 8px 0 12px;
+            padding: 14px 16px; border: none; border-radius: 12px;
+            background: linear-gradient(135deg, #ec4899, #f43f5e);
+            color: white; font-size: 15px; font-weight: 700;
+            cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+        }
+        .va-live-talk-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(236, 72, 153, 0.4);
+        }
+
     </style>
 </head>
 <body>
@@ -5754,6 +5820,7 @@
             </div>
             <button class="va-close" onclick="VoiceAssistant.close()">✕</button>
         </div>
+        <button class="va-live-talk-btn" onclick="ChefLunaLive.start()">📞 Talk Live with Chef Luna</button>
         <div class="va-quick-actions" id="vaQuickActions">
             <button class="va-quick-btn" onclick="VoiceAssistant.quickAction('suggest')">🍽️ Suggest a recipe</button>
             <button class="va-quick-btn" onclick="VoiceAssistant.quickAction('tips')">💡 Cooking tips</button>
@@ -5766,6 +5833,20 @@
             <button class="va-mic-btn" id="vaMicBtn" onclick="VoiceAssistant.toggleMic()">🎙️</button>
             <button class="va-send-btn" onclick="VoiceAssistant.sendText()">➤</button>
         </div>
+    </div>
+
+
+    <!-- Chef Luna Live Voice Overlay -->
+    <div class="va-live-overlay" id="vaLiveOverlay">
+        <div class="va-live-avatar" id="vaLiveAvatar">👩‍🍳</div>
+        <div class="va-live-name">Chef Luna</div>
+        <div class="va-live-status" id="vaLiveStatus">Connecting...</div>
+        <div class="va-live-timer" id="vaLiveTimer">00:00</div>
+        <div class="va-live-controls">
+            <button class="va-live-btn" id="vaLiveMuteBtn" onclick="ChefLunaLive.toggleMute()" title="Mute">🎙️</button>
+            <button class="va-live-btn end" onclick="ChefLunaLive.end()" title="End call">✕</button>
+        </div>
+        <div class="va-live-transcript" id="vaLiveTranscript" style="display:none;"></div>
     </div>
 
     <!-- Feedback FAB -->
@@ -8482,6 +8563,185 @@
         // ========================================
         // CHEF LUNA MEMORY SYSTEM
         // ========================================
+
+        // ===== CHEF LUNA LIVE VOICE (OpenAI Realtime API) =====
+        var ChefLunaLive = {
+            pc: null, dc: null, localStream: null, audioEl: null,
+            isMuted: false, isActive: false, startTime: 0,
+            timerInterval: null, transcriptText: '',
+            FREE_LIMIT_SEC: 60, PRO_LIMIT_SEC: 1800,
+
+            getDailyUsage: function() {
+                var today = new Date().toDateString();
+                var data = JSON.parse(localStorage.getItem('snapchef_live_voice_usage') || '{}');
+                if (data.date !== today) return 0;
+                return data.seconds || 0;
+            },
+            addDailyUsage: function(seconds) {
+                var today = new Date().toDateString();
+                var data = JSON.parse(localStorage.getItem('snapchef_live_voice_usage') || '{}');
+                if (data.date !== today) data = { date: today, seconds: 0 };
+                data.seconds += seconds;
+                localStorage.setItem('snapchef_live_voice_usage', JSON.stringify(data));
+            },
+            getRemainingSeconds: function() {
+                var limit = isPremium ? this.PRO_LIMIT_SEC : this.FREE_LIMIT_SEC;
+                return Math.max(0, limit - this.getDailyUsage());
+            },
+
+            start: async function() {
+                if (this.isActive) return;
+                var remaining = this.getRemainingSeconds();
+                if (remaining <= 0) {
+                    if (isPremium) {
+                        toast('Daily limit reached (30 min). Resets tomorrow.', '⏱️');
+                    } else {
+                        toast('Free limit reached (1 min/day). Upgrade for 30 min/day.', '👑');
+                        if (typeof showPremiumModal === 'function') setTimeout(showPremiumModal, 800);
+                    }
+                    return;
+                }
+                document.getElementById('vaLiveOverlay').classList.add('active');
+                document.getElementById('vaLiveStatus').textContent = 'Connecting...';
+                document.getElementById('vaLiveTimer').textContent = '00:00';
+                this.transcriptText = '';
+                document.getElementById('vaLiveTranscript').textContent = '';
+                document.getElementById('vaLiveTranscript').style.display = 'none';
+
+                try {
+                    var mem = (typeof LunaMemory !== 'undefined') ? LunaMemory.get() : null;
+                    var userName = (currentUser && currentUser.displayName) ? currentUser.displayName.split(' ')[0] : null;
+                    var lang = (typeof currentLang !== 'undefined') ? currentLang : 'en';
+
+                    var tokenRes = await fetch('/.netlify/functions/realtime-token', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ lunaMemory: mem, userName: userName, language: lang })
+                    });
+                    if (!tokenRes.ok) throw new Error('Failed to get session token');
+                    var session = await tokenRes.json();
+                    var ephemeralKey = session.client_secret && session.client_secret.value;
+                    if (!ephemeralKey) throw new Error('Invalid session response');
+
+                    this.localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    this.pc = new RTCPeerConnection();
+                    this.audioEl = document.createElement('audio');
+                    this.audioEl.autoplay = true;
+                    this.pc.ontrack = function(e) { ChefLunaLive.audioEl.srcObject = e.streams[0]; };
+                    this.pc.addTrack(this.localStream.getAudioTracks()[0], this.localStream);
+                    this.dc = this.pc.createDataChannel('oai-events');
+                    this.dc.addEventListener('message', function(e) { ChefLunaLive.handleEvent(e.data); });
+
+                    var offer = await this.pc.createOffer();
+                    await this.pc.setLocalDescription(offer);
+
+                    var sdpRes = await fetch('https://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview', {
+                        method: 'POST',
+                        body: offer.sdp,
+                        headers: {
+                            'Authorization': 'Bearer ' + ephemeralKey,
+                            'Content-Type': 'application/sdp'
+                        }
+                    });
+                    if (!sdpRes.ok) throw new Error('SDP exchange failed');
+                    var answerSdp = await sdpRes.text();
+                    await this.pc.setRemoteDescription({ type: 'answer', sdp: answerSdp });
+
+                    this.isActive = true;
+                    this.startTime = Date.now();
+                    this.startTimer();
+                    document.getElementById('vaLiveStatus').textContent = 'Listening...';
+                } catch (err) {
+                    console.error('Chef Luna Live error:', err);
+                    toast('Voice call failed: ' + (err.message || 'unknown'), '❌');
+                    this.cleanup();
+                }
+            },
+
+            handleEvent: function(raw) {
+                try {
+                    var msg = JSON.parse(raw);
+                    var status = document.getElementById('vaLiveStatus');
+                    var avatar = document.getElementById('vaLiveAvatar');
+                    var transcript = document.getElementById('vaLiveTranscript');
+                    if (msg.type === 'response.audio.delta' || msg.type === 'response.output_audio.delta') {
+                        avatar.classList.add('speaking');
+                        if (status) status.textContent = 'Speaking...';
+                    } else if (msg.type === 'response.done' || msg.type === 'response.audio.done' || msg.type === 'response.output_audio.done') {
+                        avatar.classList.remove('speaking');
+                        if (status) status.textContent = 'Listening...';
+                    }
+                    if (msg.type === 'conversation.item.input_audio_transcription.completed' && msg.transcript) {
+                        ChefLunaLive.transcriptText += '\n👤 ' + msg.transcript;
+                        transcript.textContent = ChefLunaLive.transcriptText.trim();
+                        transcript.style.display = 'block';
+                        transcript.scrollTop = transcript.scrollHeight;
+                        if (typeof LunaMemory !== 'undefined') LunaMemory.learnFrom(msg.transcript, '');
+                    }
+                    if (msg.type === 'response.audio_transcript.done' && msg.transcript) {
+                        ChefLunaLive.transcriptText += '\n👩‍🍳 ' + msg.transcript;
+                        transcript.textContent = ChefLunaLive.transcriptText.trim();
+                        transcript.style.display = 'block';
+                        transcript.scrollTop = transcript.scrollHeight;
+                    }
+                } catch (e) {}
+            },
+
+            toggleMute: function() {
+                if (!this.localStream) return;
+                this.isMuted = !this.isMuted;
+                this.localStream.getAudioTracks().forEach(function(t) { t.enabled = !ChefLunaLive.isMuted; });
+                var btn = document.getElementById('vaLiveMuteBtn');
+                btn.textContent = this.isMuted ? '🔇' : '🎙️';
+                btn.classList.toggle('muted', this.isMuted);
+            },
+
+            startTimer: function() {
+                var self = this;
+                this.timerInterval = setInterval(function() {
+                    var elapsed = Math.floor((Date.now() - self.startTime) / 1000);
+                    var remaining = self.getRemainingSeconds() - elapsed;
+                    var mins = Math.floor(elapsed / 60);
+                    var secs = elapsed % 60;
+                    document.getElementById('vaLiveTimer').textContent =
+                        String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0') +
+                        ' / ' + Math.floor(remaining / 60) + 'm left';
+                    if (remaining <= 0) {
+                        toast('Daily voice limit reached', '⏱️');
+                        self.end();
+                    }
+                }, 1000);
+            },
+
+            end: function() {
+                if (this.startTime > 0) {
+                    var elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+                    this.addDailyUsage(elapsed);
+                    if (this.transcriptText && typeof LunaMemory !== 'undefined') {
+                        LunaMemory.incrementChats();
+                    }
+                }
+                this.cleanup();
+            },
+
+            cleanup: function() {
+                if (this.timerInterval) { clearInterval(this.timerInterval); this.timerInterval = null; }
+                if (this.dc) { try { this.dc.close(); } catch (e) {} this.dc = null; }
+                if (this.pc) { try { this.pc.close(); } catch (e) {} this.pc = null; }
+                if (this.localStream) {
+                    this.localStream.getTracks().forEach(function(t) { t.stop(); });
+                    this.localStream = null;
+                }
+                if (this.audioEl) { this.audioEl.srcObject = null; this.audioEl = null; }
+                this.isActive = false; this.isMuted = false; this.startTime = 0;
+                document.getElementById('vaLiveOverlay').classList.remove('active');
+                var avatar = document.getElementById('vaLiveAvatar');
+                if (avatar) avatar.classList.remove('speaking');
+                var btn = document.getElementById('vaLiveMuteBtn');
+                if (btn) { btn.textContent = '🎙️'; btn.classList.remove('muted'); }
+            }
+        };
+
         var LunaMemory = {
             _key: 'snapchef_luna_memory',
 
