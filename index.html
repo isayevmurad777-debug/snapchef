@@ -8618,8 +8618,9 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ lunaMemory: mem, userName: userName, language: lang })
                     });
-                    if (!tokenRes.ok) throw new Error('Failed to get session token');
-                    var session = await tokenRes.json();
+                    var tokenText = await tokenRes.text();
+                    if (!tokenRes.ok) throw new Error('HTTP ' + tokenRes.status + ': ' + tokenText.substring(0, 300));
+                    var session = JSON.parse(tokenText);
                     var ephemeralKey = session.client_secret && session.client_secret.value;
                     if (!ephemeralKey) throw new Error('Invalid session response');
 
