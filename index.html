@@ -8653,7 +8653,15 @@
                     document.getElementById('vaLiveStatus').textContent = 'Listening...';
                 } catch (err) {
                     console.error('Chef Luna Live error:', err);
-                    toast('Voice call failed: ' + (err.message || 'unknown'), '❌');
+                    var errMsg = (err && err.message) ? err.message : (err && err.name) ? err.name : 'unknown';
+                    if (err && err.stack) errMsg += ' | ' + err.stack.substring(0, 200);
+                    var statusEl = document.getElementById('vaLiveStatus');
+                    if (statusEl) {
+                        statusEl.textContent = 'ERROR: ' + errMsg;
+                        statusEl.style.color = '#ff6b6b';
+                        statusEl.style.fontSize = '12px';
+                    }
+                    alert('Chef Luna Live ERROR:\n\n' + errMsg);
                     this.cleanup();
                 }
             },
