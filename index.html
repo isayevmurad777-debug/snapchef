@@ -8621,7 +8621,7 @@
                     var tokenText = await tokenRes.text();
                     if (!tokenRes.ok) throw new Error('HTTP ' + tokenRes.status + ': ' + tokenText.substring(0, 300));
                     var session = JSON.parse(tokenText);
-                    var ephemeralKey = session.client_secret && session.client_secret.value;
+                    var ephemeralKey = session.value || (session.client_secret && session.client_secret.value);
                     if (!ephemeralKey) throw new Error('Invalid session response');
 
                     this.localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -8636,7 +8636,7 @@
                     var offer = await this.pc.createOffer();
                     await this.pc.setLocalDescription(offer);
 
-                    var sdpRes = await fetch('https://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview', {
+                    var sdpRes = await fetch('https://api.openai.com/v1/realtime/calls', {
                         method: 'POST',
                         body: offer.sdp,
                         headers: {
