@@ -5414,21 +5414,39 @@
         }
         body.dark-mode .cp-section-label { color: var(--text-dark); }
     
-        /* Chef Luna Live Voice Call */
+        /* Chef Luna Live Voice Call - compact centered modal */
         .va-live-overlay {
             position: fixed; inset: 0; z-index: 9500;
-            background: linear-gradient(135deg, #1a0f2e 0%, #2d1b4e 50%, #1a0f2e 100%);
-            display: none; flex-direction: column;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: none;
             align-items: center; justify-content: center;
-            padding: 24px; color: white;
+            padding: 16px; color: white;
+            animation: vaFadeIn 0.25s ease-out;
         }
         .va-live-overlay.active { display: flex; }
+        @keyframes vaFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .va-live-card {
+            background: linear-gradient(135deg, #1a0f2e 0%, #2d1b4e 50%, #1a0f2e 100%);
+            border-radius: 24px;
+            padding: 28px 24px 24px;
+            width: 100%; max-width: 340px;
+            display: flex; flex-direction: column;
+            align-items: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.08);
+            animation: vaSlideUp 0.3s ease-out;
+        }
+        @keyframes vaSlideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
         .va-live-avatar {
-            width: 180px; height: 180px; border-radius: 50%;
+            width: 110px; height: 110px; border-radius: 50%;
             background: linear-gradient(135deg, #ec4899, #f43f5e);
             display: flex; align-items: center; justify-content: center;
-            font-size: 80px; margin-bottom: 32px;
-            box-shadow: 0 0 60px rgba(236, 72, 153, 0.5);
+            font-size: 50px; margin-bottom: 20px;
+            box-shadow: 0 0 40px rgba(236, 72, 153, 0.5);
             animation: vaPulse 2s ease-in-out infinite;
             position: relative;
         }
@@ -5441,9 +5459,9 @@
             0%, 100% { transform: scale(1.05); }
             50% { transform: scale(1.12); }
         }
-        .va-live-name { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
-        .va-live-status { font-size: 16px; opacity: 0.7; margin-bottom: 12px; min-height: 24px; }
-        .va-live-timer { font-size: 14px; opacity: 0.6; font-family: 'Courier New', monospace; margin-bottom: 40px; }
+        .va-live-name { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+        .va-live-status { font-size: 14px; opacity: 0.7; margin-bottom: 8px; min-height: 20px; }
+        .va-live-timer { font-size: 13px; opacity: 0.6; font-family: 'Courier New', monospace; margin-bottom: 24px; }
         .va-live-controls { display: flex; gap: 20px; align-items: center; }
         .va-live-btn {
             width: 64px; height: 64px; border-radius: 50%;
@@ -5460,11 +5478,12 @@
         }
         .va-live-btn.end:hover { background: #ef4444; }
         .va-live-transcript {
-            position: absolute; bottom: 32px; left: 24px; right: 24px;
-            max-height: 100px; overflow-y: auto;
-            background: rgba(0,0,0,0.3); padding: 12px 16px;
-            border-radius: 12px; font-size: 14px;
+            width: 100%; margin-top: 18px;
+            max-height: 90px; overflow-y: auto;
+            background: rgba(0,0,0,0.3); padding: 10px 14px;
+            border-radius: 12px; font-size: 13px;
             line-height: 1.5; opacity: 0.85;
+            white-space: pre-wrap;
         }
         .va-live-talk-btn {
             display: block; width: 100%; margin: 8px 0 12px;
@@ -5838,15 +5857,17 @@
 
     <!-- Chef Luna Live Voice Overlay -->
     <div class="va-live-overlay" id="vaLiveOverlay">
-        <div class="va-live-avatar" id="vaLiveAvatar">👩‍🍳</div>
-        <div class="va-live-name">Chef Luna</div>
-        <div class="va-live-status" id="vaLiveStatus">Connecting...</div>
-        <div class="va-live-timer" id="vaLiveTimer">00:00</div>
-        <div class="va-live-controls">
-            <button class="va-live-btn" id="vaLiveMuteBtn" onclick="ChefLunaLive.toggleMute()" title="Mute">🎙️</button>
-            <button class="va-live-btn end" onclick="ChefLunaLive.end()" title="End call">✕</button>
+        <div class="va-live-card">
+            <div class="va-live-avatar" id="vaLiveAvatar">👩‍🍳</div>
+            <div class="va-live-name">Chef Luna</div>
+            <div class="va-live-status" id="vaLiveStatus">Connecting...</div>
+            <div class="va-live-timer" id="vaLiveTimer">00:00</div>
+            <div class="va-live-controls">
+                <button class="va-live-btn" id="vaLiveMuteBtn" onclick="ChefLunaLive.toggleMute()" title="Mute">🎙️</button>
+                <button class="va-live-btn end" onclick="ChefLunaLive.end()" title="End call">✕</button>
+            </div>
+            <div class="va-live-transcript" id="vaLiveTranscript" style="display:none;"></div>
         </div>
-        <div class="va-live-transcript" id="vaLiveTranscript" style="display:none;"></div>
     </div>
 
     <!-- Feedback FAB -->
