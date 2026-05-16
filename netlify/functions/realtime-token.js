@@ -125,8 +125,17 @@ exports.handler = async (event) => {
                         {
                             type: "function",
                             name: "generate_recipe_now",
-                            description: "Switch to the recipe section and trigger recipe generation. Call when user explicitly wants to generate a recipe now.",
-                            parameters: { type: "object", properties: {} }
+                            description: "Switch to the recipe section, fill in ingredients/dish name, and trigger recipe generation. Call when user explicitly wants to generate a recipe (e.g. 'generate steak recipe', 'make me a pizza recipe', 'give me a cake recipe').",
+                            parameters: {
+                                type: "object",
+                                properties: {
+                                    ingredients: {
+                                        type: "string",
+                                        description: "The dish name or comma-separated list of ingredients. Examples: 'steak', 'chicken, rice, broccoli', 'chocolate cake'. ALWAYS provide this."
+                                    }
+                                },
+                                required: ["ingredients"]
+                            }
                         }
                     ],
                     tool_choice: "auto"

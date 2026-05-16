@@ -8831,9 +8831,17 @@
                 } else if (name === 'generate_recipe_now') {
                     try {
                         if (typeof switchTab === 'function') switchTab('recipe');
-                        setTimeout(function() { if (typeof generateRecipe === 'function') generateRecipe(); }, 400);
-                    } catch (e) {}
-                    html = '<div class="ic-title">✨ Generating recipe</div><div class="ic-sub">Check the recipe section</div>';
+                        setTimeout(function() {
+                            var ta = document.getElementById('ingredients');
+                            if (ta && args.ingredients) {
+                                ta.value = args.ingredients;
+                                if (typeof updateCharCount === 'function') { try { updateCharCount(); } catch (e) {} }
+                            }
+                            if (typeof generateRecipe === 'function') generateRecipe();
+                        }, 400);
+                    } catch (e) { console.log('generate_recipe_now error:', e); }
+                    var ingLabel = args.ingredients ? ' (' + args.ingredients + ')' : '';
+                    html = '<div class="ic-title">✨ Generating recipe' + ingLabel + '</div><div class="ic-sub">Check the recipe section</div>';
                 } else if (name === 'show_recipe') {
                     html = '<div class="ic-title">🍳 ' + (args.name || 'Recipe') + '</div>';
                     var subParts = [];
