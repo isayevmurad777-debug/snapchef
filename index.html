@@ -8800,6 +8800,7 @@
                         transcript.scrollTop = transcript.scrollHeight;
                     }
                     if (msg.type === 'response.function_call_arguments.done') {
+                        console.log('[ChefLuna] Got function_call_arguments.done event:', msg);
                         var fnName = msg.name;
                         var args = {};
                         try { args = JSON.parse(msg.arguments || '{}'); } catch (e) {}
@@ -8809,6 +8810,8 @@
             },
 
             handleFunctionCall: function(name, args, callId) {
+                toast('🔧 ' + name + ' called', 'ℹ️');
+                console.log('[ChefLuna] Function:', name, 'Args:', args);
                 var card = document.getElementById('vaLiveInfoCard');
                 if (!card) return;
                 var html = '';
