@@ -8722,15 +8722,32 @@
                 }, 1000);
             },
 
-            end: function() {
+            end: async function() {
+                var savedTranscript = this.transcriptText;
                 if (this.startTime > 0) {
                     var elapsed = Math.floor((Date.now() - this.startTime) / 1000);
                     this.addDailyUsage(elapsed);
-                    if (this.transcriptText && typeof LunaMemory !== 'undefined') {
+                    if (typeof LunaMemory !== 'undefined') {
                         LunaMemory.incrementChats();
                     }
                 }
                 this.cleanup();
+                if (savedTranscript && savedTranscript.length > 50) {
+                    try {
+                        var res = await fetch('/.netlify/functions/summarize-chat', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ transcript: savedTranscript })
+                        });
+                        if (res.ok) {
+                            var data = await res.json();
+                            if (data.summary && data.summary.length > 5 && typeof LunaMemory !== 'undefined') {
+                                LunaMemory.addNote(data.summary);
+                                toast('Memory saved', 'OK');
+                            }
+                        }
+                    } catch (e) { console.log('Summary save failed:', e); }
+                }
             },
 
             cleanup: function() {
