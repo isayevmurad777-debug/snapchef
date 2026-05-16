@@ -8753,7 +8753,26 @@
                 var card = document.getElementById('vaLiveInfoCard');
                 if (!card) return;
                 var html = '';
-                if (name === 'show_recipe') {
+                // Navigation tools
+                if (name === 'navigate') {
+                    var sectionMap = { recipe: 'recipe', analyze: 'analyze', health: 'health', plan: 'mealplan', saved: 'favorites', settings: 'settings' };
+                    var target = sectionMap[args.section] || args.section;
+                    var labelMap = { recipe: 'Recipe Generator', analyze: 'Food Analyzer', mealplan: 'Meal Plan', favorites: 'Saved Recipes', health: 'Health', settings: 'Settings' };
+                    try { if (typeof switchTab === 'function') switchTab(target); } catch (e) { console.log('switchTab error', e); }
+                    html = '<div class="ic-title">📍 Opened: ' + (labelMap[target] || target) + '</div><div class="ic-sub">You can keep talking while viewing</div>';
+                } else if (name === 'scan_ingredients') {
+                    try {
+                        if (typeof switchTab === 'function') switchTab('recipe');
+                        setTimeout(function() { if (typeof startCamera === 'function') startCamera('recipe'); }, 300);
+                    } catch (e) {}
+                    html = '<div class="ic-title">📷 Opening camera</div><div class="ic-sub">Point at your ingredients</div>';
+                } else if (name === 'generate_recipe_now') {
+                    try {
+                        if (typeof switchTab === 'function') switchTab('recipe');
+                        setTimeout(function() { if (typeof generateRecipe === 'function') generateRecipe(); }, 400);
+                    } catch (e) {}
+                    html = '<div class="ic-title">✨ Generating recipe</div><div class="ic-sub">Check the recipe section</div>';
+                } else if (name === 'show_recipe') {
                     html = '<div class="ic-title">🍳 ' + (args.name || 'Recipe') + '</div>';
                     var subParts = [];
                     if (args.cuisine) subParts.push(args.cuisine);

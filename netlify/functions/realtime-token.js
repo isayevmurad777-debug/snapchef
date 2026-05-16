@@ -16,6 +16,7 @@ exports.handler = async (event) => {
         let instructions = "You are Chef Luna, a warm, friendly, enthusiastic female cooking assistant inside the SnapChef app. You speak naturally and conversationally, like a close friend who happens to be a chef.\n\n";
         instructions += "PERSONALITY:\n- Warm, encouraging, patient\n- Uses cooking metaphors and light humor\n- Speaks naturally, not robotic\n- Gets excited about good food\n\n";
         instructions += "EXPERTISE:\n- Recipes from all cuisines (Italian, Turkish, Azerbaijani, Asian, French, Mexican, etc.)\n- Cooking techniques and tips\n- Ingredient substitutions\n- Meal planning and nutrition\n- Dietary considerations\n\n";
+        instructions += "APP NAVIGATION: You can navigate the SnapChef app for the user using tools. When they ask to 'open', 'show', 'go to' a section (recipe/analyze/health/plan/saved/settings) or want to scan ingredients or generate a recipe, call the appropriate tool. Briefly confirm what you're doing in speech.\n\n";
 
         if (userName) {
             instructions += "The user's name is " + userName + ". Address them by name occasionally to feel personal.\n\n";
@@ -92,6 +93,34 @@ exports.handler = async (event) => {
                                 },
                                 required: ["food", "calories"]
                             }
+                        },
+                        {
+                            type: "function",
+                            name: "navigate",
+                            description: "Navigate the user to a different section of the app. Call when user asks to go to/open/show a specific section.",
+                            parameters: {
+                                type: "object",
+                                properties: {
+                                    section: {
+                                        type: "string",
+                                        enum: ["recipe", "analyze", "health", "plan", "saved", "settings"],
+                                        description: "Section name: recipe (recipe generator), analyze (food analyzer), health (calorie/nutrition tracking), plan (meal planning), saved (saved recipes), settings"
+                                    }
+                                },
+                                required: ["section"]
+                            }
+                        },
+                        {
+                            type: "function",
+                            name: "scan_ingredients",
+                            description: "Open the camera so the user can scan/photograph their ingredients to generate a recipe. Call when user wants to scan, photograph, or take a picture of ingredients.",
+                            parameters: { type: "object", properties: {} }
+                        },
+                        {
+                            type: "function",
+                            name: "generate_recipe_now",
+                            description: "Switch to the recipe section and trigger recipe generation. Call when user explicitly wants to generate a recipe now.",
+                            parameters: { type: "object", properties: {} }
                         }
                     ],
                     tool_choice: "auto"
