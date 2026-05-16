@@ -8631,8 +8631,12 @@
             },
 
             start: async function() {
-                if (this.isActive) return;
+                if (this.isActive) { console.log('Already active, ignoring'); return; }
+                this.isActive = true;
                 var remaining = this.getRemainingSeconds();
+                if (remaining <= 0) {
+                    this.isActive = false;
+                }
                 if (remaining <= 0) {
                     if (isPremium) {
                         toast('Daily limit reached (30 min). Resets tomorrow.', '⏱️');
@@ -8687,9 +8691,11 @@
                     });
                     if (!sdpRes.ok) throw new Error('SDP exchange failed');
                     var answerSdp = await sdpRes.text();
+                    if (!this.pc || this.pc.signalingState !== 'have-local-offer') {
+                        throw new Error('Wrong state: ' + (this.pc ? this.pc.signalingState : 'null'));
+                    }
                     await this.pc.setRemoteDescription({ type: 'answer', sdp: answerSdp });
 
-                    this.isActive = true;
                     this.startTime = Date.now();
                     this.startTimer();
                     document.getElementById('vaLiveStatus').textContent = 'Listening...';
