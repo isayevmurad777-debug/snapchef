@@ -58,7 +58,43 @@ exports.handler = async (event) => {
                     audio: {
                         output: { voice: "coral" },
                         input: { transcription: { model: "whisper-1" } }
-                    }
+                    },
+                    tools: [
+                        {
+                            type: "function",
+                            name: "show_recipe",
+                            description: "Display a recipe card to the user when you recommend or discuss a specific dish. Call this whenever you mention a particular recipe by name.",
+                            parameters: {
+                                type: "object",
+                                properties: {
+                                    name: { type: "string", description: "Recipe name" },
+                                    cuisine: { type: "string", description: "Cuisine type, e.g., Italian, Turkish" },
+                                    cookTime: { type: "string", description: "Cooking time, e.g., 30 min" },
+                                    difficulty: { type: "string", enum: ["Easy", "Medium", "Hard"] },
+                                    ingredients: { type: "array", items: { type: "string" }, description: "Main 3-5 ingredients" },
+                                    calories: { type: "number", description: "Approximate calories per serving" }
+                                },
+                                required: ["name"]
+                            }
+                        },
+                        {
+                            type: "function",
+                            name: "show_calories",
+                            description: "Display calorie and nutrition info when discussing nutrition or when user asks about calories.",
+                            parameters: {
+                                type: "object",
+                                properties: {
+                                    food: { type: "string", description: "Food or dish name" },
+                                    calories: { type: "number", description: "Calories per serving" },
+                                    protein: { type: "number", description: "Protein in grams" },
+                                    carbs: { type: "number", description: "Carbs in grams" },
+                                    fat: { type: "number", description: "Fat in grams" }
+                                },
+                                required: ["food", "calories"]
+                            }
+                        }
+                    ],
+                    tool_choice: "auto"
                 }
             })
         });

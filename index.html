@@ -5485,6 +5485,25 @@
             line-height: 1.5; opacity: 0.85;
             white-space: pre-wrap;
         }
+        .va-live-info-card {
+            width: 100%;
+            margin: 14px 0 4px;
+            padding: 12px 14px;
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.18), rgba(244, 63, 94, 0.12));
+            border: 1px solid rgba(236, 72, 153, 0.35);
+            border-radius: 12px;
+            font-size: 13px;
+            text-align: left;
+            animation: vaCardSlide 0.35s ease-out;
+        }
+        .va-live-info-card .ic-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+        .va-live-info-card .ic-sub { opacity: 0.7; font-size: 12px; margin-bottom: 6px; }
+        .va-live-info-card .ic-row { font-size: 12px; opacity: 0.9; }
+        .va-live-info-card .ic-big { font-size: 22px; color: #f9a8d4; font-weight: 800; margin: 4px 0; }
+        @keyframes vaCardSlide {
+            from { transform: translateY(-8px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
         .va-live-talk-btn {
             display: block; width: 100%; margin: 8px 0 12px;
             padding: 14px 16px; border: none; border-radius: 12px;
@@ -5862,6 +5881,7 @@
             <div class="va-live-name">Chef Luna</div>
             <div class="va-live-status" id="vaLiveStatus">Connecting...</div>
             <div class="va-live-timer" id="vaLiveTimer">00:00</div>
+            <div class="va-live-info-card" id="vaLiveInfoCard" style="display:none;"></div>
             <div class="va-live-controls">
                 <button class="va-live-btn" id="vaLiveMuteBtn" onclick="ChefLunaLive.toggleMute()" title="Mute">🎙️</button>
                 <button class="va-live-btn end" onclick="ChefLunaLive.end()" title="End call">✕</button>
@@ -8714,7 +8734,56 @@
                         transcript.style.display = 'block';
                         transcript.scrollTop = transcript.scrollHeight;
                     }
+                    if (msg.type === 'response.function_call_arguments.done') {
+                        var fnName = msg.name;
+                        var args = {};
+                        try { args = JSON.parse(msg.arguments || '{}'); } catch (e) {}
+                        ChefLunaLive.handleFunctionCall(fnName, args, msg.call_id);
+                    }
                 } catch (e) {}
+            },
+
+            handleFunctionCall: function(name, args, callId) {
+                var card = document.getElementById('vaLiveInfoCard');
+                if (!card) return;
+                var html = '';
+                if (name === 'show_recipe') {
+                    html = '<div class="ic-title">🍳 ' + (args.name || 'Recipe') + '</div>';
+                    var subParts = [];
+                    if (args.cuisine) subParts.push(args.cuisine);
+                    if (args.cookTime) subParts.push(args.cookTime);
+                    if (args.difficulty) subParts.push(args.difficulty);
+                    if (subParts.length) html += '<div class="ic-sub">' + subParts.join(' • ') + '</div>';
+                    if (args.ingredients && args.ingredients.length) {
+                        html += '<div class="ic-row">' + args.ingredients.slice(0,5).join(' • ') + '</div>';
+                    }
+                    if (args.calories) html += '<div class="ic-row" style="margin-top:4px;color:#f9a8d4;">~' + args.calories + ' cal/serving</div>';
+                } else if (name === 'show_calories') {
+                    html = '<div class="ic-title">🔥 ' + (args.food || 'Nutrition') + '</div>';
+                    html += '<div class="ic-big">' + (args.calories || 0) + ' cal</div>';
+                    var macros = [];
+                    if (args.protein) macros.push('P: ' + args.protein + 'g');
+                    if (args.carbs) macros.push('C: ' + args.carbs + 'g');
+                    if (args.fat) macros.push('F: ' + args.fat + 'g');
+                    if (macros.length) html += '<div class="ic-row">' + macros.join(' • ') + '</div>';
+                }
+                if (html) {
+                    card.innerHTML = html;
+                    card.style.display = 'block';
+                }
+                // Send function output back so model continues smoothly
+                if (this.dc && this.dc.readyState === 'open' && callId) {
+                    try {
+                        this.dc.send(JSON.stringify({
+                            type: 'conversation.item.create',
+                            item: {
+                                type: 'function_call_output',
+                                call_id: callId,
+                                output: JSON.stringify({ success: true })
+                            }
+                        }));
+                    } catch (e) {}
+                }
             },
 
             toggleMute: function() {
@@ -8781,6 +8850,8 @@
                 }
                 if (this.audioEl) { this.audioEl.srcObject = null; this.audioEl = null; }
                 this.isActive = false; this.isMuted = false; this.startTime = 0;
+                var ic = document.getElementById('vaLiveInfoCard');
+                if (ic) { ic.style.display = 'none'; ic.innerHTML = ''; }
                 document.getElementById('vaLiveOverlay').classList.remove('active');
                 var avatar = document.getElementById('vaLiveAvatar');
                 if (avatar) avatar.classList.remove('speaking');
