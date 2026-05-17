@@ -5501,16 +5501,25 @@
             position: relative;
             z-index: 2;
         }
+        .va-live-avatar::before {
+            content: '';
+            position: absolute;
+            inset: -14px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #ec4899, #fbbf24, #8b5cf6, #ec4899);
+            opacity: 0.6;
+            animation: vaRotate 6s linear infinite;
+            filter: blur(10px);
+            z-index: 0;
+        }
+        .va-live-avatar > * { position: relative; z-index: 1; }
         .va-live-avatar::after {
             content: '';
             position: absolute;
-            inset: -10px;
+            inset: 0;
             border-radius: 50%;
-            background: conic-gradient(from 0deg, rgba(236, 72, 153, 0.4), rgba(251, 191, 36, 0.4), rgba(139, 92, 246, 0.4), rgba(236, 72, 153, 0.4));
-            z-index: -1;
-            opacity: 0.5;
-            animation: vaRotate 8s linear infinite;
-            filter: blur(8px);
+            background: linear-gradient(135deg, #ec4899 0%, #f43f5e 50%, #fbbf24 100%);
+            z-index: 0;
         }
         @keyframes vaRotate { to { transform: rotate(360deg); } }
         .va-live-avatar.speaking { animation: vaSpeaking 0.6s ease-in-out infinite; }
@@ -5523,14 +5532,15 @@
             50% { transform: scale(1.12); }
         }
         .va-live-name {
-            font-size: 22px; font-weight: 700; margin-bottom: 6px;
-            background: linear-gradient(135deg, #ffffff 0%, #fbbf24 50%, #ec4899 100%);
+            font-size: 24px; font-weight: 800; margin-bottom: 6px;
+            background: linear-gradient(90deg, #fde68a 0%, #fbbf24 30%, #f9a8d4 70%, #ec4899 100%);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
             color: transparent;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
             position: relative; z-index: 2;
+            filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
         }
         .va-live-status { font-size: 14px; opacity: 0.85; margin-bottom: 8px; min-height: 20px; position: relative; z-index: 2; }
         .va-live-timer { font-size: 13px; opacity: 0.7; font-family: 'Courier New', monospace; margin-bottom: 24px; position: relative; z-index: 2; color: #fbbf24; }
