@@ -5504,22 +5504,14 @@
         .va-live-avatar::before {
             content: '';
             position: absolute;
-            inset: -14px;
+            inset: -16px;
             border-radius: 50%;
             background: conic-gradient(from 0deg, #ec4899, #fbbf24, #8b5cf6, #ec4899);
-            opacity: 0.6;
+            opacity: 0.55;
             animation: vaRotate 6s linear infinite;
-            filter: blur(10px);
-            z-index: 0;
-        }
-        .va-live-avatar > * { position: relative; z-index: 1; }
-        .va-live-avatar::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ec4899 0%, #f43f5e 50%, #fbbf24 100%);
-            z-index: 0;
+            filter: blur(12px);
+            z-index: -1;
+            pointer-events: none;
         }
         @keyframes vaRotate { to { transform: rotate(360deg); } }
         .va-live-avatar.speaking { animation: vaSpeaking 0.6s ease-in-out infinite; }
@@ -5533,14 +5525,12 @@
         }
         .va-live-name {
             font-size: 24px; font-weight: 800; margin-bottom: 6px;
-            background: linear-gradient(90deg, #fde68a 0%, #fbbf24 30%, #f9a8d4 70%, #ec4899 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
+            color: #ffffff;
             letter-spacing: 0.8px;
             position: relative; z-index: 2;
-            filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
+            text-shadow:
+                0 0 12px rgba(251, 191, 36, 0.5),
+                0 0 24px rgba(236, 72, 153, 0.35);
         }
         .va-live-status { font-size: 14px; opacity: 0.85; margin-bottom: 8px; min-height: 20px; position: relative; z-index: 2; }
         .va-live-timer { font-size: 13px; opacity: 0.7; font-family: 'Courier New', monospace; margin-bottom: 24px; position: relative; z-index: 2; color: #fbbf24; }
