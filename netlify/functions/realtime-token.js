@@ -124,6 +124,22 @@ exports.handler = async (event) => {
                         },
                         {
                             type: "function",
+                            name: "add_to_shopping_list",
+                            description: "Add one or more items to the user shopping list. Call when user says things like 'add tomatoes to my shopping list', 'I need to buy olive oil', 'put eggs on my list'.",
+                            parameters: {
+                                type: "object",
+                                properties: {
+                                    items: {
+                                        type: "array",
+                                        items: { type: "string" },
+                                        description: "List of items to add, e.g. ['tomatoes', 'olive oil', 'eggs']"
+                                    }
+                                },
+                                required: ["items"]
+                            }
+                        },
+                        {
+                            type: "function",
                             name: "set_timer",
                             description: "Set a kitchen timer for the user. Call when user asks to set a timer, e.g. 'timer for 5 minutes', 'set a 10 minute timer for the pasta', 'remind me in 30 seconds'.",
                             parameters: {

@@ -8886,8 +8886,20 @@
                 var card = document.getElementById('vaLiveInfoCard');
                 if (!card) return;
                 var html = '';
+                // Shopping list
+                if (name === 'add_to_shopping_list') {
+                    var items = (args.items || []).filter(function(x) { return x && typeof x === 'string'; });
+                    var added = 0;
+                    try {
+                        if (typeof ShoppingList !== 'undefined' && ShoppingList.addItem) {
+                            items.forEach(function(item) { ShoppingList.addItem(item); added++; });
+                        }
+                    } catch (e) { console.log('shopping list error', e); }
+                    html = '<div class="ic-title">Added to shopping list</div>';
+                    if (items.length) html += '<div class="ic-row">' + items.join(' • ') + '</div>';
+                }
                 // Voice timer
-                if (name === 'set_timer') {
+                else if (name === 'set_timer') {
                     var secs = parseInt(args.seconds) || 60;
                     var label = args.label || 'Timer';
                     ChefLunaLive.startVoiceTimer(secs, label);
