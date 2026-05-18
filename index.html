@@ -8891,11 +8891,23 @@
                     var items = (args.items || []).filter(function(x) { return x && typeof x === 'string'; });
                     var added = 0;
                     try {
-                        if (typeof ShoppingList !== 'undefined' && ShoppingList.addItem) {
-                            items.forEach(function(item) { ShoppingList.addItem(item); added++; });
+                        if (typeof ShoppingList !== 'undefined') {
+                            var stored = JSON.parse(localStorage.getItem('snapchef_shopping') || '[]');
+                            items.forEach(function(item) {
+                                var exists = stored.some(function(s) {
+                                    return (s.text || s.name || '').toLowerCase() === item.toLowerCase();
+                                });
+                                if (!exists) {
+                                    stored.push({ text: item, name: item, checked: false, done: false });
+                                    added++;
+                                }
+                            });
+                            localStorage.setItem('snapchef_shopping', JSON.stringify(stored));
+                            ShoppingList.items = stored;
+                            if (ShoppingList.render) { try { ShoppingList.render(); } catch (e) {} }
                         }
                     } catch (e) { console.log('shopping list error', e); }
-                    html = '<div class="ic-title">Added to shopping list</div>';
+                    html = '<div class="ic-title">Added to shopping list (' + added + ')</div>';
                     if (items.length) html += '<div class="ic-row">' + items.join(' • ') + '</div>';
                 }
                 // Voice timer
