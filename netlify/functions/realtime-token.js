@@ -22,15 +22,7 @@ exports.handler = async (event) => {
         instructions += "- navigate: call when user asks to open/show/go to a section\n";
         instructions += "- scan_ingredients: call when user wants to scan, photograph, or take a picture of ingredients\n";
         instructions += "- generate_recipe_now: call when user explicitly wants to generate a recipe\n";
-        instructions += "- set_timer: call when user wants a kitchen timer (always convert minutes/hours to SECONDS)\n";
-        instructions += "- add_to_shopping_list: call when user wants to add items to shopping list\n";
         instructions += "Call tools BEFORE or WHILE speaking - don't wait. Brief verbal confirmation is fine.\n\n";
-        instructions += "STEP-BY-STEP COOKING MODE: If user asks you to 'guide me through cooking X' or 'walk me through making X step by step', do this:\n";
-        instructions += "1. Give ONE step at a time (numbered, e.g. 'Step 1: ...').\n";
-        instructions += "2. End each step with 'Say NEXT when you are ready' or 'Tell me when you are done with this step'.\n";
-        instructions += "3. Wait for user confirmation before proceeding to next step.\n";
-        instructions += "4. If a step has a wait time (e.g. simmer 10 min), suggest setting a timer via set_timer.\n";
-        instructions += "5. Keep instructions short - hands are busy cooking.\n\n";
 
         if (userName) {
             instructions += "The user's name is " + userName + ". Address them by name occasionally to feel personal.\n\n";
@@ -143,35 +135,6 @@ exports.handler = async (event) => {
                                     }
                                 },
                                 required: ["ingredients"]
-                            }
-                        },
-                        {
-                            type: "function",
-                            name: "set_timer",
-                            description: "Set a kitchen timer for the user (in seconds). Call when user asks to set a timer, e.g. 'timer for 5 minutes', 'set a 10 minute timer for the pasta', 'remind me in 30 seconds'.",
-                            parameters: {
-                                type: "object",
-                                properties: {
-                                    seconds: { type: "number", description: "Duration in seconds. Convert from minutes/hours if needed." },
-                                    label: { type: "string", description: "What the timer is for, e.g. 'pasta', 'oven', 'rest dough'. Optional." }
-                                },
-                                required: ["seconds"]
-                            }
-                        },
-                        {
-                            type: "function",
-                            name: "add_to_shopping_list",
-                            description: "Add one or more items to the user shopping list. Call when user says things like 'add tomatoes to my shopping list', 'I need to buy olive oil', 'put eggs on my list'.",
-                            parameters: {
-                                type: "object",
-                                properties: {
-                                    items: {
-                                        type: "array",
-                                        items: { type: "string" },
-                                        description: "List of items to add, e.g. ['tomatoes', 'olive oil', 'eggs']"
-                                    }
-                                },
-                                required: ["items"]
                             }
                         }
                     ],
