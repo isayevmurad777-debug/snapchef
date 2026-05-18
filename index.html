@@ -8889,16 +8889,45 @@
                 // Shopping list
                 if (name === 'add_to_shopping_list') {
                     var items = (args.items || []).filter(function(x) { return x && typeof x === 'string'; });
+                    function getEmoji(item) {
+                        var s = item.toLowerCase();
+                        var map = {
+                            'egg': '🥚', 'milk': '🥛', 'bread': '🥖', 'butter': '🧈',
+                            'cheese': '🧀', 'yogurt': '🥛',
+                            'beef': '🥩', 'steak': '🥩', 'meat': '🥩', 'pork': '🥓', 'lamb': '🥩',
+                            'chicken': '🍗', 'turkey': '🦃', 'duck': '🦆',
+                            'fish': '🐟', 'salmon': '🐟', 'tuna': '🐟', 'shrimp': '🦐', 'prawn': '🦐',
+                            'tomato': '🍅', 'onion': '🧅', 'garlic': '🧄',
+                            'potato': '🥔', 'carrot': '🥕', 'pepper': '🫑', 'chili': '🌶️',
+                            'broccoli': '🥦', 'corn': '🌽', 'mushroom': '🍄',
+                            'lettuce': '🥬', 'cucumber': '🥒', 'avocado': '🥑',
+                            'apple': '🍎', 'banana': '🍌', 'orange': '🍊', 'lemon': '🍋',
+                            'strawberry': '🍓', 'grape': '🍇', 'pineapple': '🍍',
+                            'watermelon': '🍉', 'mango': '🥭', 'peach': '🍑', 'cherry': '🍒',
+                            'rice': '🍚', 'pasta': '🍝', 'noodle': '🍜', 'bean': '🫘',
+                            'oil': '🫒', 'olive': '🫒', 'salt': '🧂', 'sugar': '🍬',
+                            'flour': '🌾', 'honey': '🍯',
+                            'coffee': '☕', 'tea': '🍵', 'water': '💧', 'juice': '🧃',
+                            'chocolate': '🍫', 'cake': '🍰', 'cookie': '🍪',
+                            'pizza': '🍕', 'burger': '🍔', 'taco': '🌮'
+                        };
+                        for (var key in map) { if (s.indexOf(key) !== -1) return map[key]; }
+                        return '🛒';
+                    }
                     var added = 0;
+                    var displayItems = [];
                     try {
                         if (typeof ShoppingList !== 'undefined') {
                             var stored = JSON.parse(localStorage.getItem('snapchef_shopping') || '[]');
                             items.forEach(function(item) {
+                                var display = getEmoji(item) + ' ' + item;
+                                displayItems.push(display);
                                 var exists = stored.some(function(s) {
-                                    return (s.text || s.name || '').toLowerCase() === item.toLowerCase();
+                                    var existing = (s.text || s.name || '').toLowerCase();
+                                    return existing === item.toLowerCase() || existing === display.toLowerCase();
                                 });
                                 if (!exists) {
-                                    stored.push({ text: item, name: item, checked: false, done: false });
+                                    stored.push({ text: display, name: display, checked: false, done: false });
                                     added++;
                                 }
                             });
@@ -8908,7 +8937,7 @@
                         }
                     } catch (e) { console.log('shopping list error', e); }
                     html = '<div class="ic-title">Added to shopping list (' + added + ')</div>';
-                    if (items.length) html += '<div class="ic-row">' + items.join(' • ') + '</div>';
+                    if (displayItems.length) html += '<div class="ic-row">' + displayItems.join(' • ') + '</div>';
                 }
                 // Voice timer
                 else if (name === 'set_timer') {
