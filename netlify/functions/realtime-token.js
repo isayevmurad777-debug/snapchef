@@ -124,6 +124,19 @@ exports.handler = async (event) => {
                         },
                         {
                             type: "function",
+                            name: "set_timer",
+                            description: "Set a kitchen timer for the user. Call when user asks to set a timer, e.g. 'timer for 5 minutes', 'set a 10 minute timer for the pasta', 'remind me in 30 seconds'.",
+                            parameters: {
+                                type: "object",
+                                properties: {
+                                    seconds: { type: "number", description: "Duration in SECONDS. Convert minutes (x60) or hours (x3600) if needed." },
+                                    label: { type: "string", description: "Optional label, e.g. 'pasta', 'oven'." }
+                                },
+                                required: ["seconds"]
+                            }
+                        },
+                        {
+                            type: "function",
                             name: "generate_recipe_now",
                             description: "Switch to the recipe section, fill in ingredients/dish name, and trigger recipe generation. Call when user explicitly wants to generate a recipe (e.g. 'generate steak recipe', 'make me a pizza recipe', 'give me a cake recipe').",
                             parameters: {

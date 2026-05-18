@@ -8886,8 +8886,18 @@
                 var card = document.getElementById('vaLiveInfoCard');
                 if (!card) return;
                 var html = '';
+                // Voice timer
+                if (name === 'set_timer') {
+                    var secs = parseInt(args.seconds) || 60;
+                    var label = args.label || 'Timer';
+                    ChefLunaLive.startVoiceTimer(secs, label);
+                    var mins = Math.floor(secs / 60);
+                    var rem = secs % 60;
+                    var dispTime = mins > 0 ? (mins + 'm ' + (rem > 0 ? rem + 's' : '')) : (rem + 's');
+                    html = '<div class="ic-title">Timer set: ' + dispTime + '</div><div class="ic-sub">' + label + '</div>';
+                }
                 // Navigation tools
-                if (name === 'navigate') {
+                else if (name === 'navigate') {
                     var sectionMap = { recipe: 'recipe', analyze: 'analyze', health: 'health', plan: 'mealplan', saved: 'favorites', settings: 'settings' };
                     var target = sectionMap[args.section] || args.section;
                     var labelMap = { recipe: 'Recipe Generator', analyze: 'Food Analyzer', mealplan: 'Meal Plan', favorites: 'Saved Recipes', health: 'Health', settings: 'Settings' };
@@ -9006,6 +9016,62 @@
                 }
             },
 
+            voiceTimerInterval: null,
+            voiceTimerEndTime: 0,
+            voiceTimerLabel: '',
+
+            startVoiceTimer: function(seconds, label) {
+                if (this.voiceTimerInterval) clearInterval(this.voiceTimerInterval);
+                this.voiceTimerEndTime = Date.now() + seconds * 1000;
+                this.voiceTimerLabel = label || 'Timer';
+                var self = this;
+                this.voiceTimerInterval = setInterval(function() {
+                    var remainMs = self.voiceTimerEndTime - Date.now();
+                    if (remainMs <= 0) {
+                        clearInterval(self.voiceTimerInterval);
+                        self.voiceTimerInterval = null;
+                        self.fireTimerAlarm(self.voiceTimerLabel);
+                        return;
+                    }
+                    self.renderTimerInCard(remainMs, self.voiceTimerLabel);
+                }, 500);
+                this.renderTimerInCard(seconds * 1000, label);
+            },
+
+            renderTimerInCard: function(remainMs, label) {
+                var card = document.getElementById('vaLiveInfoCard');
+                if (!card) return;
+                var totalSecs = Math.ceil(remainMs / 1000);
+                var mins = Math.floor(totalSecs / 60);
+                var secs = totalSecs % 60;
+                var disp = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+                card.innerHTML =
+                    '<div class="ic-title">Timer: ' + (label || 'Timer') + '</div>' +
+                    '<div class="ic-big" style="font-size:32px;color:#fbbf24;">' + disp + '</div>' +
+                    '<div class="ic-live-dot"></div>';
+                card.style.display = 'block';
+            },
+
+            fireTimerAlarm: function(label) {
+                try { toast('Timer done: ' + label, 'OK'); } catch (e) {}
+                try {
+                    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    function beep(freq, start, duration) {
+                        var osc = ctx.createOscillator();
+                        var gain = ctx.createGain();
+                        osc.connect(gain); gain.connect(ctx.destination);
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.001, ctx.currentTime + start);
+                        gain.gain.exponentialRampToValueAtTime(0.3, ctx.currentTime + start + 0.02);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + duration);
+                        osc.start(ctx.currentTime + start);
+                        osc.stop(ctx.currentTime + start + duration);
+                    }
+                    beep(880, 0, 0.18); beep(880, 0.25, 0.18); beep(1100, 0.5, 0.3);
+                } catch (e) {}
+                if (navigator.vibrate) { try { navigator.vibrate([200, 100, 200, 100, 400]); } catch (e) {} }
+            },
+
             toggleMinimize: function(event) {
                 if (event) event.stopPropagation();
                 var overlay = document.getElementById('vaLiveOverlay');
@@ -9022,6 +9088,7 @@
 
             cleanup: function() {
                 if (this.timerInterval) { clearInterval(this.timerInterval); this.timerInterval = null; }
+                if (this.voiceTimerInterval) { clearInterval(this.voiceTimerInterval); this.voiceTimerInterval = null; }
                 if (this.dc) { try { this.dc.close(); } catch (e) {} this.dc = null; }
                 if (this.pc) { try { this.pc.close(); } catch (e) {} this.pc = null; }
                 if (this.localStream) {
